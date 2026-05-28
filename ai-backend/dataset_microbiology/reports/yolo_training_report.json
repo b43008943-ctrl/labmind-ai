@@ -1,0 +1,48 @@
+{
+  "model": "yolov8n",
+  "dataset": "D:\\New folder\\ai-backend\\dataset_microbiology\\yolo_dataset\\data.yaml",
+  "classes": [
+    "G-_Bacillus",
+    "G+_Coccus",
+    "G-_Coccus",
+    "G+_Bacillus"
+  ],
+  "nc": 4,
+  "training": {
+    "epochs": 50,
+    "imgsz": 416,
+    "batch": 4,
+    "device": "cpu",
+    "duration_seconds": 26470,
+    "duration_human": "7:21:10",
+    "completed_at": "2026-05-11T09:10:32.468594"
+  },
+  "augmentation": {
+    "hsv_h": 0.015,
+    "hsv_s": 0.4,
+    "hsv_v": 0.3,
+    "degrees": 15,
+    "translate": 0.1,
+    "scale": 0.3,
+    "fliplr": 0.5,
+    "flipud": 0.3,
+    "mosaic": 0.0,
+    "mixup": 0.0
+  },
+  "validation": {
+    "map50": 0.8857908064039949,
+    "map50_95": 0.5292049728364002,
+    "precision": 0.7742059950286699,
+    "recall": 0.8345673596081956,
+    "per_class_map50": {
+      "G-_Bacillus": 0.9153166525082326,
+      "G+_Coccus": 0.8810866972314604,
+      "G-_Coccus": 0.9307411767666932,
+      "G+_Bacillus": 0.8160186991095933
+    }
+  },
+  "weights": {
+    "best": "D:\\New folder\\ai-backend\\dataset_microbiology\\yolo_dataset\\bacteria_detector\\weights\\best.pt",
+    "last": "D:\\New folder\\ai-backend\\dataset_microbiology\\yolo_dataset\\bacteria_detector\\weights\\last.pt"
+  }
+}

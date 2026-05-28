@@ -1,0 +1,779 @@
+import { useState, useEffect } from 'react';
+import { login as apiLogin, register as apiRegister, ApiError } from '../services/apiClient';
+
+// --- BIOMETRIC GLYPHS (HYPER-DETAILED SVG) ---
+const HolographicDataCubeIcon = ({ delay = '0s' }) => (
+    <div className="relative flex items-center justify-center w-[36px] h-[36px] holographic-glyph" style={{ animationDelay: delay }}>
+        <svg viewBox="0 0 100 100" className="w-full h-full" style={{ filter: 'drop-shadow(0 0 3px rgba(34,211,238,0.8)) drop-shadow(0 0 12px rgba(34,211,238,0.3))' }}>
+            <g className="login-float-slow origin-center">
+                <polygon points="50,20 80,35 80,65 50,50" fill="rgba(34,211,238,0.05)" stroke="rgba(34,211,238,0.2)" strokeWidth="1" />
+                <polygon points="50,20 20,35 20,65 50,50" fill="rgba(34,211,238,0.05)" stroke="rgba(34,211,238,0.2)" strokeWidth="1" />
+                <polygon points="50,40 65,48 50,56 35,48" fill="rgba(34,211,238,0.9)" className="login-pulse-core" />
+                <polygon points="35,48 50,56 50,70 35,62" fill="rgba(34,211,238,0.6)" className="login-pulse-core" />
+                <polygon points="65,48 50,56 50,70 65,62" fill="rgba(34,211,238,0.4)" className="login-pulse-core" />
+                <polygon points="50,50 80,65 50,80 20,65" fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.8)" strokeWidth="2" strokeLinejoin="round" />
+                <polyline points="50,20 50,50" fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="2" strokeLinecap="round" />
+                <polyline points="20,35 50,50 80,35" fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <g fill="#ffffff" fontSize="8" fontFamily="monospace" fontWeight="bold" style={{ filter: 'drop-shadow(0 0 4px #22d3ee)' }}>
+                    <text x="25" y="30" className="login-data-fade-1">0</text>
+                    <text x="70" y="35" className="login-data-fade-2">1</text>
+                    <text x="20" y="75" className="login-data-fade-3">1</text>
+                    <text x="75" y="70" className="login-data-fade-1">0</text>
+                </g>
+            </g>
+        </svg>
+    </div>
+);
+
+const HolographicLockIcon = ({ delay = '0s' }) => (
+    <div className="relative flex items-center justify-center w-[36px] h-[36px] holographic-glyph" style={{ animationDelay: delay }}>
+        <svg viewBox="0 0 100 100" className="w-full h-full" style={{ filter: 'drop-shadow(0 0 3px rgba(34,211,238,0.8)) drop-shadow(0 0 10px rgba(34,211,238,0.4))' }}>
+            <path d="M 30,45 V 28 A 20,20 0 0,1 70,28 V 45" fill="none" stroke="url(#shackleGradient)" strokeWidth="8" strokeLinecap="round" />
+            <rect x="20" y="45" width="60" height="45" rx="8" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.8)" strokeWidth="2.5" />
+            <rect x="24" y="49" width="52" height="37" rx="4" fill="transparent" stroke="rgba(34,211,238,0.3)" strokeWidth="1" />
+            <circle cx="50" cy="67.5" r="14" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.6)" strokeWidth="1" strokeDasharray="3 2" className="login-spin-slow origin-center" />
+            <circle cx="50" cy="67.5" r="10" fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="1.5" strokeDasharray="6 4" className="login-spin-reverse origin-center" />
+            <circle cx="50" cy="67.5" r="5" fill="#22d3ee" className="login-pulse-fast" />
+            <path d="M 50,56 v 23 M 38,67.5 h 24" stroke="rgba(34,211,238,0.4)" strokeWidth="1" />
+            <line x1="22" y1="47" x2="78" y2="47" stroke="#ffffff" strokeWidth="1.5" style={{ filter: 'drop-shadow(0 0 5px #22d3ee)' }} className="login-scan-line" />
+            <defs>
+                <linearGradient id="shackleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="rgba(34,211,238,0.4)" />
+                    <stop offset="50%" stopColor="rgba(255,255,255,0.9)" />
+                    <stop offset="100%" stopColor="rgba(34,211,238,0.4)" />
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+);
+
+const HolographicDNAIcon = ({ delay = '0s' }) => (
+    <div className="relative flex items-center justify-center w-[36px] h-[36px] holographic-glyph" style={{ animationDelay: delay }}>
+        <svg viewBox="0 0 100 100" className="w-full h-full" style={{ filter: 'drop-shadow(0 0 3px rgba(34,211,238,0.8)) drop-shadow(0 0 10px rgba(34,211,238,0.4))' }}>
+            <circle cx="50" cy="50" r="30" fill="rgba(34,211,238,0.05)" filter="blur(8px)" />
+            <g strokeLinecap="round" className="login-dna-spin origin-center">
+                <path d="M 35,15 Q 65,30 35,50 T 35,85" fill="none" stroke="rgba(34,211,238,0.3)" strokeWidth="3" />
+                <line x1="42" y1="23" x2="58" y2="28" stroke="rgba(34,211,238,0.2)" strokeWidth="1.5" />
+                <line x1="36" y1="36" x2="64" y2="40" stroke="rgba(34,211,238,0.4)" strokeWidth="2" />
+                <line x1="39" y1="64" x2="61" y2="60" stroke="rgba(34,211,238,0.4)" strokeWidth="2" />
+                <line x1="45" y1="77" x2="55" y2="72" stroke="rgba(34,211,238,0.2)" strokeWidth="1.5" />
+                <path d="M 65,15 Q 35,30 65,50 T 65,85" fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="4" />
+                <circle cx="65" cy="15" r="3" fill="#ffffff" filter="drop-shadow(0 0 5px #22d3ee)" className="login-pulse-fast" />
+                <circle cx="53" cy="30" r="2.5" fill="#22d3ee" className="login-pulse-fast" style={{ animationDelay: '0.4s' }} />
+                <circle cx="65" cy="50" r="3.5" fill="#ffffff" filter="drop-shadow(0 0 5px #22d3ee)" className="login-pulse-fast" style={{ animationDelay: '0.8s' }} />
+                <circle cx="53" cy="70" r="2.5" fill="#22d3ee" className="login-pulse-fast" style={{ animationDelay: '1.2s' }} />
+                <circle cx="65" cy="85" r="3" fill="#ffffff" filter="drop-shadow(0 0 5px #22d3ee)" className="login-pulse-fast" style={{ animationDelay: '1.6s' }} />
+            </g>
+        </svg>
+    </div>
+);
+
+// ── Reusable styled input row ──
+function AuthInput({ icon, type, value, onChange, placeholder, disabled, swayDelay = '0s', waveDelay = '0s' }) {
+    return (
+        <div className="w-full relative login-input-group login-input-sway" style={{ animationDelay: swayDelay }}>
+            <div className="login-membrane absolute inset-0 w-full rounded-lg pointer-events-none" />
+            <div className="login-icon absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-center">
+                {icon}
+            </div>
+            <input
+                type={type}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                className="w-full bg-transparent py-4 pl-12 pr-4 text-white focus:outline-none font-sans font-light tracking-wide relative z-10 login-input-text"
+                style={{ borderBottom: 'none', fontSize: 14 }}
+                required
+                disabled={disabled}
+            />
+            <div className="login-fluid-wave absolute bottom-0 left-0 w-full h-[3px] pointer-events-none overflow-hidden rounded-b-lg" style={{ animationDelay: waveDelay }}>
+                <div className="login-wave-bg" />
+            </div>
+            <div className="login-focus-aura absolute bottom-0 left-1/2 h-[2px]" />
+        </div>
+    );
+}
+
+
+export default function LoginScreen({ onLogin }) {
+    const [mode, setMode] = useState('signin'); // 'signin' | 'register'
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [authError, setAuthError] = useState(null);
+    const [screenState, setScreenState] = useState('screen-transition-hidden');
+    const [modeTransition, setModeTransition] = useState(false);
+
+    useEffect(() => {
+        const t = setTimeout(() => setScreenState('screen-visible'), 50);
+        return () => clearTimeout(t);
+    }, []);
+
+    const switchMode = (newMode) => {
+        setModeTransition(true);
+        setAuthError(null);
+        setTimeout(() => {
+            setMode(newMode);
+            setFullName('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            setTimeout(() => setModeTransition(false), 50);
+        }, 250);
+    };
+
+    const isSignIn = mode === 'signin';
+
+    const isFilledSignIn = email.trim() && password.trim();
+    const isFilledRegister = fullName.trim() && email.trim() && password.trim() && confirmPassword.trim();
+    const isFilled = isSignIn ? isFilledSignIn : isFilledRegister;
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!isFilled) return;
+
+        if (!isSignIn && password !== confirmPassword) {
+            setAuthError('Passwords do not match.');
+            return;
+        }
+
+        setIsSubmitting(true);
+        setAuthError(null);
+
+        try {
+            if (isSignIn) {
+                await apiLogin(email.trim(), password);
+            } else {
+                await apiRegister(email.trim(), password, fullName.trim());
+                await apiLogin(email.trim(), password);
+            }
+            setScreenState('screen-exit');
+            setTimeout(() => {
+                onLogin(isSignIn ? null : fullName.trim());
+            }, 500);
+        } catch (err) {
+            setIsSubmitting(false);
+            if (err instanceof ApiError) {
+                setAuthError(err.message);
+            } else {
+                setAuthError('Unable to reach the server. Is the backend running?');
+            }
+        }
+    };
+
+    return (
+        <div
+            className={`absolute inset-0 z-20 min-h-screen w-full flex flex-col items-center justify-center overflow-hidden font-sans ${screenState}`}
+        >
+            {/* ══════════════════════════════════════════════════
+                ATMOSPHERIC BIOLOGICAL BACKGROUND
+               ══════════════════════════════════════════════════ */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: -1, opacity: 0.18, filter: 'blur(5px)' }}>
+                {/* ── LARGE MITOCHONDRIA ── */}
+                {[
+                    { x: '-2%', y: '12%', w: 260, h: 130, rot: -18, dur: 30, delay: 0 },
+                    { x: '68%', y: '55%', w: 220, h: 110, rot: 22, dur: 36, delay: 5 },
+                    { x: '35%', y: '80%', w: 180, h: 90, rot: 10, dur: 32, delay: 8 },
+                ].map((m, i) => (
+                    <div key={`login-mito-${i}`} className="absolute" style={{
+                        left: m.x, top: m.y, width: m.w, height: m.h,
+                        transform: `rotate(${m.rot}deg)`,
+                        animation: `login-bio-drift ${m.dur}s ease-in-out infinite alternate`,
+                        animationDelay: `${m.delay}s`,
+                    }}>
+                        <svg viewBox="0 0 200 100" className="w-full h-full" style={{
+                            filter: 'drop-shadow(0 0 6px rgba(34,211,238,0.7)) drop-shadow(0 0 20px rgba(34,211,238,0.25))',
+                        }}>
+                            <ellipse cx="100" cy="50" rx="95" ry="45" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" strokeWidth="1.5" strokeOpacity="0.8" />
+                            <ellipse cx="100" cy="50" rx="85" ry="38" fill="none" stroke="rgba(34,211,238,0.5)" strokeWidth="1" />
+                            <path d="M 25,50 Q 40,15 55,50 T 85,50" fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="1.2" strokeLinecap="round" />
+                            <path d="M 45,50 Q 62,85 80,50 T 115,50" fill="none" stroke="rgba(34,211,238,0.65)" strokeWidth="1.2" strokeLinecap="round" />
+                            <path d="M 85,50 Q 102,12 120,50 T 155,50" fill="none" stroke="rgba(34,211,238,0.8)" strokeWidth="1.2" strokeLinecap="round" />
+                            <path d="M 115,50 Q 138,88 158,50 T 180,50" fill="none" stroke="rgba(34,211,238,0.6)" strokeWidth="1" strokeLinecap="round" />
+                            <circle cx="55" cy="38" r="3" fill="rgba(255,255,255,0.6)" />
+                            <circle cx="100" cy="62" r="2.5" fill="rgba(255,255,255,0.5)" />
+                            <circle cx="140" cy="40" r="3.5" fill="rgba(34,211,238,0.6)" />
+                            <circle cx="80" cy="55" r="2" fill="rgba(255,255,255,0.7)" />
+                            {[30, 50, 70, 90, 110, 130, 150, 170].map((x, j) => (
+                                <circle key={j} cx={x} cy={50 + (j % 2 ? 6 : -6)} r="1.2" fill="rgba(255,255,255,0.7)" />
+                            ))}
+                            <ellipse cx="100" cy="50" rx="60" ry="25" fill="rgba(34,211,238,0.04)" />
+                        </svg>
+                    </div>
+                ))}
+
+                {/* ── NEURON NETWORKS ── */}
+                {[
+                    { x: '55%', y: '-5%', w: 420, h: 340, dur: 35, delay: 0 },
+                    { x: '-12%', y: '45%', w: 360, h: 290, dur: 40, delay: 3 },
+                ].map((n, i) => (
+                    <div key={`login-neuron-${i}`} className="absolute" style={{
+                        left: n.x, top: n.y, width: n.w, height: n.h,
+                        animation: `login-bio-drift ${n.dur}s ease-in-out infinite alternate`,
+                        animationDelay: `${n.delay}s`,
+                    }}>
+                        <svg viewBox="0 0 300 240" className="w-full h-full" style={{
+                            filter: 'drop-shadow(0 0 5px rgba(34,211,238,0.6)) drop-shadow(0 0 18px rgba(34,211,238,0.2))',
+                        }}>
+                            <circle cx="80" cy="70" r="20" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" strokeWidth="1.8" strokeOpacity="0.75" />
+                            <circle cx="80" cy="70" r="9" fill="rgba(34,211,238,0.3)" stroke="rgba(255,255,255,0.35)" strokeWidth="0.6" />
+                            <circle cx="82" cy="68" r="3.5" fill="rgba(255,255,255,0.7)" />
+                            <path d="M 64,56 Q 48,38 30,25" fill="none" stroke="rgba(34,211,238,0.7)" strokeWidth="1.2" strokeLinecap="round" />
+                            <path d="M 30,25 L 18,14" fill="none" stroke="rgba(34,211,238,0.5)" strokeWidth="0.9" />
+                            <path d="M 30,25 L 16,30" fill="none" stroke="rgba(34,211,238,0.4)" strokeWidth="0.8" />
+                            <path d="M 100,70 Q 135,74 165,82 T 240,105" fill="none" stroke="#22d3ee" strokeWidth="1.8" strokeOpacity="0.75" strokeLinecap="round" />
+                            <rect x="112" y="67" width="20" height="12" rx="6" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.5)" strokeWidth="0.9" />
+                            <rect x="145" y="73" width="20" height="12" rx="6" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.45)" strokeWidth="0.9" />
+                            <rect x="178" y="80" width="20" height="12" rx="6" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.5)" strokeWidth="0.9" />
+                            <circle r="4" fill="rgba(255,255,255,0.95)">
+                                <animateMotion dur="2.5s" repeatCount="indefinite" path="M 100,70 Q 135,74 165,82 T 240,105" />
+                            </circle>
+                            <circle cx="240" cy="105" r="6" fill="rgba(34,211,238,0.2)" stroke="#22d3ee" strokeWidth="1.2" strokeOpacity="0.65" />
+                            <circle cx="265" cy="148" r="16" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" strokeWidth="1.4" strokeOpacity="0.55" />
+                            <circle cx="265" cy="148" r="7" fill="rgba(34,211,238,0.25)" />
+                        </svg>
+                    </div>
+                ))}
+
+                {/* ── VIRAL STRUCTURES ── */}
+                {[
+                    { x: '78%', y: '35%', size: 160, rot: 15, dur: 38, delay: 1 },
+                    { x: '-2%', y: '68%', size: 130, rot: -10, dur: 34, delay: 5 },
+                ].map((v, i) => (
+                    <div key={`login-virus-${i}`} className="absolute" style={{
+                        left: v.x, top: v.y, width: v.size, height: v.size,
+                        transform: `rotate(${v.rot}deg)`,
+                        animation: `login-bio-drift ${v.dur}s ease-in-out infinite alternate`,
+                        animationDelay: `${v.delay}s`,
+                    }}>
+                        <svg viewBox="0 0 160 160" className="w-full h-full" style={{
+                            filter: 'drop-shadow(0 0 6px rgba(34,211,238,0.65)) drop-shadow(0 0 18px rgba(34,211,238,0.2))',
+                        }}>
+                            <polygon points="80,15 120,40 120,90 80,115 40,90 40,40" fill="rgba(34,211,238,0.04)" stroke="#22d3ee" strokeWidth="1.4" strokeOpacity="0.7" />
+                            <line x1="80" y1="15" x2="80" y2="65" stroke="rgba(34,211,238,0.3)" strokeWidth="0.7" />
+                            <line x1="40" y1="40" x2="80" y2="65" stroke="rgba(34,211,238,0.25)" strokeWidth="0.7" />
+                            <line x1="120" y1="40" x2="80" y2="65" stroke="rgba(34,211,238,0.25)" strokeWidth="0.7" />
+                            <circle cx="80" cy="65" r="16" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.5)" strokeWidth="1" />
+                            <circle cx="80" cy="65" r="8" fill="rgba(34,211,238,0.2)" stroke="rgba(255,255,255,0.35)" strokeWidth="0.6" />
+                            <line x1="80" y1="15" x2="80" y2="2" stroke="#22d3ee" strokeWidth="1.2" strokeOpacity="0.6" />
+                            <circle cx="80" cy="2" r="3" fill="rgba(34,211,238,0.35)" stroke="#22d3ee" strokeWidth="0.8" strokeOpacity="0.5" />
+                            <line x1="120" y1="40" x2="140" y2="22" stroke="#22d3ee" strokeWidth="1.2" strokeOpacity="0.55" />
+                            <circle cx="140" cy="22" r="3.5" fill="rgba(34,211,238,0.3)" stroke="#22d3ee" strokeWidth="0.8" strokeOpacity="0.5" />
+                        </svg>
+                    </div>
+                ))}
+            </div>
+
+            {/* ══════════════════════════════════════════════════
+                AMBIENT ATMOSPHERE — Light leak, bokeh, dust
+               ══════════════════════════════════════════════════ */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px]"
+                    style={{
+                        background: 'radial-gradient(ellipse 60% 50% at 50% 20%, rgba(34,211,238,0.08) 0%, rgba(34,211,238,0.03) 40%, transparent 70%)',
+                        filter: 'blur(40px)',
+                        animation: 'login-light-leak 8s ease-in-out infinite alternate',
+                    }}
+                />
+                {[
+                    { x: '10%', y: '12%', size: 90, blur: 15, opacity: 0.04 },
+                    { x: '78%', y: '8%', size: 70, blur: 12, opacity: 0.05 },
+                    { x: '85%', y: '75%', size: 100, blur: 18, opacity: 0.03 },
+                    { x: '5%', y: '80%', size: 80, blur: 14, opacity: 0.04 },
+                ].map((bokeh, i) => (
+                    <div key={`bokeh-${i}`} className="absolute rounded-full" style={{
+                        left: bokeh.x, top: bokeh.y,
+                        width: bokeh.size, height: bokeh.size,
+                        background: `radial-gradient(circle, rgba(34,211,238,${bokeh.opacity * 3}) 0%, rgba(34,211,238,${bokeh.opacity}) 50%, transparent 70%)`,
+                        filter: `blur(${bokeh.blur}px)`,
+                        animation: `login-bio-drift ${18 + i * 4}s ease-in-out infinite alternate`,
+                    }} />
+                ))}
+                {[...Array(12)].map((_, i) => (
+                    <div key={`dust-${i}`} className="absolute rounded-full" style={{
+                        width: `${1 + (i % 3) * 0.5}px`, height: `${1 + (i % 3) * 0.5}px`,
+                        background: `rgba(34,211,238,${0.2 + (i % 4) * 0.08})`,
+                        left: `${5 + (i * 8)}%`, top: `${5 + (i * 7.5)}%`,
+                        filter: 'blur(0.3px)',
+                        animation: `login-bg-drift ${6 + i * 1.5}s ease-in-out infinite alternate`,
+                        animationDelay: `${i * 0.9}s`,
+                    }} />
+                ))}
+            </div>
+
+            <form
+                onSubmit={handleSubmit}
+                className="relative z-10 w-full max-w-md px-8 flex flex-col items-center"
+            >
+                {/* ══════════════════════════════════════════════════
+                    MICROSCOPE HERO — Microgravity Sway
+                   ══════════════════════════════════════════════════ */}
+                <div
+                    className="relative flex items-center justify-center mb-6"
+                    style={{ width: 200, height: 200, animation: 'login-microgravity 20s ease-in-out infinite' }}
+                >
+                    <div className="absolute pointer-events-none" style={{
+                        width: 260, height: 260,
+                        background: 'radial-gradient(circle, rgba(34,211,238,0.16) 0%, rgba(34,211,238,0.05) 35%, transparent 65%)',
+                        borderRadius: '50%', filter: 'blur(50px)',
+                        animation: 'login-aura-shimmer 5s ease-in-out infinite',
+                    }} />
+                    <div className="absolute pointer-events-none" style={{
+                        width: 150, height: 150,
+                        background: 'radial-gradient(circle, rgba(34,211,238,0.25) 0%, rgba(34,211,238,0.08) 45%, transparent 75%)',
+                        borderRadius: '50%', filter: 'blur(30px)',
+                        animation: 'login-aura-shimmer 5s ease-in-out infinite 1.5s',
+                    }} />
+                    <div className="absolute pointer-events-none" style={{
+                        width: 300, height: 5,
+                        background: 'linear-gradient(90deg, transparent, rgba(34,211,238,0.06), rgba(34,211,238,0.16), rgba(34,211,238,0.06), transparent)',
+                        filter: 'blur(10px)', top: '55%',
+                        animation: 'login-streak-breathe 6s ease-in-out infinite',
+                    }} />
+                    {[...Array(10)].map((_, i) => {
+                        const angle = (i / 10) * 360;
+                        const radius = 35 + (i % 4) * 18;
+                        const x = Math.cos((angle * Math.PI) / 180) * radius;
+                        const y = Math.sin((angle * Math.PI) / 180) * radius;
+                        const size = 1.2 + (i % 3) * 0.6;
+                        return (
+                            <div key={`holo-${i}`} className="absolute rounded-full pointer-events-none" style={{
+                                width: size, height: size,
+                                background: `rgba(34,211,238,${0.3 + (i % 4) * 0.1})`,
+                                left: `calc(50% + ${x}px)`, top: `calc(50% + ${y}px)`,
+                                filter: `blur(${0.3 + (i % 3) * 0.2}px)`,
+                                animation: `login-holo-particle ${6 + (i % 5) * 2}s ease-in-out infinite alternate`,
+                                animationDelay: `${i * 0.7}s`,
+                            }} />
+                        );
+                    })}
+                    <img
+                        src="/microscope-hero.png" alt="3D Medical Microscope" className="relative z-10"
+                        style={{
+                            width: 170, height: 170, objectFit: 'contain', mixBlendMode: 'lighten',
+                            filter: 'drop-shadow(0 0 25px rgba(34,211,238,0.12)) drop-shadow(0 8px 30px rgba(0,0,0,0.6))',
+                            WebkitMaskImage: 'radial-gradient(ellipse 85% 85% at 50% 50%, black 60%, transparent 100%)',
+                            maskImage: 'radial-gradient(ellipse 85% 85% at 50% 50%, black 60%, transparent 100%)',
+                        }}
+                        draggable={false}
+                    />
+                </div>
+
+                {/* ── Title Block ── */}
+                <h2 className="text-xl font-bold uppercase text-white mb-1 text-center login-title-text">
+                    SMART ANALYST SYSTEM
+                </h2>
+                <p className="text-[10.5px] uppercase mb-10 text-center login-subtitle-text">
+                    {isSignIn ? 'Secure Access' : 'Create Your Account'}
+                </p>
+
+                {/* ══════════════════════════════════════════════════
+                    FORM FIELDS — Dual Mode
+                   ══════════════════════════════════════════════════ */}
+                <div
+                    className="w-full relative z-10 mb-10 transition-opacity duration-300"
+                    style={{ opacity: modeTransition ? 0 : 1 }}
+                >
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl z-0" style={{ margin: '-20px', padding: '20px' }}>
+                        {[...Array(6)].map((_, i) => (
+                            <div key={`input-part-${i}`} className="absolute rounded-full" style={{
+                                width: `${1 + i % 2.5}px`, height: `${1 + i % 2.5}px`,
+                                background: `rgba(34,211,238,${0.2 + (i % 3) * 0.1})`,
+                                left: `${15 + (i * 14)}%`, bottom: `${10 + (i * 12)}%`,
+                                filter: 'blur(0.5px)',
+                                animation: `login-input-particle ${6 + i * 1.5}s ease-in-out infinite`,
+                                animationDelay: `${i * 0.8}s`,
+                            }} />
+                        ))}
+                    </div>
+
+                    <div className="w-full flex flex-col gap-8 relative z-10">
+                        {/* Full Name — register mode only */}
+                        {!isSignIn && (
+                            <AuthInput
+                                icon={<HolographicDNAIcon delay="0s" />}
+                                type="text"
+                                value={fullName}
+                                onChange={(e) => setFullName(e.target.value)}
+                                placeholder="Full Name"
+                                disabled={isSubmitting}
+                                swayDelay="0s"
+                                waveDelay="0s"
+                            />
+                        )}
+
+                        {/* Email — both modes */}
+                        <AuthInput
+                            icon={<HolographicDataCubeIcon delay={isSignIn ? '0s' : '1s'} />}
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email Address"
+                            disabled={isSubmitting}
+                            swayDelay={isSignIn ? '0s' : '1.2s'}
+                            waveDelay={isSignIn ? '0s' : '0.8s'}
+                        />
+
+                        {/* Password — both modes */}
+                        <AuthInput
+                            icon={<HolographicLockIcon delay={isSignIn ? '1s' : '2s'} />}
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Password"
+                            disabled={isSubmitting}
+                            swayDelay={isSignIn ? '1.2s' : '2.4s'}
+                            waveDelay={isSignIn ? '0.8s' : '1.6s'}
+                        />
+
+                        {/* Confirm Password — register mode only */}
+                        {!isSignIn && (
+                            <AuthInput
+                                icon={<HolographicLockIcon delay="3s" />}
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="Confirm Password"
+                                disabled={isSubmitting}
+                                swayDelay="3.6s"
+                                waveDelay="2.4s"
+                            />
+                        )}
+                    </div>
+                </div>
+
+                {/* ── Auth Error Banner ── */}
+                {authError && (
+                    <div className="w-full px-4 py-3 mb-5 rounded-xl text-center"
+                        style={{
+                            background: 'rgba(239,68,68,0.08)',
+                            border: '1px solid rgba(239,68,68,0.25)',
+                            boxShadow: '0 0 20px rgba(239,68,68,0.1)',
+                        }}
+                    >
+                        <p className="text-[12px] text-red-400 font-medium tracking-wide">
+                            {authError}
+                        </p>
+                    </div>
+                )}
+
+                {/* ══════════════════════════════════════════════════
+                    CTA — Plasma Pill Button
+                   ══════════════════════════════════════════════════ */}
+                <button
+                    type="submit"
+                    disabled={isSubmitting || !isFilled}
+                    className="login-plasma-btn relative w-full h-[60px] rounded-full flex items-center justify-center overflow-hidden transition-all duration-700"
+                    style={{
+                        opacity: isFilled && !isSubmitting ? 1 : 0.4,
+                        cursor: isFilled && !isSubmitting ? 'pointer' : 'default',
+                        pointerEvents: isSubmitting ? 'none' : 'auto'
+                    }}
+                >
+                    <div className={`login-plasma-bg absolute inset-0 ${isFilled ? 'active' : ''}`} />
+                    <div className="absolute inset-x-1 inset-y-1 rounded-full border border-cyan-400/30 pointer-events-none" />
+                    {isSubmitting ? (
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin relative z-10" />
+                    ) : (
+                        <span className="relative z-10 text-white font-bold text-[13px] login-btn-text">
+                            {isSignIn ? 'SIGN IN' : 'CREATE ACCOUNT'}
+                        </span>
+                    )}
+                </button>
+
+                {/* ── Mode Toggle Link ── */}
+                <div className="mt-6 flex flex-col items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => switchMode(isSignIn ? 'register' : 'signin')}
+                        className="text-[11px] tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer bg-transparent border-none"
+                        style={{
+                            color: 'rgba(34,211,238,0.6)',
+                            textShadow: '0 0 8px rgba(34,211,238,0.3)',
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.color = '#22d3ee';
+                            e.target.style.textShadow = '0 0 15px rgba(34,211,238,0.8)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.color = 'rgba(34,211,238,0.6)';
+                            e.target.style.textShadow = '0 0 8px rgba(34,211,238,0.3)';
+                        }}
+                    >
+                        {isSignIn ? 'Create Account' : 'Already have an account? Sign In'}
+                    </button>
+
+                    {isSignIn && (
+                        <button
+                            type="button"
+                            className="text-[10px] tracking-[0.15em] uppercase bg-transparent border-none cursor-pointer"
+                            style={{ color: 'rgba(148,163,184,0.5)' }}
+                            onMouseEnter={(e) => { e.target.style.color = 'rgba(148,163,184,0.8)'; }}
+                            onMouseLeave={(e) => { e.target.style.color = 'rgba(148,163,184,0.5)'; }}
+                        >
+                            Forgot Password?
+                        </button>
+                    )}
+                </div>
+
+            </form>
+
+            {/* ══════════════════════════════════════════════════
+                CSS ANIMATIONS
+               ══════════════════════════════════════════════════ */}
+            <style>{`
+                @keyframes login-microgravity {
+                    0%   { transform: translateY(0) translateX(0) rotate(0deg); }
+                    15%  { transform: translateY(-5px) translateX(2px) rotate(0.4deg); }
+                    30%  { transform: translateY(-3px) translateX(-3px) rotate(-0.3deg); }
+                    50%  { transform: translateY(-8px) translateX(1px) rotate(0.5deg); }
+                    65%  { transform: translateY(-4px) translateX(-2px) rotate(-0.2deg); }
+                    80%  { transform: translateY(-6px) translateX(3px) rotate(0.3deg); }
+                    100% { transform: translateY(0) translateX(0) rotate(0deg); }
+                }
+
+                @keyframes login-aura-shimmer {
+                    0%   { opacity: 0.6; transform: scale(0.94); }
+                    25%  { opacity: 0.85; transform: scale(1.02); }
+                    50%  { opacity: 1; transform: scale(1.06); }
+                    75%  { opacity: 0.75; transform: scale(0.98); }
+                    100% { opacity: 0.6; transform: scale(0.94); }
+                }
+
+                @keyframes login-streak-breathe {
+                    0%, 100% { opacity: 0.5; transform: scaleX(0.9); }
+                    50% { opacity: 0.9; transform: scaleX(1.1); }
+                }
+
+                @keyframes login-holo-particle {
+                    0%   { transform: translateY(0) translateX(0); opacity: 0.15; }
+                    50%  { transform: translateY(-12px) translateX(8px); opacity: 0.4; }
+                    100% { transform: translateY(-20px) translateX(-5px); opacity: 0.1; }
+                }
+
+                @keyframes login-bg-drift {
+                    0%   { transform: translateY(0) translateX(0); opacity: 0.2; }
+                    100% { transform: translateY(-25px) translateX(12px); opacity: 0.08; }
+                }
+
+                @keyframes login-bio-drift {
+                    0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0.8; }
+                    25%  { transform: translateY(-12px) translateX(8px) scale(1.02); opacity: 1; }
+                    50%  { transform: translateY(-5px) translateX(-6px) scale(0.98); opacity: 0.9; }
+                    75%  { transform: translateY(-15px) translateX(4px) scale(1.01); opacity: 1; }
+                    100% { transform: translateY(-8px) translateX(-10px) scale(0.99); opacity: 0.85; }
+                }
+
+                @keyframes login-light-leak {
+                    0%   { opacity: 0.5; transform: translateX(-50%) scale(0.95); }
+                    50%  { opacity: 0.8; transform: translateX(-50%) scale(1.05); }
+                    100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+                }
+
+                .holographic-glyph {
+                    animation: holographicSway 4s ease-in-out infinite alternate;
+                }
+                @keyframes holographicSway {
+                    0% { transform: translateY(-4px); filter: drop-shadow(0px 0px 4px rgba(34, 211, 238, 0.6)); }
+                    100% { transform: translateY(4px); filter: drop-shadow(0px 0px 12px rgba(34, 211, 238, 1)); }
+                }
+
+                .login-dna-spin { animation: login-dna-spin 8s ease-in-out infinite; }
+                @keyframes login-dna-spin {
+                    0% { transform: scaleX(1); }
+                    50% { transform: scaleX(0.7); }
+                    100% { transform: scaleX(1); }
+                }
+
+                @keyframes login-pulse-core {
+                    0% { opacity: 0.7; filter: brightness(1); }
+                    50% { opacity: 1; filter: brightness(1.5); }
+                    100% { opacity: 0.7; filter: brightness(1); }
+                }
+                .login-pulse-core { animation: login-pulse-core 3s ease-in-out infinite alternate; }
+
+                .login-data-fade-1 { animation: login-data-fade 4s infinite; }
+                .login-data-fade-2 { animation: login-data-fade 5s infinite 1.5s; }
+                .login-data-fade-3 { animation: login-data-fade 6s infinite 3s; }
+                @keyframes login-data-fade {
+                    0%, 100% { opacity: 0; transform: translateY(0); }
+                    50% { opacity: 1; transform: translateY(-5px); }
+                }
+
+                .login-scan-line { animation: login-scan 3s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+                @keyframes login-scan {
+                    0% { transform: translateY(0); opacity: 0; }
+                    10% { opacity: 1; }
+                    90% { opacity: 1; }
+                    100% { transform: translateY(41px); opacity: 0; }
+                }
+
+                .login-spin-slow { animation: login-spin 12s linear infinite; transform-origin: 50px 65px; }
+                .login-spin-reverse { animation: login-spin 8s linear infinite reverse; transform-origin: 50px 65px; }
+                @keyframes login-spin { 100% { transform: rotate(360deg); } }
+
+                .login-pulse-fast { animation: login-opacity-pulse 2s ease-in-out infinite alternate; }
+                @keyframes login-opacity-pulse {
+                    0% { opacity: 0.3; filter: drop-shadow(0 0 2px #22d3ee); }
+                    100% { opacity: 1; filter: drop-shadow(0 0 8px #22d3ee); }
+                }
+
+                @keyframes login-input-particle {
+                    0%   { transform: translateY(0); opacity: 0; }
+                    20%  { opacity: 0.6; }
+                    80%  { opacity: 0.6; }
+                    100% { transform: translateY(-40px); opacity: 0; }
+                }
+
+                .login-input-sway { animation: login-input-float 6s ease-in-out infinite alternate; }
+                @keyframes login-input-float {
+                    0% { transform: translateY(-3px); }
+                    100% { transform: translateY(3px); }
+                }
+
+                .login-membrane {
+                    top: 10px; bottom: 0; height: auto;
+                    background: linear-gradient(180deg, transparent 0%, rgba(34,211,238,0.02) 60%, rgba(34,211,238,0.1) 100%);
+                    opacity: 0.2;
+                    transition: opacity 0.8s ease, transform 0.8s ease, background 0.8s ease;
+                    transform: scaleY(0.9) translateY(2px);
+                    transform-origin: bottom;
+                }
+                .login-input-group:focus-within .login-membrane {
+                    opacity: 1;
+                    background: linear-gradient(180deg, transparent 0%, rgba(34,211,238,0.08) 50%, rgba(34,211,238,0.2) 100%);
+                    transform: scaleY(1) translateY(0);
+                    box-shadow: inset 0 -10px 20px -10px rgba(34,211,238,0.4);
+                }
+
+                .login-fluid-wave {
+                    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 3' preserveAspectRatio='none'%3E%3Cpath d='M0,1.5 Q100,3 200,1.5 T400,1.5 L400,3 L0,3 Z' fill='black'/%3E%3C/svg%3E");
+                    mask-size: 200% 100%;
+                    animation: login-wave-flow 4s linear infinite;
+                    transition: height 0.3s ease;
+                }
+                .login-input-group:focus-within .login-fluid-wave {
+                    height: 4px;
+                    animation: login-wave-flow 2s linear infinite, login-wave-undulate 1.5s ease-in-out infinite alternate;
+                }
+                .login-wave-bg {
+                    width: 100%; height: 100%;
+                    background: linear-gradient(90deg, transparent 5%, #22d3ee 30%, #67e8f9 50%, #22d3ee 70%, transparent 95%);
+                    opacity: 0.5;
+                    transition: opacity 0.4s ease;
+                }
+                .login-input-group:focus-within .login-wave-bg {
+                    opacity: 1;
+                    background: linear-gradient(90deg, transparent, #22d3ee 20%, #ffffff 50%, #22d3ee 80%, transparent);
+                    box-shadow: 0 0 10px #22d3ee;
+                }
+                @keyframes login-wave-flow {
+                    0% { mask-position: 100% 0; }
+                    100% { mask-position: -100% 0; }
+                }
+                @keyframes login-wave-undulate {
+                    0% { filter: brightness(1) drop-shadow(0 0 2px #22d3ee); }
+                    100% { filter: brightness(1.5) drop-shadow(0 0 8px #22d3ee); }
+                }
+
+                .login-focus-aura {
+                    width: 0%; opacity: 0;
+                    transform: translateX(-50%);
+                    background: #22d3ee;
+                    box-shadow: 0 0 15px rgba(34,211,238,1), 0 0 5px rgba(255,255,255,0.8);
+                    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+                }
+                .login-input-group:focus-within .login-focus-aura {
+                    width: 100%; opacity: 0.8;
+                    animation: login-line-shimmer 2s ease-in-out infinite;
+                }
+                @keyframes login-line-shimmer {
+                    0%, 100% { filter: brightness(1) blur(1px); }
+                    50% { filter: brightness(1.4) blur(0px); }
+                }
+
+                .login-icon {
+                    opacity: 0.6; transition: all 0.5s ease; transform: scale(0.95);
+                }
+                .login-input-group:focus-within .login-icon {
+                    opacity: 1; transform: scale(1.05);
+                    filter: drop-shadow(0 0 10px rgba(34,211,238,0.8));
+                }
+
+                .login-input-text { caret-color: #22d3ee; transition: text-shadow 0.3s ease; }
+                .login-input-text:focus { text-shadow: 0 0 8px rgba(255,255,255,0.8), 0 0 20px rgba(34,211,238,0.6); }
+
+                .login-input-group input::placeholder {
+                    color: rgba(34,211,238,0.25); font-weight: 400;
+                    letter-spacing: 0.15em; transition: color 0.3s ease;
+                }
+                .login-input-group:focus-within input::placeholder { color: rgba(34,211,238,0.5); }
+                .login-input-group:not(:focus-within) input::placeholder {
+                    animation: login-placeholder-ghost 3s ease-in-out infinite alternate;
+                }
+                @keyframes login-placeholder-ghost {
+                    0% { color: rgba(34,211,238,0.15); text-shadow: 0 0 2px rgba(34,211,238,0.1); }
+                    100% { color: rgba(34,211,238,0.35); text-shadow: 0 0 8px rgba(34,211,238,0.4); }
+                }
+
+                .login-title-text {
+                    font-family: 'Inter', system-ui, sans-serif;
+                    letter-spacing: 0.15em;
+                    text-shadow: 0 0 8px rgba(255,255,255,0.8), 0 0 25px rgba(34,211,238,0.8), 0 0 50px rgba(34,211,238,0.4);
+                }
+                .login-subtitle-text {
+                    font-family: 'Inter', system-ui, sans-serif;
+                    font-weight: 300; letter-spacing: 0.4em; color: #22d3ee;
+                    animation: login-subtitle-pulse 3s ease-in-out infinite alternate;
+                }
+                @keyframes login-subtitle-pulse {
+                    0% { opacity: 0.7; filter: drop-shadow(0 0 5px rgba(34,211,238,0.3)); }
+                    100% { opacity: 1; filter: drop-shadow(0 0 15px rgba(34,211,238,0.8)); }
+                }
+
+                .login-btn-text {
+                    letter-spacing: 0.2em;
+                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    text-shadow: 0 0 8px rgba(255,255,255,0.4), 0 0 15px rgba(34,211,238,0.4);
+                }
+                .login-plasma-btn:not(:disabled):hover .login-btn-text {
+                    letter-spacing: 0.3em;
+                    text-shadow: 0 0 12px rgba(255,255,255,0.9), 0 0 25px rgba(34,211,238,0.8), 0 0 40px rgba(34,211,238,0.6);
+                }
+
+                .login-plasma-btn {
+                    border: 1px solid rgba(34,211,238,0.3);
+                    box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 20px rgba(34,211,238,0.1);
+                }
+                .login-plasma-btn:not(:disabled):hover {
+                    border-color: rgba(34,211,238,0.8);
+                    box-shadow: 0 0 40px rgba(34,211,238,0.4), inset 0 0 30px rgba(34,211,238,0.3);
+                    transform: scale(1.02);
+                }
+                .login-plasma-btn:not(:disabled):active { transform: scale(0.98); }
+
+                .login-plasma-bg {
+                    background: radial-gradient(ellipse at center, rgba(34,211,238,0.25) 0%, rgba(34,211,238,0.05) 60%, transparent 100%);
+                    background-size: 200% 200%;
+                    animation: login-plasma-flow 6s ease-in-out infinite alternate;
+                    mix-blend-mode: screen;
+                }
+                .login-plasma-bg.active {
+                    background: radial-gradient(ellipse at center, rgba(34,211,238,0.4) 0%, rgba(34,211,238,0.15) 70%, transparent 100%);
+                    animation: login-plasma-flow 3s ease-in-out infinite alternate;
+                }
+                .login-plasma-btn:hover .login-plasma-bg.active {
+                    background: radial-gradient(ellipse at center, rgba(34,211,238,0.6) 0%, rgba(34,211,238,0.2) 80%, transparent 100%);
+                    filter: brightness(1.3);
+                }
+                @keyframes login-plasma-flow {
+                    0% { background-position: 0% 50%; transform: scale(1) rotate(0deg); }
+                    50% { background-position: 100% 50%; transform: scale(1.05) rotate(2deg); }
+                    100% { background-position: 0% 50%; transform: scale(0.95) rotate(-2deg); }
+                }
+            `}</style>
+        </div>
+    );
+}

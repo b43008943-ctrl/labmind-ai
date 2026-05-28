@@ -1,0 +1,62 @@
+{
+  "normal_01.jpg.jpg": {
+    "v4_sickle_count": 1,
+    "v3_sickle_count": 1,
+    "original_sickle_count": 1,
+    "status": "OK"
+  },
+  "normal_02.jpg.jpg": {
+    "v4_sickle_count": 6,
+    "v3_sickle_count": 8,
+    "original_sickle_count": 0,
+    "status": "FAIL (Target: < 3)"
+  },
+  "normal_03.jpg.jpg": {
+    "v4_sickle_count": 0,
+    "v3_sickle_count": 0,
+    "original_sickle_count": 1,
+    "status": "OK"
+  },
+  "normal_04.jpg.jpg": {
+    "v4_sickle_count": 18,
+    "v3_sickle_count": 3,
+    "original_sickle_count": 21,
+    "status": "FAIL (Target: < 5)"
+  },
+  "normal_05.jpg.jpg": {
+    "v4_sickle_count": 0,
+    "v3_sickle_count": 0,
+    "original_sickle_count": 0,
+    "status": "OK"
+  },
+  "sickle_01.jpg.jpg": {
+    "v4_sickle_count": 29,
+    "v3_sickle_count": 24,
+    "original_sickle_count": 56,
+    "status": "OK"
+  },
+  "sickle_02.jpg.jpg": {
+    "v4_sickle_count": 27,
+    "v3_sickle_count": 28,
+    "original_sickle_count": 44,
+    "status": "OK"
+  },
+  "sickle_03.jpg.jpg": {
+    "v4_sickle_count": 3,
+    "v3_sickle_count": 3,
+    "original_sickle_count": 5,
+    "status": "OK"
+  },
+  "sickle_04.jpg.jpg": {
+    "v4_sickle_count": 18,
+    "v3_sickle_count": 9,
+    "original_sickle_count": 19,
+    "status": "OK"
+  },
+  "sickle_05.jpg.jpg": {
+    "v4_sickle_count": 2,
+    "v3_sickle_count": 2,
+    "original_sickle_count": 1,
+    "status": "OK"
+  }
+}

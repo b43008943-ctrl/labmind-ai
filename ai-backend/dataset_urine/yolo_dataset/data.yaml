@@ -1,0 +1,6 @@
+path: D:/New folder/ai-backend/dataset_urine/yolo_dataset
+train: images/train
+val: images/val
+test: images/test
+nc: 3
+names: ['rbc', 'pus', 'ep']

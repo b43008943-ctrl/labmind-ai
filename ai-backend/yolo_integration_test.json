@@ -1,0 +1,92 @@
+[
+  {
+    "image": "normal_01.jpg.jpg",
+    "old_total": "?",
+    "new_total": 55,
+    "old_sickle": "?",
+    "new_sickle": 1,
+    "old_result": "N/A",
+    "new_result": "REVIEW"
+  },
+  {
+    "image": "normal_02.jpg.jpg",
+    "old_total": "?",
+    "new_total": 196,
+    "old_sickle": "?",
+    "new_sickle": 11,
+    "old_result": "N/A",
+    "new_result": "SICKLE_SCREEN_POSITIVE"
+  },
+  {
+    "image": "normal_03.jpg.jpg",
+    "old_total": "?",
+    "new_total": 46,
+    "old_sickle": "?",
+    "new_sickle": 2,
+    "old_result": "N/A",
+    "new_result": "REVIEW"
+  },
+  {
+    "image": "normal_04.jpg.jpg",
+    "old_total": "?",
+    "new_total": 343,
+    "old_sickle": "?",
+    "new_sickle": 13,
+    "old_result": "N/A",
+    "new_result": "REVIEW"
+  },
+  {
+    "image": "normal_05.jpg.jpg",
+    "old_total": "?",
+    "new_total": 107,
+    "old_sickle": "?",
+    "new_sickle": 0,
+    "old_result": "N/A",
+    "new_result": "NEGATIVE"
+  },
+  {
+    "image": "sickle_01.jpg.jpg",
+    "old_total": "?",
+    "new_total": 195,
+    "old_sickle": "?",
+    "new_sickle": 79,
+    "old_result": "N/A",
+    "new_result": "SICKLE_SCREEN_POSITIVE"
+  },
+  {
+    "image": "sickle_02.jpg.jpg",
+    "old_total": "?",
+    "new_total": 176,
+    "old_sickle": "?",
+    "new_sickle": 56,
+    "old_result": "N/A",
+    "new_result": "SICKLE_SCREEN_POSITIVE"
+  },
+  {
+    "image": "sickle_03.jpg.jpg",
+    "old_total": "?",
+    "new_total": 153,
+    "old_sickle": "?",
+    "new_sickle": 30,
+    "old_result": "N/A",
+    "new_result": "SICKLE_SCREEN_POSITIVE"
+  },
+  {
+    "image": "sickle_04.jpg.jpg",
+    "old_total": "?",
+    "new_total": 97,
+    "old_sickle": "?",
+    "new_sickle": 24,
+    "old_result": "N/A",
+    "new_result": "SICKLE_SCREEN_POSITIVE"
+  },
+  {
+    "image": "sickle_05.jpg.jpg",
+    "old_total": "?",
+    "new_total": 82,
+    "old_sickle": "?",
+    "new_sickle": 3,
+    "old_result": "N/A",
+    "new_result": "REVIEW"
+  }
+]

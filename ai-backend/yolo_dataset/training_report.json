@@ -1,0 +1,49 @@
+{
+  "training_epochs": 22,
+  "best_epoch": 21,
+  "best_mAP50": 0.0758,
+  "best_mAP50_95": 0.0286,
+  "best_weights_path": "D:\\New folder\\ai-backend\\yolo_dataset\\blood_cell_detector\\weights\\best.pt",
+  "comparison_results": [
+    {
+      "image": "33erythrocytesIDB2.jpg",
+      "old_detections": 2,
+      "new_detections": 0,
+      "old_avg_conf": 0.0842,
+      "new_avg_conf": 0.0,
+      "comparison_image": "D:\\New folder\\ai-backend\\yolo_dataset\\comparison_results\\compare_33erythrocytesIDB2.png"
+    },
+    {
+      "image": "36erythrocytesIDB2.jpg",
+      "old_detections": 1,
+      "new_detections": 0,
+      "old_avg_conf": 0.1292,
+      "new_avg_conf": 0.0,
+      "comparison_image": "D:\\New folder\\ai-backend\\yolo_dataset\\comparison_results\\compare_36erythrocytesIDB2.png"
+    },
+    {
+      "image": "normal_01.jpg.jpg",
+      "old_detections": 3,
+      "new_detections": 116,
+      "old_avg_conf": 0.1915,
+      "new_avg_conf": 0.6502,
+      "comparison_image": "D:\\New folder\\ai-backend\\yolo_dataset\\comparison_results\\compare_normal_01.jpg.png"
+    },
+    {
+      "image": "sickle_02.jpg.jpg",
+      "old_detections": 2,
+      "new_detections": 203,
+      "old_avg_conf": 0.1003,
+      "new_avg_conf": 0.7543,
+      "comparison_image": "D:\\New folder\\ai-backend\\yolo_dataset\\comparison_results\\compare_sickle_02.jpg.png"
+    },
+    {
+      "image": "344.jpg",
+      "old_detections": 3,
+      "new_detections": 177,
+      "old_avg_conf": 0.2967,
+      "new_avg_conf": 0.5308,
+      "comparison_image": "D:\\New folder\\ai-backend\\yolo_dataset\\comparison_results\\compare_344.png"
+    }
+  ]
+}

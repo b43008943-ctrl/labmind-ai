@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="600" viewBox="0 0 200 600">
+  <defs>
+    <filter id="glow-cyan"><feGaussianBlur stdDeviation="6" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <linearGradient id="grad-dna" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2DD4BF" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+  </defs>
+  <path d="M 50,0 C 150,100 150,200 50,300 C -50,400 -50,500 50,600 M 150,0 C 50,100 50,200 150,300 C 250,400 250,500 150,600" stroke="url(#grad-dna)" stroke-width="6" fill="none" filter="url(#glow-cyan)" opacity="0.6"/>
+  <path d="M 70,50 L 130,50 M 100,100 L 100,100 M 55,150 L 145,150 M 70,250 L 130,250 M 70,350 L 130,350 M 55,450 L 145,450 M 70,550 L 130,550" stroke="#2DD4BF" stroke-width="3" stroke-dasharray="2, 4" filter="url(#glow-cyan)" opacity="0.5"/>
+</svg>

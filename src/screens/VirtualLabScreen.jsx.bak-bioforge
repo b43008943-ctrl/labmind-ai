@@ -1,0 +1,202 @@
+import { useState, useEffect } from 'react';
+import { ArrowLeft, FlaskConical } from 'lucide-react';
+import { HoloHematology, HoloUrinalysis, HoloMicrobiology, HoloClinical, HoloParasitology, HoloBloodBank } from '../components/HoloIcons';
+import { motion, AnimatePresence } from 'framer-motion';
+
+
+
+// Department Card Sub-component
+function DeptCard({ id, icon: Icon, title, subtitle, colorHex, bgImage, aiObjective, learningMode, alert, onClick }) {
+    const [isPressed, setIsPressed] = useState(false);
+
+    const handlePress = () => {
+        setIsPressed(true);
+        setTimeout(() => {
+            if (onClick) onClick();
+            setIsPressed(false);
+        }, 250);
+    };
+
+    return (
+        <div
+            id={`dept-${id}`}
+            onClick={handlePress}
+            className={`group relative w-full overflow-hidden rounded-2xl bg-[#080c14] border transition-all duration-500 transform ${isPressed ? 'scale-[0.98]' : 'hover:scale-[1.02]'} cursor-pointer`}
+            style={{
+                borderColor: learningMode ? colorHex : 'rgba(255,255,255,0.08)',
+                boxShadow: learningMode ? `0 0 25px -5px ${colorHex}` : 'none'
+            }}
+        >
+            {/* Colored Left Accent Bar */}
+            <div className="absolute left-0 top-0 bottom-0 w-1 transition-all duration-300 group-hover:w-1.5 z-20 rounded-l-2xl"
+                style={{ backgroundColor: colorHex, boxShadow: `0 0 12px ${colorHex}66` }}>
+            </div>
+
+            <div className="relative z-10 px-6 py-5 flex items-center gap-5">
+
+                {/* Icon Container */}
+                <div className="relative shrink-0 w-14 h-14 rounded-xl bg-black/60 border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                    style={{ boxShadow: `0 0 20px ${colorHex}22` }}>
+                    <div className="w-10 h-10 relative flex items-center justify-center">
+                        <Icon />
+                    </div>
+                </div>
+
+                {/* Text Content */}
+                <div className="flex-1 min-w-0">
+                    <h3 className="font-bold uppercase tracking-wide text-lg text-white transition-colors duration-300 leading-tight"
+                        onMouseEnter={(e) => e.currentTarget.style.color = colorHex}
+                        onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
+                    >
+                        {title}
+                    </h3>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/35 mt-1.5">
+                        {subtitle}
+                    </p>
+                </div>
+
+                {/* Alert Ping */}
+                {alert && (
+                    <div className="relative w-2.5 h-2.5 bg-rose-500 rounded-full shadow-[0_0_12px_rgba(244,63,94,0.8)] shrink-0">
+                        <div className="absolute inset-0 bg-rose-500 animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite] opacity-75 rounded-full"></div>
+                    </div>
+                )}
+
+                {/* Chevron */}
+                <div className="opacity-20 group-hover:opacity-80 group-hover:translate-x-1 transition-all shrink-0" style={{ color: colorHex }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </div>
+            </div>
+
+            <AnimatePresence>
+                {learningMode && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                    >
+                        <div className="mx-6 mb-5 p-3 rounded-lg bg-slate-950/80 backdrop-blur-md border border-slate-800/60 border-l-4 text-slate-300 text-[11px] leading-relaxed font-medium" style={{ borderLeftColor: colorHex }}>
+                            <strong className="block mb-1 uppercase tracking-wider text-[10px]" style={{ color: colorHex }}>AI PROTOCOL {id.toUpperCase()}:</strong>
+                            {aiObjective}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+}
+
+export default function VirtualLabScreen({ onNavigate, alerts, clearAlert }) {
+    const [screenState, setScreenState] = useState('screen-transition-hidden');
+    const [isLearningMode, setIsLearningMode] = useState(false);
+
+    useEffect(() => {
+        const t = setTimeout(() => setScreenState('screen-visible'), 50);
+        return () => clearTimeout(t);
+    }, []);
+
+    const handleNavigation = (target) => {
+        setScreenState('screen-exit');
+        setTimeout(() => onNavigate(target), 600);
+    };
+
+    return (
+        <div id="virtual-lab-screen" className={`absolute inset-0 z-30 flex flex-col ${screenState}`}>
+            <div className="w-full h-full max-w-5xl mx-auto flex flex-col relative overflow-y-auto overflow-x-hidden shadow-2xl ring-1 ring-white/5 bg-black">
+
+                {/* BACKGROUND TEXTURE */}
+                <div className="absolute inset-0 z-0 opacity-20 pointer-events-none"
+                    style={{ backgroundImage: 'linear-gradient(#222 1px, transparent 1px), linear-gradient(90deg, #222 1px, transparent 1px)', backgroundSize: '30px 30px' }}>
+                </div>
+
+                <div className={`absolute inset-0 z-0 pointer-events-none transition-opacity duration-1000 ${isLearningMode ? 'opacity-15 bg-neural-grid' : 'opacity-0'}`}></div>
+                <div className={`absolute top-0 left-0 w-full h-1 bg-[#00E5FF] shadow-[0_0_20px_#00E5FF,0_0_10px_white] z-40 pointer-events-none ${isLearningMode ? 'opacity-100' : 'opacity-0'}`}></div>
+
+                {/* HEADER & TOGGLE */}
+                <header className="sticky top-0 z-50 pt-12 pb-5 px-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between border-b border-white/5 bg-[#050914]/80 backdrop-blur-lg">
+                    <div className="flex items-center gap-4 relative z-10">
+                        <button
+                            onClick={() => handleNavigation('dashboard')}
+                            className="btn-back-glow w-10 h-10 rounded-xl flex items-center justify-center text-purple-300 hover:text-white transition-colors border border-white/10 bg-black/50"
+                        >
+                            <ArrowLeft className="w-5 h-5" />
+                        </button>
+                        <div>
+                            <h1 className="font-black uppercase tracking-tighter text-2xl text-white">Lab Directory</h1>
+                            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40 mt-1">SELECT ANALYSIS PROTOCOL</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-4 justify-between w-full sm:w-auto mt-4 sm:mt-0 relative z-10">
+                        <div className="flex items-center gap-3 bg-[#0a0a0a] border border-white/5 rounded-xl p-3">
+                            <div className="flex flex-col text-right">
+                                <span className={`font-semibold text-sm transition-colors ${isLearningMode ? 'text-white' : 'text-slate-400'}`}>Learning Mode</span>
+                                <span className="text-slate-500 text-[10px] uppercase tracking-wider">SCIENTIFIC TOOLTIPS</span>
+                            </div>
+
+                            {/* TACTICAL TOGGLE SWITCH */}
+                            <div
+                                onClick={() => setIsLearningMode(!isLearningMode)}
+                                className={`relative flex items-center h-8 w-16 rounded-full border border-white/20 cursor-pointer transition-all duration-300 ${isLearningMode ? 'bg-cyan-900/50 border-cyan-400' : 'bg-black/50'}`}
+                            >
+                                <div className={`absolute left-1 w-6 h-6 rounded-full shadow-md transition-all duration-300 flex items-center justify-center text-[10px] font-bold ${isLearningMode ? 'translate-x-8 bg-cyan-400 text-black' : 'bg-gray-600 text-gray-300'}`}>
+                                    {isLearningMode ? 'ON' : 'OFF'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                {/* Content */}
+                <div className="flex-1 overflow-auto no-scrollbar p-6 relative z-10">
+                    <div className={`flex flex-col gap-4 pb-10 w-full box-border ${isLearningMode ? 'grid-tactical-zoom' : ''}`}>
+
+                        <DeptCard
+                            id="hematology" icon={HoloHematology} title="Hematology" subtitle="Blood Studies" colorHex="#e11d48" bgImage="/1.jpg.jpg"
+                            aiObjective="Analyzing leukocyte morphology and erythrocyte counts for pathogenic deviations."
+                            learningMode={isLearningMode} alert={alerts.hematology}
+                            onClick={() => { clearAlert('hematology'); handleNavigation('hematology-lab'); }}
+                        />
+
+                        <DeptCard
+                            id="urinalysis" icon={HoloUrinalysis} title="Urinalysis" subtitle="Chemical & Microscopic" colorHex="#eab308" bgImage="/4.jpg"
+                            aiObjective="Evaluating chemical metabolic markers and observing microscopic sediment."
+                            learningMode={isLearningMode} alert={alerts.urinalysis}
+                            onClick={() => { clearAlert('urinalysis'); handleNavigation('urinalysis'); }}
+                        />
+
+                        <DeptCard
+                            id="microbiology" icon={HoloMicrobiology} title="Microbiology" subtitle="Bacterial Culture" colorHex="#8b5cf6" bgImage="/5.jpg"
+                            aiObjective="Culturing and isolating pathogens to identify source of systemic bio-change."
+                            learningMode={isLearningMode} alert={alerts.microbiology}
+                            onClick={() => { clearAlert('microbiology'); handleNavigation('microbiology-lab'); }}
+                        />
+
+                        <DeptCard
+                            id="clinical" icon={HoloClinical} title="Clinical Biochemistry" subtitle="Metabolic Panels" colorHex="#c026d3" bgImage="/6.jpg"
+                            aiObjective="Quantifying enzyme and electrolyte levels to assess organ health changes."
+                            learningMode={isLearningMode} alert={alerts.clinical}
+                            onClick={() => { clearAlert('clinical'); handleNavigation('clinical'); }}
+                        />
+
+                        <DeptCard
+                            id="parasitology" icon={HoloParasitology} title="Parasitology" subtitle="Pathogenic Micro-Organism Scan" colorHex="#059669" bgImage="/2.jpg.png"
+                            aiObjective="Identification of parasitic life stages and pathogenic morphological markers."
+                            learningMode={isLearningMode} alert={alerts.parasitology}
+                            onClick={() => { clearAlert('parasitology'); handleNavigation('parasitology-lab'); }}
+                        />
+
+                        <DeptCard
+                            id="bloodbank" icon={HoloBloodBank} title="Blood Bank" subtitle="Serology & Blood Typing" colorHex="#db2777" bgImage="/3.jpg.png"
+                            aiObjective="ABO/Rh testing and crossmatch compatibility determination."
+                            learningMode={isLearningMode} alert={alerts.bloodbank}
+                            onClick={() => { clearAlert('bloodbank'); handleNavigation('bloodbank-lab'); }}
+                        />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

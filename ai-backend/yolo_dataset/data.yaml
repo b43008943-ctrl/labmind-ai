@@ -1,0 +1,8 @@
+path: D:/New folder/ai-backend/yolo_dataset
+train: images/train
+val: images/val
+names:
+  0: circular
+  1: elongated
+  2: other
+nc: 3

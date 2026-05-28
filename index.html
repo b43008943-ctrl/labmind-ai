@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Analyst</title>
+
+    <!-- Google Fonts: Montserrat, Orbitron, Rajdhani -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body
+    class="font-sans text-white w-full max-w-[100vw] overflow-x-hidden selection:bg-neon-purple selection:text-white">
+    <style>
+      /* ── Mobile Touch Fix ── */
+      *, *::before, *::after {
+        -webkit-tap-highlight-color: transparent;
+      }
+      html, body {
+        touch-action: manipulation;
+        -webkit-touch-callout: none;
+      }
+      button, a, [role="button"], input, select, textarea, label {
+        touch-action: manipulation;
+        cursor: pointer;
+      }
+    </style>
+    <div id="root" class="relative w-full"></div>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

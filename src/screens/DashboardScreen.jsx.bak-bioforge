@@ -1,0 +1,286 @@
+import { useState, useEffect } from 'react';
+import { useAppSettings } from '../context/AppSettingsContext';
+// Navigation is now rendered in DashboardPager (persistent across views)
+import { HoloFileHeart, HoloDna, HoloBookOpen, HoloGauge } from '../components/HoloIcons';
+import { Database, FileText } from 'lucide-react';
+import { AlertBellBadge } from '../components/AlertsPanel';
+
+export default function DashboardScreen({ onNavigate, alerts = {}, onOpenModal, analystName, user, onSlideToCommunity, activeView }) {
+    const { isLight } = useAppSettings();
+    const [screenState, setScreenState] = useState('screen-transition-hidden');
+    const [pushedCard, setPushedCard] = useState(null);
+    const [dimmedCard, setDimmedCard] = useState(null);
+
+    useEffect(() => {
+        const t = setTimeout(() => setScreenState('screen-visible'), 50);
+        return () => clearTimeout(t);
+    }, []);
+
+    const handleNavigation = (target) => {
+        setScreenState('screen-exit');
+        setTimeout(() => onNavigate(target), 600);
+    };
+
+    const handleCardClick = (cardId, action, targetPath) => {
+        if (pushedCard) return; // Prevent double clicks
+
+        // Phase 1: Heavy Push & Dim (starts immediately)
+        setPushedCard(cardId);
+        setDimmedCard(cardId);
+
+        // Phase 2: Enter/Navigate (fluid 'one-touch' 400ms transition)
+        setTimeout(() => {
+            if (action === 'modal') {
+                setPushedCard(null);
+                setDimmedCard(null);
+                onOpenModal();
+            } else {
+                handleNavigation(targetPath);
+            }
+        }, 400);
+    };
+
+    const hasAnyAlert = Object.values(alerts).some(v => v);
+
+    const cards = [
+        {
+            id: 'intelligence',
+            label: 'Change Intelligence',
+            subtitle: 'Biological Pattern Recognition',
+            sysLabel: 'BIO_PATTERN_RECOG',
+            target: 'analysis',
+            glow: '#3b82f6',
+            glowRgb: '59,130,246',
+            cornerPos: 'tl-br',
+            holoIcon: <HoloFileHeart />,
+        },
+        {
+            id: 'virtual-lab',
+            label: 'Virtual Lab',
+            subtitle: 'Specimen Analysis Suite',
+            sysLabel: 'SPECIMEN_ANALYSIS',
+            target: 'virtual-lab',
+            alert: hasAnyAlert,
+            glow: '#f59e0b',
+            glowRgb: '245,158,11',
+            cornerPos: 'tr-bl',
+            holoIcon: <HoloDna />,
+        },
+        {
+            id: 'academic',
+            label: 'Academic Hub',
+            subtitle: 'Research & Learning Center',
+            sysLabel: 'RESEARCH_CENTER',
+            target: 'academic-hub',
+            glow: '#22c55e',
+            glowRgb: '34,197,94',
+            cornerPos: 'tl-br',
+            holoIcon: <HoloBookOpen />,
+        },
+        {
+            id: 'performance',
+            label: 'Performance',
+            subtitle: 'System Metrics & AI',
+            sysLabel: 'METRICS_&_AI',
+            action: 'modal',
+            glow: '#a855f7',
+            glowRgb: '168,85,247',
+            cornerPos: 'tr-bl',
+            holoIcon: <HoloGauge />,
+        },
+    ];
+
+    return (
+        <div id="dashboard-screen" className={`min-h-dvh w-full flex flex-col overflow-hidden font-sans relative z-10 ${screenState}`}>
+
+            {/* ═══ COMMANDER BIO-ID HEADER (Ultra-Clean Professional) ═══ */}
+            <header className="relative z-20 w-full px-6 sm:px-10 pt-10 pb-5">
+                <div className="flex items-center justify-between p-4 bg-[#0a0a0a]/60 backdrop-blur-md border border-cyan-500/20 rounded-2xl">
+                    <div className="flex items-center gap-4">
+                        {/* Avatar */}
+                        {/* Avatar (Crackling Energy Core) */}
+                        <div className="relative flex items-center justify-center">
+                            {/* Inner Lightning Ring (Clockwise) */}
+                            <div className="absolute inset-[-4px] rounded-full border-2 border-dashed border-cyan-400 shadow-[0_0_15px_#22d3ee] animate-[spin_3s_linear_infinite]"
+                                style={{ borderRadius: '45% 55% 40% 60% / 55% 45% 60% 40%' }}
+                            />
+                            {/* Outer Electric Ring (Counter-Clockwise) */}
+                            <div className="absolute inset-[-8px] rounded-full border border-dashed border-cyan-500/60 shadow-[0_0_8px_rgba(34,211,238,0.4)]"
+                                style={{ animation: 'spin 4s linear infinite reverse', borderRadius: '50% 40% 60% 45% / 45% 60% 40% 55%' }}
+                            />
+                            <img
+                                src={user?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Alpha"}
+                                className="relative z-10 w-12 h-12 object-cover rounded-full ring-1 ring-cyan-500/40 ring-offset-4 ring-offset-transparent"
+                                alt="User Avatar"
+                            />
+                            <div className="absolute z-20 bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-[#0a0a0a]" />
+                        </div>
+
+                        {/* User Info */}
+                        <div className="flex flex-col">
+                            <h1 className="text-white font-medium text-xl tracking-wide">
+                                {user?.name || "0898 DOE"}
+                            </h1>
+                            <span className="text-cyan-500/60 text-xs font-mono mt-0.5">
+                                LVL. {user?.level || "42"} // OPTIMAL STATE
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Header Actions */}
+                    <div className="flex items-center gap-2">
+                        <AlertBellBadge onClick={() => onNavigate('alerts')} />
+                        <button
+                            onClick={() => onNavigate('my-reports')}
+                            className="flex items-center gap-2 bg-transparent border border-indigo-500/30 text-indigo-400 px-3 py-2 rounded hover:bg-indigo-500/10 transition-colors cursor-pointer font-sans text-xs font-medium tracking-wide"
+                        >
+                            <FileText size={14} className="text-indigo-400" />
+                            REPORTS
+                        </button>
+                        <button
+                            onClick={() => onNavigate('archive')}
+                            className="flex items-center gap-2 bg-transparent border border-cyan-500/30 text-cyan-400 px-3 py-2 rounded hover:bg-cyan-500/10 transition-colors cursor-pointer font-sans text-xs font-medium tracking-wide"
+                        >
+                            <Database size={14} className="text-cyan-400" />
+                            ARCHIVE
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+
+            {/* ═══ TACTICAL COMMAND GRID ═══ */}
+            <div className="flex-1 flex items-center justify-center relative z-10 px-4 sm:px-8 py-4">
+                <div className="grid grid-cols-2 gap-4 w-full max-w-2xl">
+                    {cards.map((card) => (
+                        <button
+                            key={card.id}
+                            onClick={() => handleCardClick(card.id, card.action, card.target)}
+                            className={`dashboard-card relative group rounded-xl p-5 overflow-hidden text-left transition-all duration-300 ${pushedCard === card.id ? 'is-pushed pointer-events-none' : 'cursor-pointer'} ${dimmedCard === card.id ? 'is-dimmed' : ''}`}
+                            style={{
+                                border: `1px solid rgba(${card.glowRgb},${isLight ? '0.2' : '0.2'})`,
+                                background: isLight
+                                    ? `linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(${card.glowRgb},0.06) 100%)`
+                                    : `rgba(0,0,0,0.4)`,
+                                backdropFilter: 'blur(16px)',
+                                WebkitBackdropFilter: 'blur(16px)',
+                                aspectRatio: '1 / 1',
+                                width: '100%',
+                            }}
+                        >
+                            {/* HUD Corner Accent — Top */}
+                            <div className="absolute top-0 w-4 h-4 pointer-events-none"
+                                style={{
+                                    [card.cornerPos === 'tl-br' ? 'left' : 'right']: 0,
+                                    borderTop: `2px solid rgba(${card.glowRgb},0.5)`,
+                                    [card.cornerPos === 'tl-br' ? 'borderLeft' : 'borderRight']: `2px solid rgba(${card.glowRgb},0.5)`,
+                                    [card.cornerPos === 'tl-br' ? 'borderTopLeftRadius' : 'borderTopRightRadius']: '8px',
+                                }}
+                            />
+                            {/* HUD Corner Accent — Bottom */}
+                            <div className="absolute bottom-0 w-4 h-4 pointer-events-none"
+                                style={{
+                                    [card.cornerPos === 'tl-br' ? 'right' : 'left']: 0,
+                                    borderBottom: `2px solid rgba(${card.glowRgb},0.5)`,
+                                    [card.cornerPos === 'tl-br' ? 'borderRight' : 'borderLeft']: `2px solid rgba(${card.glowRgb},0.5)`,
+                                    [card.cornerPos === 'tl-br' ? 'borderBottomRightRadius' : 'borderBottomLeftRadius']: '8px',
+                                }}
+                            />
+
+                            {/* Hover glow overlay */}
+                            <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                                style={{ boxShadow: `inset 0 0 40px rgba(${card.glowRgb},0.08), 0 0 20px rgba(${card.glowRgb},0.15)` }}
+                            />
+
+                            {/* Alert badge */}
+                            {card.alert && <span className="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-red-400 animate-pulse z-20" style={{ boxShadow: '0 0 10px #f87171' }} />}
+
+                            {/* CONTENT: Icon + Text */}
+                            <div className="relative z-10 flex flex-col items-center justify-center text-center h-full gap-3">
+                                {/* Glowing Icon Container */}
+                                <div className="w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+                                    style={{
+                                        background: isLight ? `rgba(${card.glowRgb},0.08)` : `rgba(${card.glowRgb},0.08)`,
+                                        border: `1px solid rgba(${card.glowRgb},0.25)`,
+                                        boxShadow: `0 0 12px rgba(${card.glowRgb},0.1)`,
+                                    }}
+                                >
+                                    <div className="w-12 h-12">{card.holoIcon}</div>
+                                </div>
+
+                                {/* Title */}
+                                <h3 className={`text-sm font-bold tracking-wider uppercase leading-tight ${isLight ? 'text-slate-800' : 'text-white'}`}
+                                    style={isLight ? {} : { textShadow: `0 0 8px rgba(${card.glowRgb},0.3)` }}
+                                >
+                                    {card.label}
+                                </h3>
+
+                                {/* Technical Sub-System Label */}
+                                <p className="text-[9px] font-mono tracking-widest mt-auto"
+                                    style={{ color: `rgba(${card.glowRgb},${isLight ? '0.7' : '0.5'})` }}
+                                >
+                                    {card.sysLabel}
+                                </p>
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* ═══ BOTTOM STATUS BAR ═══ */}
+            <div className="relative z-20 px-6 sm:px-10 pb-4">
+                {/* System Status Bar */}
+                <div className={`w-full rounded-2xl px-6 py-4 flex items-center justify-between mb-3`} style={isLight
+                    ? {
+                        background: 'rgba(255,255,255,0.6)',
+                        border: '1px solid rgba(59,130,246,0.15)',
+                        boxShadow: '0 2px 12px rgba(59,130,246,0.08)',
+                        backdropFilter: 'blur(12px)',
+                    }
+                    : {
+                        background: 'linear-gradient(135deg, rgba(34,211,238,0.04) 0%, rgba(34,211,238,0.01) 100%)',
+                        border: '1px solid rgba(34,211,238,0.12)',
+                        boxShadow: '0 0 20px rgba(34,211,238,0.04)',
+                    }
+                }>
+                    <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
+                            <span className={`w-2 h-2 rounded-full animate-pulse ${isLight ? 'bg-blue-500 shadow-[0_0_8px_#3b82f6]' : 'bg-cyan-400 shadow-[0_0_8px_#22d3ee]'}`} />
+                            <span className={`text-[11px] tracking-[0.2em] uppercase font-bold ${isLight ? 'text-slate-600' : 'text-white/80'}`}
+                                style={isLight ? {} : { textShadow: '0 0 6px rgba(34,211,238,0.4)' }}
+                            >
+                                System Status: <span className={isLight ? 'text-blue-600 font-extrabold' : 'text-cyan-400'}>Optimal</span>
+                            </span>
+                        </div>
+                        <span className={`text-[8px] tracking-[0.2em] uppercase hidden sm:inline ${isLight ? 'text-slate-400' : 'text-white/30'}`}>|</span>
+                        <span className={`text-[9px] tracking-[0.15em] hidden sm:inline ${isLight ? 'text-blue-500/60' : 'text-cyan-400/40'}`}>
+                            Biological Change Array Synchronized
+                        </span>
+                    </div>
+                </div>
+                {/* Spacer for persistent bottom nav rendered by DashboardPager */}
+                <div className="h-24 shrink-0" />
+            </div>
+
+            <style>{`
+                /* THE BASE STATE - Fluid, responsive physics */
+                .dashboard-card {
+                  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s ease-out;
+                  transform: scale(1);
+                }
+
+                /* ACTIVE STATE - Simultaneous Heavy Push and Dim */
+                .dashboard-card.is-pushed {
+                  transform: scale(0.85);
+                }
+
+                .dashboard-card.is-dimmed {
+                  filter: brightness(0.4);
+                }
+                
+                /* ═══ CYBER-HUD KEYFRAMES ═══ */
+                @keyframes cinematicFadeIn { from { opacity: 0; } to { opacity: 1; } }
+            `}</style>
+        </div >
+    );
+}

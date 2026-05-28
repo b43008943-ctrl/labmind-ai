@@ -1,0 +1,1149 @@
+{
+  "metadata": {
+    "script": "diagnose_full_pipeline.py",
+    "parameters": {
+      "yolo_conf": 0.05,
+      "tile_size": 640,
+      "overlap_ratio": 0.25,
+      "nms_iou": 0.35,
+      "border_skip": 5
+    },
+    "yolo_model": "D:\\New folder\\ai-backend\\blood_ai_v2.pt"
+  },
+  "step1_scan": {
+    "validation_smears": {
+      "source": "validation_smears",
+      "count": 10,
+      "readable": 10,
+      "dimensions": {
+        "avg_w": 870.0,
+        "avg_h": 667.0,
+        "min_w": 410,
+        "min_h": 307,
+        "max_w": 1000,
+        "max_h": 767,
+        "avg_megapixels": 0.62
+      },
+      "color_profile": {
+        "mean_R": 214.41,
+        "mean_G": 199.64,
+        "mean_B": 201.27
+      }
+    },
+    "erythrocytesIDB": {
+      "source": "erythrocytesIDB",
+      "count": 196,
+      "readable": 196,
+      "dimensions": {
+        "avg_w": 3264.0,
+        "avg_h": 2448.0,
+        "min_w": 3264,
+        "min_h": 2448,
+        "max_w": 3264,
+        "max_h": 2448,
+        "avg_megapixels": 7.99
+      },
+      "color_profile": {
+        "mean_R": 160.57,
+        "mean_G": 153.54,
+        "mean_B": 164.74
+      }
+    },
+    "kaggle_positive": {
+      "source": "kaggle_positive",
+      "count": 844,
+      "readable": 844,
+      "dimensions": {
+        "avg_w": 1321.6,
+        "avg_h": 1334.3,
+        "min_w": 469,
+        "min_h": 436,
+        "max_w": 3456,
+        "max_h": 4160,
+        "avg_megapixels": 2.34
+      },
+      "color_profile": {
+        "mean_R": 153.58,
+        "mean_G": 150.84,
+        "mean_B": 152.97
+      }
+    },
+    "kaggle_negative": {
+      "source": "kaggle_negative",
+      "count": 0,
+      "note": "No images found / directory missing"
+    }
+  },
+  "step2_erythrocytesIDB": [
+    {
+      "image": "164source.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\sources\\164source.jpg",
+      "source": "erythrocytesIDB",
+      "image_size": {
+        "w": 3264,
+        "h": 2448
+      },
+      "tile_count": 35,
+      "raw_detections": 83,
+      "nms_detections": 81,
+      "nms_stats": {
+        "avg_conf": 0.5777,
+        "min_conf": 0.0586,
+        "max_conf": 0.8775,
+        "avg_box_w": 168.5,
+        "avg_box_h": 172.6,
+        "min_box_w": 41,
+        "min_box_h": 41,
+        "max_box_w": 237,
+        "max_box_h": 307,
+        "class_counts": {
+          "wbc": 65,
+          "rbc": 7,
+          "plt": 9
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 62,
+          "medium_0.1_0.3": 14,
+          "low_lt_0.1": 5
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.5664,
+        "min_conf": 0.0586,
+        "max_conf": 0.8775,
+        "avg_box_w": 167.2,
+        "avg_box_h": 171.5,
+        "min_box_w": 41,
+        "min_box_h": 41,
+        "max_box_w": 237,
+        "max_box_h": 307,
+        "class_counts": {
+          "wbc": 66,
+          "plt": 10,
+          "rbc": 7
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 62,
+          "medium_0.1_0.3": 15,
+          "low_lt_0.1": 6
+        }
+      },
+      "elapsed_seconds": 17.96,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_164source.png"
+    },
+    {
+      "image": "029source.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\sources\\029source.jpg",
+      "source": "erythrocytesIDB",
+      "image_size": {
+        "w": 3264,
+        "h": 2448
+      },
+      "tile_count": 35,
+      "raw_detections": 104,
+      "nms_detections": 97,
+      "nms_stats": {
+        "avg_conf": 0.6123,
+        "min_conf": 0.0627,
+        "max_conf": 0.9307,
+        "avg_box_w": 180.6,
+        "avg_box_h": 178.4,
+        "min_box_w": 29,
+        "min_box_h": 39,
+        "max_box_w": 345,
+        "max_box_h": 283,
+        "class_counts": {
+          "wbc": 83,
+          "plt": 9,
+          "rbc": 5
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 75,
+          "medium_0.1_0.3": 17,
+          "low_lt_0.1": 5
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.5861,
+        "min_conf": 0.0589,
+        "max_conf": 0.9307,
+        "avg_box_w": 172.3,
+        "avg_box_h": 170.8,
+        "min_box_w": 25,
+        "min_box_h": 36,
+        "max_box_w": 345,
+        "max_box_h": 283,
+        "class_counts": {
+          "wbc": 84,
+          "plt": 15,
+          "rbc": 5
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 78,
+          "medium_0.1_0.3": 18,
+          "low_lt_0.1": 8
+        }
+      },
+      "elapsed_seconds": 17.34,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_029source.png"
+    },
+    {
+      "image": "007source.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\sources\\007source.jpg",
+      "source": "erythrocytesIDB",
+      "image_size": {
+        "w": 3264,
+        "h": 2448
+      },
+      "tile_count": 35,
+      "raw_detections": 38,
+      "nms_detections": 36,
+      "nms_stats": {
+        "avg_conf": 0.3476,
+        "min_conf": 0.0501,
+        "max_conf": 0.7704,
+        "avg_box_w": 149.9,
+        "avg_box_h": 149.2,
+        "min_box_w": 27,
+        "min_box_h": 35,
+        "max_box_w": 215,
+        "max_box_h": 220,
+        "class_counts": {
+          "wbc": 27,
+          "plt": 8,
+          "rbc": 1
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 19,
+          "medium_0.1_0.3": 11,
+          "low_lt_0.1": 6
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.3365,
+        "min_conf": 0.0501,
+        "max_conf": 0.7704,
+        "avg_box_w": 143.8,
+        "avg_box_h": 143.4,
+        "min_box_w": 27,
+        "min_box_h": 35,
+        "max_box_w": 215,
+        "max_box_h": 220,
+        "class_counts": {
+          "wbc": 27,
+          "plt": 10,
+          "rbc": 1
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 19,
+          "medium_0.1_0.3": 12,
+          "low_lt_0.1": 7
+        }
+      },
+      "elapsed_seconds": 17.77,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_007source.png"
+    },
+    {
+      "image": "190source.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\sources\\190source.jpg",
+      "source": "erythrocytesIDB",
+      "image_size": {
+        "w": 3264,
+        "h": 2448
+      },
+      "tile_count": 35,
+      "raw_detections": 81,
+      "nms_detections": 78,
+      "nms_stats": {
+        "avg_conf": 0.5213,
+        "min_conf": 0.0602,
+        "max_conf": 0.8994,
+        "avg_box_w": 156.4,
+        "avg_box_h": 168.0,
+        "min_box_w": 26,
+        "min_box_h": 32,
+        "max_box_w": 219,
+        "max_box_h": 238,
+        "class_counts": {
+          "wbc": 58,
+          "rbc": 12,
+          "plt": 8
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 51,
+          "medium_0.1_0.3": 17,
+          "low_lt_0.1": 10
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.5043,
+        "min_conf": 0.0573,
+        "max_conf": 0.8994,
+        "avg_box_w": 154.6,
+        "avg_box_h": 166.4,
+        "min_box_w": 26,
+        "min_box_h": 32,
+        "max_box_w": 219,
+        "max_box_h": 243,
+        "class_counts": {
+          "wbc": 59,
+          "rbc": 13,
+          "plt": 9
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 51,
+          "medium_0.1_0.3": 17,
+          "low_lt_0.1": 13
+        }
+      },
+      "elapsed_seconds": 18.05,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_190source.png"
+    },
+    {
+      "image": "071source.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\sources\\071source.jpg",
+      "source": "erythrocytesIDB",
+      "image_size": {
+        "w": 3264,
+        "h": 2448
+      },
+      "tile_count": 35,
+      "raw_detections": 38,
+      "nms_detections": 38,
+      "nms_stats": {
+        "avg_conf": 0.376,
+        "min_conf": 0.0556,
+        "max_conf": 0.7978,
+        "avg_box_w": 171.2,
+        "avg_box_h": 179.5,
+        "min_box_w": 56,
+        "min_box_h": 71,
+        "max_box_w": 217,
+        "max_box_h": 247,
+        "class_counts": {
+          "wbc": 34,
+          "plt": 2,
+          "rbc": 2
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 21,
+          "medium_0.1_0.3": 13,
+          "low_lt_0.1": 4
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.376,
+        "min_conf": 0.0556,
+        "max_conf": 0.7978,
+        "avg_box_w": 171.2,
+        "avg_box_h": 179.5,
+        "min_box_w": 56,
+        "min_box_h": 71,
+        "max_box_w": 217,
+        "max_box_h": 247,
+        "class_counts": {
+          "wbc": 34,
+          "plt": 2,
+          "rbc": 2
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 21,
+          "medium_0.1_0.3": 13,
+          "low_lt_0.1": 4
+        }
+      },
+      "elapsed_seconds": 16.92,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_071source.png"
+    }
+  ],
+  "step3_kaggle_positive": [
+    {
+      "image": "227.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_kaggle_scd\\Positive\\Labelled\\227.jpg",
+      "source": "kaggle_positive",
+      "image_size": {
+        "w": 1000,
+        "h": 1019
+      },
+      "tile_count": 4,
+      "raw_detections": 40,
+      "nms_detections": 35,
+      "nms_stats": {
+        "avg_conf": 0.1791,
+        "min_conf": 0.052,
+        "max_conf": 0.7627,
+        "avg_box_w": 48.5,
+        "avg_box_h": 49.8,
+        "min_box_w": 32,
+        "min_box_h": 33,
+        "max_box_w": 110,
+        "max_box_h": 147,
+        "class_counts": {
+          "rbc": 35
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 8,
+          "medium_0.1_0.3": 10,
+          "low_lt_0.1": 17
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.1788,
+        "min_conf": 0.052,
+        "max_conf": 0.7627,
+        "avg_box_w": 48.1,
+        "avg_box_h": 49.9,
+        "min_box_w": 32,
+        "min_box_h": 33,
+        "max_box_w": 110,
+        "max_box_h": 147,
+        "class_counts": {
+          "rbc": 40
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 9,
+          "medium_0.1_0.3": 12,
+          "low_lt_0.1": 19
+        }
+      },
+      "elapsed_seconds": 2.08,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_227.png"
+    },
+    {
+      "image": "399.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_kaggle_scd\\Positive\\Unlabelled\\399.jpg",
+      "source": "kaggle_positive",
+      "image_size": {
+        "w": 1000,
+        "h": 968
+      },
+      "tile_count": 4,
+      "raw_detections": 52,
+      "nms_detections": 44,
+      "nms_stats": {
+        "avg_conf": 0.1859,
+        "min_conf": 0.0514,
+        "max_conf": 0.5881,
+        "avg_box_w": 37.5,
+        "avg_box_h": 39.5,
+        "min_box_w": 28,
+        "min_box_h": 31,
+        "max_box_w": 53,
+        "max_box_h": 48,
+        "class_counts": {
+          "rbc": 44
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 9,
+          "medium_0.1_0.3": 16,
+          "low_lt_0.1": 19
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.1742,
+        "min_conf": 0.0514,
+        "max_conf": 0.5881,
+        "avg_box_w": 37.5,
+        "avg_box_h": 39.7,
+        "min_box_w": 28,
+        "min_box_h": 31,
+        "max_box_w": 53,
+        "max_box_h": 48,
+        "class_counts": {
+          "rbc": 52
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 9,
+          "medium_0.1_0.3": 18,
+          "low_lt_0.1": 25
+        }
+      },
+      "elapsed_seconds": 1.96,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_399.png"
+    },
+    {
+      "image": "193.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_kaggle_scd\\Positive\\Labelled\\193.jpg",
+      "source": "kaggle_positive",
+      "image_size": {
+        "w": 1000,
+        "h": 1021
+      },
+      "tile_count": 4,
+      "raw_detections": 104,
+      "nms_detections": 84,
+      "nms_stats": {
+        "avg_conf": 0.1823,
+        "min_conf": 0.0505,
+        "max_conf": 0.6798,
+        "avg_box_w": 39.0,
+        "avg_box_h": 41.2,
+        "min_box_w": 17,
+        "min_box_h": 18,
+        "max_box_w": 93,
+        "max_box_h": 104,
+        "class_counts": {
+          "rbc": 16,
+          "wbc": 29,
+          "plt": 39
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 13,
+          "medium_0.1_0.3": 43,
+          "low_lt_0.1": 28
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.1733,
+        "min_conf": 0.0505,
+        "max_conf": 0.6798,
+        "avg_box_w": 37.9,
+        "avg_box_h": 40.9,
+        "min_box_w": 17,
+        "min_box_h": 18,
+        "max_box_w": 93,
+        "max_box_h": 104,
+        "class_counts": {
+          "plt": 53,
+          "rbc": 20,
+          "wbc": 31
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 14,
+          "medium_0.1_0.3": 53,
+          "low_lt_0.1": 37
+        }
+      },
+      "elapsed_seconds": 1.89,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_193.png"
+    }
+  ],
+  "step3_kaggle_negative": [],
+  "step3_validation_baseline": [
+    {
+      "image": "sickle_04.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\sickle\\sickle_04.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 1000,
+        "h": 750
+      },
+      "tile_count": 4,
+      "raw_detections": 88,
+      "nms_detections": 69,
+      "nms_stats": {
+        "avg_conf": 0.5158,
+        "min_conf": 0.0578,
+        "max_conf": 0.8797,
+        "avg_box_w": 63.8,
+        "avg_box_h": 64.1,
+        "min_box_w": 23,
+        "min_box_h": 23,
+        "max_box_w": 123,
+        "max_box_h": 132,
+        "class_counts": {
+          "rbc": 63,
+          "wbc": 1,
+          "plt": 5
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 50,
+          "medium_0.1_0.3": 14,
+          "low_lt_0.1": 5
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.512,
+        "min_conf": 0.0543,
+        "max_conf": 0.8797,
+        "avg_box_w": 62.9,
+        "avg_box_h": 63.5,
+        "min_box_w": 23,
+        "min_box_h": 23,
+        "max_box_w": 123,
+        "max_box_h": 132,
+        "class_counts": {
+          "wbc": 1,
+          "rbc": 81,
+          "plt": 6
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 64,
+          "medium_0.1_0.3": 17,
+          "low_lt_0.1": 7
+        }
+      },
+      "elapsed_seconds": 1.64,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_sickle_04.jpg.png"
+    },
+    {
+      "image": "normal_02.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\normal\\normal_02.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 1000,
+        "h": 742
+      },
+      "tile_count": 4,
+      "raw_detections": 299,
+      "nms_detections": 214,
+      "nms_stats": {
+        "avg_conf": 0.5697,
+        "min_conf": 0.0506,
+        "max_conf": 0.8692,
+        "avg_box_w": 51.4,
+        "avg_box_h": 57.1,
+        "min_box_w": 22,
+        "min_box_h": 27,
+        "max_box_w": 69,
+        "max_box_h": 79,
+        "class_counts": {
+          "rbc": 212,
+          "wbc": 1,
+          "plt": 1
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 176,
+          "medium_0.1_0.3": 26,
+          "low_lt_0.1": 12
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.5194,
+        "min_conf": 0.0506,
+        "max_conf": 0.8692,
+        "avg_box_w": 51.3,
+        "avg_box_h": 57.2,
+        "min_box_w": 22,
+        "min_box_h": 27,
+        "max_box_w": 71,
+        "max_box_h": 82,
+        "class_counts": {
+          "rbc": 297,
+          "wbc": 1,
+          "plt": 1
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 227,
+          "medium_0.1_0.3": 41,
+          "low_lt_0.1": 31
+        }
+      },
+      "elapsed_seconds": 1.53,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_normal_02.jpg.png"
+    },
+    {
+      "image": "sickle_02.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\sickle\\sickle_02.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 960,
+        "h": 767
+      },
+      "tile_count": 4,
+      "raw_detections": 225,
+      "nms_detections": 175,
+      "nms_stats": {
+        "avg_conf": 0.6429,
+        "min_conf": 0.0506,
+        "max_conf": 0.9097,
+        "avg_box_w": 44.0,
+        "avg_box_h": 47.1,
+        "min_box_w": 14,
+        "min_box_h": 15,
+        "max_box_w": 66,
+        "max_box_h": 77,
+        "class_counts": {
+          "rbc": 168,
+          "plt": 7
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 143,
+          "medium_0.1_0.3": 18,
+          "low_lt_0.1": 14
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.6234,
+        "min_conf": 0.0506,
+        "max_conf": 0.9097,
+        "avg_box_w": 43.7,
+        "avg_box_h": 47.2,
+        "min_box_w": 14,
+        "min_box_h": 15,
+        "max_box_w": 66,
+        "max_box_h": 77,
+        "class_counts": {
+          "rbc": 215,
+          "plt": 10
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 176,
+          "medium_0.1_0.3": 22,
+          "low_lt_0.1": 27
+        }
+      },
+      "elapsed_seconds": 1.65,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_sickle_02.jpg.png"
+    },
+    {
+      "image": "normal_01.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\normal\\normal_01.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 410,
+        "h": 307
+      },
+      "tile_count": 1,
+      "raw_detections": 63,
+      "nms_detections": 63,
+      "nms_stats": {
+        "avg_conf": 0.816,
+        "min_conf": 0.1519,
+        "max_conf": 0.9048,
+        "avg_box_w": 28.4,
+        "avg_box_h": 30.4,
+        "min_box_w": 23,
+        "min_box_h": 23,
+        "max_box_w": 57,
+        "max_box_h": 60,
+        "class_counts": {
+          "rbc": 62,
+          "wbc": 1
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 61,
+          "medium_0.1_0.3": 2,
+          "low_lt_0.1": 0
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.816,
+        "min_conf": 0.1519,
+        "max_conf": 0.9048,
+        "avg_box_w": 28.4,
+        "avg_box_h": 30.4,
+        "min_box_w": 23,
+        "min_box_h": 23,
+        "max_box_w": 57,
+        "max_box_h": 60,
+        "class_counts": {
+          "rbc": 62,
+          "wbc": 1
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 61,
+          "medium_0.1_0.3": 2,
+          "low_lt_0.1": 0
+        }
+      },
+      "elapsed_seconds": 0.64,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_normal_01.jpg.png"
+    },
+    {
+      "image": "sickle_03.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\sickle\\sickle_03.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 960,
+        "h": 767
+      },
+      "tile_count": 4,
+      "raw_detections": 51,
+      "nms_detections": 41,
+      "nms_stats": {
+        "avg_conf": 0.5384,
+        "min_conf": 0.0531,
+        "max_conf": 0.8505,
+        "avg_box_w": 91.6,
+        "avg_box_h": 95.8,
+        "min_box_w": 39,
+        "min_box_h": 43,
+        "max_box_w": 139,
+        "max_box_h": 172,
+        "class_counts": {
+          "rbc": 40,
+          "plt": 1
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 28,
+          "medium_0.1_0.3": 9,
+          "low_lt_0.1": 4
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.4939,
+        "min_conf": 0.0531,
+        "max_conf": 0.8505,
+        "avg_box_w": 90.8,
+        "avg_box_h": 94.7,
+        "min_box_w": 39,
+        "min_box_h": 43,
+        "max_box_w": 139,
+        "max_box_h": 172,
+        "class_counts": {
+          "rbc": 50,
+          "plt": 1
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 32,
+          "medium_0.1_0.3": 12,
+          "low_lt_0.1": 7
+        }
+      },
+      "elapsed_seconds": 1.71,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_sickle_03.jpg.png"
+    },
+    {
+      "image": "sickle_01.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\sickle\\sickle_01.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 960,
+        "h": 767
+      },
+      "tile_count": 4,
+      "raw_detections": 239,
+      "nms_detections": 184,
+      "nms_stats": {
+        "avg_conf": 0.656,
+        "min_conf": 0.0547,
+        "max_conf": 0.919,
+        "avg_box_w": 45.3,
+        "avg_box_h": 49.4,
+        "min_box_w": 13,
+        "min_box_h": 16,
+        "max_box_w": 66,
+        "max_box_h": 68,
+        "class_counts": {
+          "rbc": 180,
+          "plt": 4
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 155,
+          "medium_0.1_0.3": 16,
+          "low_lt_0.1": 13
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.6229,
+        "min_conf": 0.0504,
+        "max_conf": 0.919,
+        "avg_box_w": 45.2,
+        "avg_box_h": 49.2,
+        "min_box_w": 13,
+        "min_box_h": 16,
+        "max_box_w": 66,
+        "max_box_h": 68,
+        "class_counts": {
+          "rbc": 235,
+          "plt": 4
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 188,
+          "medium_0.1_0.3": 25,
+          "low_lt_0.1": 26
+        }
+      },
+      "elapsed_seconds": 1.46,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_sickle_01.jpg.png"
+    },
+    {
+      "image": "sickle_05.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\sickle\\sickle_05.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 1000,
+        "h": 749
+      },
+      "tile_count": 4,
+      "raw_detections": 101,
+      "nms_detections": 78,
+      "nms_stats": {
+        "avg_conf": 0.5954,
+        "min_conf": 0.051,
+        "max_conf": 0.8603,
+        "avg_box_w": 60.7,
+        "avg_box_h": 65.3,
+        "min_box_w": 23,
+        "min_box_h": 28,
+        "max_box_w": 103,
+        "max_box_h": 108,
+        "class_counts": {
+          "rbc": 66,
+          "wbc": 5,
+          "plt": 7
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 62,
+          "medium_0.1_0.3": 13,
+          "low_lt_0.1": 3
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.616,
+        "min_conf": 0.051,
+        "max_conf": 0.8603,
+        "avg_box_w": 60.3,
+        "avg_box_h": 65.5,
+        "min_box_w": 23,
+        "min_box_h": 28,
+        "max_box_w": 103,
+        "max_box_h": 108,
+        "class_counts": {
+          "rbc": 88,
+          "wbc": 5,
+          "plt": 8
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 83,
+          "medium_0.1_0.3": 13,
+          "low_lt_0.1": 5
+        }
+      },
+      "elapsed_seconds": 1.48,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_sickle_05.jpg.png"
+    },
+    {
+      "image": "normal_05.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\normal\\normal_05.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 410,
+        "h": 307
+      },
+      "tile_count": 1,
+      "raw_detections": 281,
+      "nms_detections": 281,
+      "nms_stats": {
+        "avg_conf": 0.721,
+        "min_conf": 0.6339,
+        "max_conf": 0.845,
+        "avg_box_w": 12.0,
+        "avg_box_h": 13.3,
+        "min_box_w": 10,
+        "min_box_h": 11,
+        "max_box_w": 15,
+        "max_box_h": 18,
+        "class_counts": {
+          "rbc": 281
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 281,
+          "medium_0.1_0.3": 0,
+          "low_lt_0.1": 0
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.721,
+        "min_conf": 0.6339,
+        "max_conf": 0.845,
+        "avg_box_w": 12.0,
+        "avg_box_h": 13.3,
+        "min_box_w": 10,
+        "min_box_h": 11,
+        "max_box_w": 15,
+        "max_box_h": 18,
+        "class_counts": {
+          "rbc": 281
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 281,
+          "medium_0.1_0.3": 0,
+          "low_lt_0.1": 0
+        }
+      },
+      "elapsed_seconds": 0.64,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_normal_05.jpg.png"
+    },
+    {
+      "image": "normal_03.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\normal\\normal_03.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 1000,
+        "h": 753
+      },
+      "tile_count": 4,
+      "raw_detections": 48,
+      "nms_detections": 41,
+      "nms_stats": {
+        "avg_conf": 0.7122,
+        "min_conf": 0.059,
+        "max_conf": 0.8912,
+        "avg_box_w": 83.2,
+        "avg_box_h": 87.0,
+        "min_box_w": 27,
+        "min_box_h": 30,
+        "max_box_w": 117,
+        "max_box_h": 128,
+        "class_counts": {
+          "rbc": 35,
+          "plt": 6
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 34,
+          "medium_0.1_0.3": 1,
+          "low_lt_0.1": 6
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.6832,
+        "min_conf": 0.0579,
+        "max_conf": 0.8912,
+        "avg_box_w": 80.9,
+        "avg_box_h": 84.5,
+        "min_box_w": 27,
+        "min_box_h": 30,
+        "max_box_w": 117,
+        "max_box_h": 128,
+        "class_counts": {
+          "rbc": 39,
+          "plt": 9
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 38,
+          "medium_0.1_0.3": 1,
+          "low_lt_0.1": 9
+        }
+      },
+      "elapsed_seconds": 1.49,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_normal_03.jpg.png"
+    },
+    {
+      "image": "normal_04.jpg.jpg",
+      "image_path": "D:\\New folder\\ai-backend\\validation_smears\\normal\\normal_04.jpg.jpg",
+      "source": "validation_smears",
+      "image_size": {
+        "w": 1000,
+        "h": 761
+      },
+      "tile_count": 4,
+      "raw_detections": 539,
+      "nms_detections": 409,
+      "nms_stats": {
+        "avg_conf": 0.6827,
+        "min_conf": 0.0534,
+        "max_conf": 0.8815,
+        "avg_box_w": 37.3,
+        "avg_box_h": 39.6,
+        "min_box_w": 12,
+        "min_box_h": 13,
+        "max_box_w": 71,
+        "max_box_h": 77,
+        "class_counts": {
+          "rbc": 390,
+          "wbc": 6,
+          "plt": 13
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 377,
+          "medium_0.1_0.3": 24,
+          "low_lt_0.1": 8
+        }
+      },
+      "raw_stats": {
+        "avg_conf": 0.6678,
+        "min_conf": 0.0534,
+        "max_conf": 0.8815,
+        "avg_box_w": 37.2,
+        "avg_box_h": 39.6,
+        "min_box_w": 12,
+        "min_box_h": 13,
+        "max_box_w": 71,
+        "max_box_h": 77,
+        "class_counts": {
+          "rbc": 515,
+          "wbc": 7,
+          "plt": 17
+        },
+        "conf_buckets": {
+          "high_gt_0.3": 492,
+          "medium_0.1_0.3": 38,
+          "low_lt_0.1": 9
+        }
+      },
+      "elapsed_seconds": 1.48,
+      "diagnostic_image": "D:\\New folder\\ai-backend\\reports\\diagnose_yolo_normal_04.jpg.png"
+    }
+  ],
+  "step4_comparison": {
+    "erythrocytesIDB": {
+      "sample_count": 5,
+      "avg_detections": 66.0,
+      "avg_confidence": 0.487,
+      "avg_box_w": 165.3,
+      "avg_box_h": 169.5,
+      "avg_image_w": 3264.0,
+      "avg_image_h": 2448.0
+    },
+    "kaggle_positive": {
+      "sample_count": 3,
+      "avg_detections": 54.3,
+      "avg_confidence": 0.1824,
+      "avg_box_w": 41.7,
+      "avg_box_h": 43.5,
+      "avg_image_w": 1000.0,
+      "avg_image_h": 1003.0
+    },
+    "kaggle_negative": {
+      "avg_detections": 0,
+      "avg_confidence": 0,
+      "avg_box_w": 0,
+      "avg_box_h": 0,
+      "avg_image_w": 0,
+      "avg_image_h": 0,
+      "sample_count": 0
+    },
+    "validation_smears": {
+      "sample_count": 10,
+      "avg_detections": 155.5,
+      "avg_confidence": 0.645,
+      "avg_box_w": 51.8,
+      "avg_box_h": 54.9,
+      "avg_image_w": 870.0,
+      "avg_image_h": 667.0
+    }
+  },
+  "step5_diagnosis": {
+    "findings": [
+      {
+        "question": "A) Is YOLO detecting too many false objects (boxes on empty space)?",
+        "low_confidence_detections": 159,
+        "total_detections": 2048,
+        "low_confidence_percentage": 7.8,
+        "verdict": "LOW RISK",
+        "detail": "Only 7.8% of detections are very low confidence."
+      },
+      {
+        "question": "B) Is YOLO missing real cells?",
+        "verdict": "ASSESSMENT BELOW",
+        "detail": "Detection counts need to be compared against manual cell counts."
+      },
+      {
+        "question": "C) Is the bounding box size appropriate for cell crops?",
+        "verdict": "ACCEPTABLE",
+        "detail": "Bounding box sizes are within reasonable range for cell crops."
+      },
+      {
+        "question": "D) Is the confidence threshold (0.05) too low \u2014 letting noise through?",
+        "confidence_distribution": {
+          "high_gt_0.3": 1625,
+          "high_pct": 79.3,
+          "medium_0.1_0.3": 264,
+          "medium_pct": 12.9,
+          "low_lt_0.1": 159,
+          "low_pct": 7.8
+        },
+        "verdict": "ACCEPTABLE",
+        "detail": "Most detections are reasonably confident."
+      },
+      {
+        "question": "E) Are the tile sizes (640x640) appropriate for these image sizes?",
+        "verdict": "ACCEPTABLE",
+        "detail": "640x640 tiling is reasonable for the observed image sizes."
+      }
+    ],
+    "recommendations": []
+  }
+}

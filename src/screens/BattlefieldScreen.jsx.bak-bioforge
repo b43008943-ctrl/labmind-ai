@@ -1,0 +1,354 @@
+import { useState, useEffect, useRef } from 'react';
+import { useNavigation } from '../context/NavigationContext';
+
+const MOCK_QUESTIONS = [
+  { text: "What shape is an Ascaris lumbricoides egg?", options: ["Round", "Barrel", "Oval with mammillated shell", "Crescent"], correct: 2 },
+  { text: "Gram-positive cocci in clusters suggest:", options: ["E.coli", "Staphylococcus", "Neisseria", "Proteus"], correct: 1 },
+  { text: "Sickle cells are seen in:", options: ["Thalassemia", "Sickle cell disease", "Iron deficiency", "G6PD deficiency"], correct: 1 },
+  { text: "Many WBCs in urine suggests:", options: ["Diabetes", "UTI", "Kidney stones", "Dehydration"], correct: 1 },
+  { text: "Which crystal is described as 'coffin lid' shaped?", options: ["Calcium oxalate", "Uric acid", "Triple phosphate", "Cystine"], correct: 2 },
+  { text: "Plasmodium falciparum rings often appear:", options: ["Single and large", "Multiple and delicate", "Outside RBCs", "As crescents"], correct: 1 },
+  { text: "What color do Gram-negative bacteria stain?", options: ["Purple", "Blue", "Pink/Red", "Green"], correct: 2 },
+  { text: "A 'shift to the left' in a WBC differential indicates:", options: ["Viral infection", "Increase in immature neutrophils", "Allergic reaction", "Parasitic infection"], correct: 1 },
+  { text: "Which objective lens is used with immersion oil?", options: ["10x", "40x", "100x", "400x"], correct: 2 },
+  { text: "Which parasite causes malaria?", options: ["Trypanosoma", "Leishmania", "Plasmodium", "Toxoplasma"], correct: 2 }
+];
+
+export default function BattlefieldScreen() {
+    const { navigate } = useNavigation();
+    
+    const [phase, setPhase] = useState('matchmaking'); // matchmaking | battle
+    const [matchCountdown, setMatchCountdown] = useState(3);
+    
+    // Battle state
+    const [qIndex, setQIndex] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(15);
+    const [myScore, setMyScore] = useState(0);
+    const [oppScore, setOppScore] = useState(0);
+    
+    const [myAnswer, setMyAnswer] = useState(null);
+    const [oppAnswer, setOppAnswer] = useState(null);
+    const [myCombo, setMyCombo] = useState(0);
+    const [oppCombo, setOppCombo] = useState(0);
+    
+    // Stats for aftermath
+    const [stats, setStats] = useState({
+        myCorrect: 0, oppCorrect: 0, 
+        myTimes: [], oppTimes: [],
+        myMaxCombo: 0, oppMaxCombo: 0,
+        myAnswers: [], oppAnswers: [] // array of booleans
+    });
+
+    const timerRef = useRef(null);
+    const oppTimerRef = useRef(null);
+    const nextQTimerRef = useRef(null);
+
+    // Phase 1: Matchmaking
+    useEffect(() => {
+        if (phase === 'matchmaking') {
+            const int = setInterval(() => {
+                setMatchCountdown(c => {
+                    if (c <= 1) {
+                        clearInterval(int);
+                        setPhase('battle');
+                        startQuestion();
+                        return 0;
+                    }
+                    return c - 1;
+                });
+            }, 1000);
+            return () => clearInterval(int);
+        }
+    }, [phase]);
+
+    // Timer logic
+    const startQuestion = () => {
+        setMyAnswer(null);
+        setOppAnswer(null);
+        setTimeLeft(15);
+        
+        timerRef.current = setInterval(() => {
+            setTimeLeft(t => {
+                if (t <= 0.1) {
+                    clearInterval(timerRef.current);
+                    handleTimeOut();
+                    return 0;
+                }
+                return t - 0.1;
+            });
+        }, 100);
+
+        // Opponent logic
+        const oppDelay = Math.random() * 6000 + 2000; // 2s to 8s
+        oppTimerRef.current = setTimeout(() => {
+            if (myAnswer === null && timeLeft > 0) {
+                // Opponent answers
+                const isCorrect = Math.random() < 0.6; // 60% accuracy
+                handleOpponentAnswer(isCorrect);
+            }
+        }, oppDelay);
+    };
+
+    const handleOpponentAnswer = (isCorrect) => {
+        const q = MOCK_QUESTIONS[qIndex];
+        const ansIdx = isCorrect ? q.correct : (q.correct + 1) % 4; // fake wrong
+        setOppAnswer(ansIdx);
+        
+        if (isCorrect) {
+            setOppCombo(c => c + 1);
+            setStats(s => ({ ...s, oppMaxCombo: Math.max(s.oppMaxCombo, oppCombo + 1) }));
+            const pts = 100 * (1 + (oppCombo * 0.5));
+            setOppScore(s => s + Math.round(pts));
+        } else {
+            setOppCombo(0);
+        }
+        
+        setStats(s => ({ 
+            ...s, 
+            oppCorrect: s.oppCorrect + (isCorrect ? 1 : 0),
+            oppTimes: [...s.oppTimes, 15 - timeLeft],
+            oppAnswers: [...s.oppAnswers, isCorrect]
+        }));
+    };
+
+    const handleMyAnswer = (idx) => {
+        if (myAnswer !== null || timeLeft <= 0) return;
+        
+        clearInterval(timerRef.current);
+        clearTimeout(oppTimerRef.current);
+        
+        setMyAnswer(idx);
+        const q = MOCK_QUESTIONS[qIndex];
+        const isCorrect = idx === q.correct;
+        
+        const timeTaken = 15 - timeLeft;
+        
+        if (isCorrect) {
+            setMyCombo(c => c + 1);
+            setStats(s => ({ ...s, myMaxCombo: Math.max(s.myMaxCombo, myCombo + 1) }));
+            const pts = 100 * (1 + (myCombo * 0.5));
+            setMyScore(s => s + Math.round(pts));
+        } else {
+            setMyCombo(0);
+        }
+        
+        setStats(s => ({ 
+            ...s, 
+            myCorrect: s.myCorrect + (isCorrect ? 1 : 0),
+            myTimes: [...s.myTimes, timeTaken],
+            myAnswers: [...s.myAnswers, isCorrect]
+        }));
+
+        // If opponent hasn't answered, they answer now (simulated)
+        if (oppAnswer === null) {
+            handleOpponentAnswer(Math.random() < 0.6);
+        }
+
+        scheduleNextQuestion();
+    };
+
+    const handleTimeOut = () => {
+        if (myAnswer === null) {
+            setMyCombo(0);
+            setStats(s => ({ 
+                ...s, 
+                myTimes: [...s.myTimes, 15],
+                myAnswers: [...s.myAnswers, false]
+            }));
+            setMyAnswer(-1); // -1 means timeout
+        }
+        if (oppAnswer === null) {
+            handleOpponentAnswer(false);
+        }
+        scheduleNextQuestion();
+    };
+
+    const scheduleNextQuestion = () => {
+        nextQTimerRef.current = setTimeout(() => {
+            if (qIndex + 1 < MOCK_QUESTIONS.length) {
+                setQIndex(i => i + 1);
+                startQuestion();
+            } else {
+                finishBattle();
+            }
+        }, 2000);
+    };
+
+    const finishBattle = () => {
+        // Compute final stats and navigate
+        const myAvgTime = stats.myTimes.reduce((a,b)=>a+b,0) / Math.max(1, stats.myTimes.length);
+        const oppAvgTime = stats.oppTimes.reduce((a,b)=>a+b,0) / Math.max(1, stats.oppTimes.length);
+        
+        const finalData = {
+            myScore, oppScore,
+            myCorrect: stats.myCorrect, oppCorrect: stats.oppCorrect,
+            myAvgTime, oppAvgTime,
+            myMaxCombo: stats.myMaxCombo, oppMaxCombo: stats.oppMaxCombo,
+            totalQ: MOCK_QUESTIONS.length,
+            history: MOCK_QUESTIONS.map((q, i) => ({
+                question: q.text,
+                myCorrect: stats.myAnswers[i],
+                oppCorrect: stats.oppAnswers[i],
+                correctAnswer: q.options[q.correct]
+            }))
+        };
+        
+        // Use navigate, passing state might require app routing config, 
+        // but typically in SPA we can store in context or localstorage.
+        // For this mock, we'll store in sessionStorage
+        sessionStorage.setItem('battle_results', JSON.stringify(finalData));
+        navigate('battle/results');
+    };
+
+    useEffect(() => {
+        return () => {
+            clearInterval(timerRef.current);
+            clearTimeout(oppTimerRef.current);
+            clearTimeout(nextQTimerRef.current);
+        };
+    }, []);
+
+    // ── Render ──
+    if (phase === 'matchmaking') {
+        return (
+            <div className="min-h-dvh w-full bg-[#0A0E17] flex flex-col items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,_rgba(239,68,68,0.15)_0%,_transparent_70%)]" />
+                
+                <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }}
+                    className="text-red-400 font-mono tracking-[0.5em] text-xs font-bold uppercase mb-12 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]">
+                    Finding Opponent...
+                </motion.div>
+
+                <div className="flex items-center justify-center gap-6 w-full px-8 relative z-10">
+                    {/* Me */}
+                    <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex flex-col items-center gap-3 w-1/3">
+                        <div className="w-20 h-20 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.4)] flex items-center justify-center">
+                            <User size={40} className="text-cyan-400" />
+                        </div>
+                        <span className="text-sm font-bold text-white tracking-widest uppercase">YOU</span>
+                    </motion.div>
+
+                    {/* VS */}
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', bounce: 0.5 }} className="w-1/3 text-center">
+                        <span className="text-5xl font-black text-white italic drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">VS</span>
+                    </motion.div>
+
+                    {/* Opponent */}
+                    <motion.div initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex flex-col items-center gap-3 w-1/3">
+                        <div className="w-20 h-20 rounded-2xl bg-red-500/20 border-2 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)] flex items-center justify-center">
+                            <User size={40} className="text-red-500" />
+                        </div>
+                        <span className="text-sm font-bold text-white tracking-widest uppercase text-center truncate w-full">Shadow Knight</span>
+                    </motion.div>
+                </div>
+
+                <div className="mt-16 flex flex-col items-center gap-3">
+                    <span className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-bold text-white tracking-wider">PARASITOLOGY</span>
+                    <span className="px-4 py-1.5 rounded-full bg-red-500/20 border border-red-500/40 text-xs font-bold text-red-400 tracking-wider">1 VS 1 BATTLE</span>
+                </div>
+
+                <motion.div key={matchCountdown} initial={{ scale: 1.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ opacity: 0 }}
+                    className="absolute bottom-20 text-6xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
+                    {matchCountdown > 0 ? matchCountdown : 'GO!'}
+                </motion.div>
+            </div>
+        );
+    }
+
+    const currentQ = MOCK_QUESTIONS[qIndex];
+
+    return (
+        <div className="min-h-dvh w-full bg-[#0A0E17] flex flex-col relative overflow-hidden font-sans">
+            <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+
+            {/* TOP BAR */}
+            <div className="w-full bg-black/50 backdrop-blur-md border-b border-white/10 p-4 pt-12 flex justify-between items-center relative z-10">
+                {/* My Score */}
+                <div className="flex flex-col items-start">
+                    <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">YOU</span>
+                    <motion.span key={myScore} initial={{ scale: 1.2 }} animate={{ scale: 1 }} className="text-xl font-black text-white font-mono">{myScore.toLocaleString()}</motion.span>
+                    {myCombo > 1 && <span className="text-[10px] text-amber-400 font-bold animate-pulse">{myCombo}x COMBO 🔥</span>}
+                </div>
+                
+                {/* Q Counter */}
+                <div className="flex flex-col items-center">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">QUESTION</span>
+                    <span className="text-lg font-black text-white font-mono">{qIndex + 1}/{MOCK_QUESTIONS.length}</span>
+                </div>
+
+                {/* Opp Score */}
+                <div className="flex flex-col items-end">
+                    <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">OPPONENT</span>
+                    <motion.span key={oppScore} initial={{ scale: 1.2 }} animate={{ scale: 1 }} className="text-xl font-black text-white font-mono">{oppScore.toLocaleString()}</motion.span>
+                    {oppCombo > 1 && <span className="text-[10px] text-amber-400 font-bold animate-pulse">🔥 {oppCombo}x COMBO</span>}
+                </div>
+            </div>
+
+            {/* TIMER BAR */}
+            <div className="w-full h-1.5 bg-white/10 relative z-10">
+                <div className="h-full bg-gradient-to-r from-cyan-400 via-amber-400 to-red-500" style={{ width: `${(timeLeft / 15) * 100}%`, transition: 'width 0.1s linear' }} />
+            </div>
+
+            {/* BATTLEFIELD CONTENT */}
+            <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10 w-full max-w-lg mx-auto">
+                <AnimatePresence mode="wait">
+                    <motion.div key={qIndex} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="w-full flex flex-col gap-6">
+                        
+                        {/* Question */}
+                        <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm shadow-xl relative">
+                            <ShieldAlert className="absolute -top-3 -right-3 text-red-500/20 w-16 h-16 pointer-events-none" />
+                            <h2 className="text-lg font-bold text-white leading-relaxed">{currentQ.text}</h2>
+                        </div>
+
+                        {/* Options */}
+                        <div className="flex flex-col gap-3">
+                            {currentQ.options.map((opt, i) => {
+                                let st = 'idle'; // idle, correct, wrong, dim
+                                if (myAnswer !== null) {
+                                    if (i === currentQ.correct) st = 'correct';
+                                    else if (i === myAnswer) st = 'wrong';
+                                    else st = 'dim';
+                                }
+
+                                const bgStyles = {
+                                    idle: 'bg-white/[0.03] border-white/10 hover:bg-white/[0.08] text-white',
+                                    correct: 'bg-emerald-500/20 border-emerald-500 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.3)]',
+                                    wrong: 'bg-red-500/20 border-red-500 text-red-400',
+                                    dim: 'bg-transparent border-white/5 text-white/30'
+                                };
+
+                                return (
+                                    <button key={i} onClick={() => handleMyAnswer(i)} disabled={myAnswer !== null}
+                                        className={`w-full p-4 rounded-xl border flex items-center gap-4 transition-all duration-300 ${bgStyles[st]}`}>
+                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold border shrink-0 ${st === 'correct' ? 'border-emerald-500/50' : st === 'wrong' ? 'border-red-500/50' : 'border-white/20'}`}>
+                                            {st === 'correct' ? <CheckCircle2 size={16} /> : st === 'wrong' ? <XCircle size={16} /> : String.fromCharCode(65 + i)}
+                                        </div>
+                                        <span className="text-sm font-semibold text-left flex-1">{opt}</span>
+                                        
+                                        {/* Show opponent pick if answered */}
+                                        {oppAnswer === i && myAnswer !== null && (
+                                            <div className="w-6 h-6 rounded-full bg-red-500/20 border border-red-500 flex items-center justify-center shrink-0">
+                                                <User size={12} className="text-red-500" />
+                                            </div>
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        
+                    </motion.div>
+                </AnimatePresence>
+
+                {/* Status Float */}
+                {myAnswer !== null && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} 
+                        className="absolute bottom-10 px-6 py-3 rounded-full bg-black/80 border border-white/10 backdrop-blur-md">
+                        <span className="text-sm font-bold text-white tracking-widest uppercase">
+                            {myAnswer === currentQ.correct ? '🎯 Target Eliminated!' : '❌ Missed!'}
+                        </span>
+                    </motion.div>
+                )}
+            </div>
+        </div>
+    );
+}

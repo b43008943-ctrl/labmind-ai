@@ -1,0 +1,10 @@
+path: D:/New folder/ai-backend/dataset_microbiology/yolo_dataset
+train: images/train
+val: images/val
+test: images/test
+nc: 4
+names:
+- G-_Bacillus
+- G+_Coccus
+- G-_Coccus
+- G+_Bacillus

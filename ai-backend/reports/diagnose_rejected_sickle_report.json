@@ -1,0 +1,5138 @@
+{
+  "generated_at": "2026-04-07T23:48:05.714381+00:00",
+  "sickle_metrics": [
+    {
+      "filename": "e0001.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0001.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 10.49,
+      "otsu_threshold": 139.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        947.5,
+        190.0
+      ],
+      "foreground_pct": 19.31,
+      "mean_B": 161.47,
+      "mean_G": 154.13,
+      "mean_R": 163.74,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0002.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0002.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.27,
+      "otsu_threshold": 141.0,
+      "total_contours": 2,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1340.0,
+        589.5
+      ],
+      "foreground_pct": 32.03,
+      "mean_B": 168.5,
+      "mean_G": 148.77,
+      "mean_R": 150.66,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0003.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0003.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 31.7,
+      "otsu_threshold": 129.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1216.0,
+        359.0,
+        320.0,
+        163.5,
+        0.5,
+        0.0
+      ],
+      "foreground_pct": 35.56,
+      "mean_B": 162.54,
+      "mean_G": 135.2,
+      "mean_R": 131.15,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0004.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0004.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.49,
+      "otsu_threshold": 133.0,
+      "total_contours": 6,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        1459.0,
+        722.5,
+        389.0,
+        65.0,
+        41.0,
+        0.0
+      ],
+      "foreground_pct": 45.23,
+      "mean_B": 166.85,
+      "mean_G": 129.24,
+      "mean_R": 138.77,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0006.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0006.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 40.04,
+      "otsu_threshold": 134.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1204.5,
+        1102.5,
+        0.0
+      ],
+      "foreground_pct": 37.09,
+      "mean_B": 169.67,
+      "mean_G": 135.39,
+      "mean_R": 148.87,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0007.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0007.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 54.67,
+      "otsu_threshold": 133.0,
+      "total_contours": 6,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        1091.0,
+        1064.5,
+        361.0,
+        80.5,
+        64.5,
+        1.0
+      ],
+      "foreground_pct": 45.28,
+      "mean_B": 166.89,
+      "mean_G": 129.5,
+      "mean_R": 139.43,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0009.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0009.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 49.42,
+      "otsu_threshold": 137.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1553.5,
+        874.5,
+        176.0,
+        59.5,
+        16.5,
+        1.5
+      ],
+      "foreground_pct": 45.3,
+      "mean_B": 169.48,
+      "mean_G": 132.17,
+      "mean_R": 144.56,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0010.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0010.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 25.23,
+      "otsu_threshold": 136.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1058.5,
+        499.0,
+        5.0,
+        0.0
+      ],
+      "foreground_pct": 26.39,
+      "mean_B": 169.96,
+      "mean_G": 147.97,
+      "mean_R": 152.24,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0011.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0011.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.9,
+      "otsu_threshold": 136.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1242.0,
+        452.5,
+        1.5
+      ],
+      "foreground_pct": 28.44,
+      "mean_B": 168.16,
+      "mean_G": 144.2,
+      "mean_R": 150.53,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0012.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0012.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 28.48,
+      "otsu_threshold": 137.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1343.5,
+        658.0,
+        120.0,
+        25.0,
+        5.0
+      ],
+      "foreground_pct": 36.34,
+      "mean_B": 170.63,
+      "mean_G": 142.37,
+      "mean_R": 142.46,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0013.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0013.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 21.56,
+      "otsu_threshold": 134.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        906.0,
+        115.5
+      ],
+      "foreground_pct": 17.39,
+      "mean_B": 168.19,
+      "mean_G": 156.05,
+      "mean_R": 156.83,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0014.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0014.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 21.73,
+      "otsu_threshold": 137.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        788.0,
+        296.5
+      ],
+      "foreground_pct": 18.55,
+      "mean_B": 168.45,
+      "mean_G": 157.84,
+      "mean_R": 160.04,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0015.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0015.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 19.32,
+      "otsu_threshold": 141.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1048.0,
+        167.5
+      ],
+      "foreground_pct": 20.48,
+      "mean_B": 171.21,
+      "mean_G": 159.74,
+      "mean_R": 158.12,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0016.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0016.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.95,
+      "otsu_threshold": 133.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        991.5,
+        55.0,
+        33.0
+      ],
+      "foreground_pct": 18.48,
+      "mean_B": 167.72,
+      "mean_G": 153.24,
+      "mean_R": 156.08,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0018.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0018.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 14.95,
+      "otsu_threshold": 130.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1164.5,
+        52.5
+      ],
+      "foreground_pct": 20.38,
+      "mean_B": 160.28,
+      "mean_G": 150.31,
+      "mean_R": 146.61,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0020.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0020.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 37.36,
+      "otsu_threshold": 129.0,
+      "total_contours": 4,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        1210.5,
+        754.0,
+        481.5,
+        4.5
+      ],
+      "foreground_pct": 41.5,
+      "mean_B": 157.63,
+      "mean_G": 131.35,
+      "mean_R": 132.96,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0021.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0021.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 12.66,
+      "otsu_threshold": 136.0,
+      "total_contours": 1,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        840.5
+      ],
+      "foreground_pct": 14.22,
+      "mean_B": 161.94,
+      "mean_G": 157.61,
+      "mean_R": 151.44,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0022.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0022.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 14.08,
+      "otsu_threshold": 137.0,
+      "total_contours": 1,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        816.5
+      ],
+      "foreground_pct": 13.91,
+      "mean_B": 167.23,
+      "mean_G": 159.7,
+      "mean_R": 159.79,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0023.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0023.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.25,
+      "otsu_threshold": 141.0,
+      "total_contours": 2,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1265.5,
+        884.5
+      ],
+      "foreground_pct": 31.03,
+      "mean_B": 162.21,
+      "mean_G": 148.98,
+      "mean_R": 151.77,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0024.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0024.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 25.64,
+      "otsu_threshold": 136.0,
+      "total_contours": 3,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        902.0,
+        762.0,
+        400.0
+      ],
+      "foreground_pct": 35.27,
+      "mean_B": 161.65,
+      "mean_G": 142.8,
+      "mean_R": 141.32,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0025.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0025.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 34.85,
+      "otsu_threshold": 130.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        698.0,
+        648.0,
+        224.0,
+        218.5,
+        120.0,
+        18.5
+      ],
+      "foreground_pct": 33.55,
+      "mean_B": 161.74,
+      "mean_G": 140.04,
+      "mean_R": 136.65,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0026.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0026.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 24.81,
+      "otsu_threshold": 138.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        949.0,
+        790.0,
+        44.0
+      ],
+      "foreground_pct": 30.17,
+      "mean_B": 174.1,
+      "mean_G": 146.21,
+      "mean_R": 155.62,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0027.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0027.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.82,
+      "otsu_threshold": 130.0,
+      "total_contours": 1,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1288.0
+      ],
+      "foreground_pct": 21.31,
+      "mean_B": 169.48,
+      "mean_G": 144.19,
+      "mean_R": 157.14,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0028.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0028.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 30.76,
+      "otsu_threshold": 136.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1309.0,
+        653.0,
+        9.0,
+        0.5
+      ],
+      "foreground_pct": 33.03,
+      "mean_B": 164.81,
+      "mean_G": 140.67,
+      "mean_R": 144.51,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0029.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0029.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 34.38,
+      "otsu_threshold": 126.0,
+      "total_contours": 6,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1015.0,
+        310.5,
+        309.5,
+        115.5,
+        72.0,
+        1.0
+      ],
+      "foreground_pct": 31.69,
+      "mean_B": 155.73,
+      "mean_G": 136.87,
+      "mean_R": 134.88,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0030.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0030.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 55.09,
+      "otsu_threshold": 134.0,
+      "total_contours": 6,
+      "significant_contours": 5,
+      "all_contour_areas": [
+        874.0,
+        615.0,
+        588.0,
+        586.0,
+        471.0,
+        6.0
+      ],
+      "foreground_pct": 53.56,
+      "mean_B": 168.33,
+      "mean_G": 124.69,
+      "mean_R": 134.6,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0031.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0031.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 10.49,
+      "otsu_threshold": 139.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        947.5,
+        190.0
+      ],
+      "foreground_pct": 19.31,
+      "mean_B": 161.47,
+      "mean_G": 154.1,
+      "mean_R": 163.78,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0032.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0032.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 19.43,
+      "otsu_threshold": 147.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1271.0,
+        588.5,
+        44.5
+      ],
+      "foreground_pct": 32.14,
+      "mean_B": 162.96,
+      "mean_G": 151.0,
+      "mean_R": 165.21,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0033.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0033.jpg",
+      "width": 567,
+      "height": 567,
+      "laplacian_variance": 9.32,
+      "otsu_threshold": 149.0,
+      "total_contours": 46,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        87678.5,
+        17675.5,
+        52.5,
+        29.5,
+        26.5,
+        17.5,
+        16.5,
+        13.0,
+        11.0,
+        11.0
+      ],
+      "foreground_pct": 33.16,
+      "mean_B": 161.64,
+      "mean_G": 153.69,
+      "mean_R": 163.92,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0034.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0034.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.97,
+      "otsu_threshold": 142.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1151.5,
+        524.5,
+        124.5,
+        4.0
+      ],
+      "foreground_pct": 30.33,
+      "mean_B": 163.93,
+      "mean_G": 148.53,
+      "mean_R": 162.03,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0035.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0035.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 42.13,
+      "otsu_threshold": 145.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1484.0,
+        573.5,
+        27.5,
+        3.5,
+        0.0
+      ],
+      "foreground_pct": 34.73,
+      "mean_B": 164.03,
+      "mean_G": 147.6,
+      "mean_R": 161.01,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0036.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0036.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 19.41,
+      "otsu_threshold": 148.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        661.0,
+        278.5,
+        2.0
+      ],
+      "foreground_pct": 16.3,
+      "mean_B": 168.29,
+      "mean_G": 164.05,
+      "mean_R": 173.82,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0037.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0037.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 25.23,
+      "otsu_threshold": 145.0,
+      "total_contours": 4,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        909.5,
+        545.0,
+        346.5,
+        5.5
+      ],
+      "foreground_pct": 30.91,
+      "mean_B": 162.91,
+      "mean_G": 149.76,
+      "mean_R": 165.52,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0038.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0038.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.82,
+      "otsu_threshold": 143.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        889.5,
+        487.5,
+        104.0,
+        96.0,
+        1.0
+      ],
+      "foreground_pct": 27.3,
+      "mean_B": 164.11,
+      "mean_G": 150.5,
+      "mean_R": 165.26,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0039.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0039.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 20.64,
+      "otsu_threshold": 129.0,
+      "total_contours": 8,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        704.5,
+        564.5,
+        241.5,
+        155.0,
+        2.5,
+        1.0,
+        0.5,
+        0.0
+      ],
+      "foreground_pct": 29.03,
+      "mean_B": 145.68,
+      "mean_G": 132.18,
+      "mean_R": 146.9,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0040.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0040.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.35,
+      "otsu_threshold": 130.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1153.5,
+        790.5,
+        54.0,
+        0.0
+      ],
+      "foreground_pct": 33.62,
+      "mean_B": 141.95,
+      "mean_G": 131.43,
+      "mean_R": 146.62,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0042.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0042.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 5.89,
+      "otsu_threshold": 147.0,
+      "total_contours": 1,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        917.5
+      ],
+      "foreground_pct": 15.34,
+      "mean_B": 164.81,
+      "mean_G": 161.92,
+      "mean_R": 172.94,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0043.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0043.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.1,
+      "otsu_threshold": 145.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        974.0,
+        205.0
+      ],
+      "foreground_pct": 20.11,
+      "mean_B": 162.93,
+      "mean_G": 156.22,
+      "mean_R": 167.66,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0044.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0044.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 12.05,
+      "otsu_threshold": 151.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        891.0,
+        358.5,
+        3.0
+      ],
+      "foreground_pct": 21.53,
+      "mean_B": 167.19,
+      "mean_G": 161.28,
+      "mean_R": 171.5,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0045.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0045.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 12.83,
+      "otsu_threshold": 151.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1290.0,
+        297.5,
+        76.0,
+        27.0
+      ],
+      "foreground_pct": 28.62,
+      "mean_B": 162.66,
+      "mean_G": 156.24,
+      "mean_R": 168.24,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0046.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0046.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 15.35,
+      "otsu_threshold": 139.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1351.0,
+        630.5,
+        279.5
+      ],
+      "foreground_pct": 37.91,
+      "mean_B": 156.43,
+      "mean_G": 140.31,
+      "mean_R": 152.9,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0047.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0047.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 15.31,
+      "otsu_threshold": 147.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        995.0,
+        704.0,
+        88.5
+      ],
+      "foreground_pct": 30.34,
+      "mean_B": 163.19,
+      "mean_G": 152.07,
+      "mean_R": 166.5,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0048.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0048.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 9.76,
+      "otsu_threshold": 147.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1154.5,
+        328.5,
+        255.0,
+        61.5
+      ],
+      "foreground_pct": 30.64,
+      "mean_B": 162.38,
+      "mean_G": 152.39,
+      "mean_R": 165.3,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0049.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0049.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 10.73,
+      "otsu_threshold": 147.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1112.5,
+        558.0,
+        164.0,
+        19.0
+      ],
+      "foreground_pct": 31.81,
+      "mean_B": 161.96,
+      "mean_G": 151.21,
+      "mean_R": 163.56,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0050.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0050.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 8.76,
+      "otsu_threshold": 145.0,
+      "total_contours": 2,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1668.0,
+        742.5
+      ],
+      "foreground_pct": 39.73,
+      "mean_B": 158.28,
+      "mean_G": 145.81,
+      "mean_R": 154.71,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0051.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0051.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 31.61,
+      "otsu_threshold": 138.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1282.5,
+        228.0,
+        4.0,
+        1.5,
+        0.0
+      ],
+      "foreground_pct": 25.47,
+      "mean_B": 158.68,
+      "mean_G": 149.65,
+      "mean_R": 159.33,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0052.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0052.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 11.95,
+      "otsu_threshold": 152.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        920.5,
+        68.0,
+        59.0
+      ],
+      "foreground_pct": 18.02,
+      "mean_B": 166.29,
+      "mean_G": 162.14,
+      "mean_R": 173.08,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0053.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0053.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 11.85,
+      "otsu_threshold": 153.0,
+      "total_contours": 1,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        977.5
+      ],
+      "foreground_pct": 16.23,
+      "mean_B": 169.42,
+      "mean_G": 163.96,
+      "mean_R": 174.57,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0054.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0054.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.68,
+      "otsu_threshold": 150.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1061.0,
+        501.5,
+        47.0
+      ],
+      "foreground_pct": 27.3,
+      "mean_B": 164.54,
+      "mean_G": 155.75,
+      "mean_R": 164.15,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0055.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0055.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 23.21,
+      "otsu_threshold": 147.0,
+      "total_contours": 7,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1386.0,
+        679.0,
+        64.0,
+        29.0,
+        6.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 36.8,
+      "mean_B": 164.64,
+      "mean_G": 148.6,
+      "mean_R": 159.51,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0056.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0056.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 45.95,
+      "otsu_threshold": 141.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1006.5,
+        241.0,
+        81.0,
+        1.5,
+        0.5
+      ],
+      "foreground_pct": 22.78,
+      "mean_B": 162.43,
+      "mean_G": 153.02,
+      "mean_R": 162.85,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0057.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0057.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 35.72,
+      "otsu_threshold": 145.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1084.5,
+        7.5,
+        2.0,
+        0.5
+      ],
+      "foreground_pct": 18.3,
+      "mean_B": 167.45,
+      "mean_G": 158.86,
+      "mean_R": 168.06,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0058.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0058.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.13,
+      "otsu_threshold": 145.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1161.0,
+        827.0,
+        100.0
+      ],
+      "foreground_pct": 35.17,
+      "mean_B": 160.93,
+      "mean_G": 148.57,
+      "mean_R": 159.85,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0059.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0059.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 16.07,
+      "otsu_threshold": 144.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1103.0,
+        510.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 27.27,
+      "mean_B": 161.95,
+      "mean_G": 152.33,
+      "mean_R": 163.43,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0060.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0060.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 16.87,
+      "otsu_threshold": 132.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1261.5,
+        266.0,
+        87.5
+      ],
+      "foreground_pct": 27.39,
+      "mean_B": 153.23,
+      "mean_G": 143.62,
+      "mean_R": 145.2,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0061.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0061.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.09,
+      "otsu_threshold": 141.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        785.5,
+        602.5,
+        32.5,
+        17.5
+      ],
+      "foreground_pct": 24.83,
+      "mean_B": 160.48,
+      "mean_G": 153.08,
+      "mean_R": 158.6,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0062.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0062.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.14,
+      "otsu_threshold": 143.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1445.5,
+        532.0,
+        16.5,
+        5.0,
+        0.0
+      ],
+      "foreground_pct": 33.58,
+      "mean_B": 161.42,
+      "mean_G": 148.53,
+      "mean_R": 154.96,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0063.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0063.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 19.89,
+      "otsu_threshold": 146.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1229.5,
+        567.5,
+        6.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 30.12,
+      "mean_B": 160.7,
+      "mean_G": 150.99,
+      "mean_R": 164.52,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0066.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0066.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.6,
+      "otsu_threshold": 136.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        773.5,
+        4.5,
+        0.0
+      ],
+      "foreground_pct": 13.22,
+      "mean_B": 169.16,
+      "mean_G": 158.73,
+      "mean_R": 172.64,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0067.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0067.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.04,
+      "otsu_threshold": 128.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        839.0,
+        584.5,
+        261.0,
+        6.0,
+        1.0
+      ],
+      "foreground_pct": 28.94,
+      "mean_B": 155.92,
+      "mean_G": 138.47,
+      "mean_R": 142.63,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0068.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0068.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 20.18,
+      "otsu_threshold": 132.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1217.0,
+        35.5,
+        1.0
+      ],
+      "foreground_pct": 20.97,
+      "mean_B": 161.38,
+      "mean_G": 148.81,
+      "mean_R": 159.45,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0069.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0069.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.34,
+      "otsu_threshold": 139.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        934.5,
+        123.0
+      ],
+      "foreground_pct": 17.84,
+      "mean_B": 160.78,
+      "mean_G": 153.84,
+      "mean_R": 160.14,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0070.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0070.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 11.9,
+      "otsu_threshold": 121.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1154.0,
+        1.0
+      ],
+      "foreground_pct": 19.16,
+      "mean_B": 150.83,
+      "mean_G": 139.26,
+      "mean_R": 143.71,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0071.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0071.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.71,
+      "otsu_threshold": 123.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1080.5,
+        267.5,
+        200.0
+      ],
+      "foreground_pct": 26.19,
+      "mean_B": 154.88,
+      "mean_G": 137.32,
+      "mean_R": 145.84,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0072.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0072.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 20.49,
+      "otsu_threshold": 149.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        895.5,
+        665.5,
+        62.0
+      ],
+      "foreground_pct": 27.5,
+      "mean_B": 166.74,
+      "mean_G": 154.98,
+      "mean_R": 168.62,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0073.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0073.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 13.08,
+      "otsu_threshold": 137.0,
+      "total_contours": 1,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1213.5
+      ],
+      "foreground_pct": 20.03,
+      "mean_B": 163.72,
+      "mean_G": 151.77,
+      "mean_R": 159.05,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0075.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0075.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 12.94,
+      "otsu_threshold": 139.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        840.5,
+        0.0
+      ],
+      "foreground_pct": 14.12,
+      "mean_B": 166.15,
+      "mean_G": 154.77,
+      "mean_R": 165.15,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0076.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0076.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.42,
+      "otsu_threshold": 136.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1393.0,
+        408.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 30.2,
+      "mean_B": 159.97,
+      "mean_G": 142.84,
+      "mean_R": 151.68,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0077.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0077.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.1,
+      "otsu_threshold": 126.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1092.5,
+        205.0,
+        0.0
+      ],
+      "foreground_pct": 21.78,
+      "mean_B": 156.08,
+      "mean_G": 142.73,
+      "mean_R": 149.94,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0079.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0079.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 20.45,
+      "otsu_threshold": 136.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1030.0,
+        16.0,
+        15.5
+      ],
+      "foreground_pct": 17.94,
+      "mean_B": 161.11,
+      "mean_G": 151.31,
+      "mean_R": 162.14,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0080.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0080.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 21.52,
+      "otsu_threshold": 141.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        707.5,
+        35.0,
+        24.0,
+        21.5
+      ],
+      "foreground_pct": 13.88,
+      "mean_B": 167.64,
+      "mean_G": 161.12,
+      "mean_R": 170.99,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0081.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0081.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 50.47,
+      "otsu_threshold": 135.0,
+      "total_contours": 4,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        843.0,
+        737.5,
+        427.0,
+        0.0
+      ],
+      "foreground_pct": 33.86,
+      "mean_B": 159.58,
+      "mean_G": 141.1,
+      "mean_R": 154.21,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0082.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0082.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 28.98,
+      "otsu_threshold": 136.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1036.5,
+        55.0,
+        17.5,
+        1.0
+      ],
+      "foreground_pct": 18.94,
+      "mean_B": 158.99,
+      "mean_G": 151.6,
+      "mean_R": 160.92,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0083.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0083.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 31.54,
+      "otsu_threshold": 133.0,
+      "total_contours": 2,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1058.5,
+        378.0
+      ],
+      "foreground_pct": 24.09,
+      "mean_B": 160.11,
+      "mean_G": 147.43,
+      "mean_R": 157.25,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0084.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0084.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 20.3,
+      "otsu_threshold": 137.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        935.5,
+        203.0,
+        5.0
+      ],
+      "foreground_pct": 19.61,
+      "mean_B": 165.19,
+      "mean_G": 154.99,
+      "mean_R": 165.51,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0085.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0085.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 8.47,
+      "otsu_threshold": 138.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1078.5,
+        180.0
+      ],
+      "foreground_pct": 21.09,
+      "mean_B": 162.45,
+      "mean_G": 151.36,
+      "mean_R": 163.36,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0086.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0086.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.37,
+      "otsu_threshold": 146.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1521.0,
+        398.5,
+        177.5,
+        50.0,
+        1.5
+      ],
+      "foreground_pct": 36.41,
+      "mean_B": 158.45,
+      "mean_G": 147.84,
+      "mean_R": 159.18,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0087.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0087.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 48.71,
+      "otsu_threshold": 130.0,
+      "total_contours": 7,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        720.5,
+        291.5,
+        214.0,
+        133.0,
+        110.5,
+        1.0,
+        0.0
+      ],
+      "foreground_pct": 25.84,
+      "mean_B": 154.96,
+      "mean_G": 143.73,
+      "mean_R": 148.75,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0088.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0088.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 35.59,
+      "otsu_threshold": 147.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        640.0,
+        499.5,
+        1.0,
+        0.5,
+        0.0
+      ],
+      "foreground_pct": 18.81,
+      "mean_B": 162.86,
+      "mean_G": 159.81,
+      "mean_R": 168.59,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0089.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0089.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 11.98,
+      "otsu_threshold": 144.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1361.0,
+        256.0
+      ],
+      "foreground_pct": 26.91,
+      "mean_B": 164.06,
+      "mean_G": 152.59,
+      "mean_R": 160.89,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0090.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0090.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 28.8,
+      "otsu_threshold": 137.0,
+      "total_contours": 9,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        657.5,
+        327.0,
+        251.0,
+        143.5,
+        127.5,
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 26.81,
+      "mean_B": 163.5,
+      "mean_G": 147.78,
+      "mean_R": 158.0,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0091.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0091.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 62.13,
+      "otsu_threshold": 130.0,
+      "total_contours": 6,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1003.0,
+        314.0,
+        311.0,
+        9.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 28.38,
+      "mean_B": 159.04,
+      "mean_G": 140.68,
+      "mean_R": 150.47,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0092.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0092.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 33.27,
+      "otsu_threshold": 135.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        985.5,
+        338.5,
+        302.5,
+        82.5,
+        38.0,
+        0.0
+      ],
+      "foreground_pct": 29.84,
+      "mean_B": 161.92,
+      "mean_G": 143.54,
+      "mean_R": 155.86,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0093.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0093.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 24.13,
+      "otsu_threshold": 134.0,
+      "total_contours": 4,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        659.0,
+        551.5,
+        450.5,
+        222.0
+      ],
+      "foreground_pct": 32.69,
+      "mean_B": 157.14,
+      "mean_G": 141.98,
+      "mean_R": 149.68,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0094.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0094.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 29.07,
+      "otsu_threshold": 134.0,
+      "total_contours": 2,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        915.0,
+        470.5
+      ],
+      "foreground_pct": 23.39,
+      "mean_B": 162.39,
+      "mean_G": 150.31,
+      "mean_R": 159.92,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0095.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0095.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 32.79,
+      "otsu_threshold": 136.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1044.5,
+        559.0,
+        228.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 30.98,
+      "mean_B": 160.42,
+      "mean_G": 144.62,
+      "mean_R": 149.98,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0096.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0096.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 45.14,
+      "otsu_threshold": 140.0,
+      "total_contours": 6,
+      "significant_contours": 4,
+      "all_contour_areas": [
+        900.0,
+        702.0,
+        463.0,
+        382.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 38.69,
+      "mean_B": 162.63,
+      "mean_G": 140.47,
+      "mean_R": 154.07,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0097.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0097.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.12,
+      "otsu_threshold": 129.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        910.5,
+        762.5,
+        1.5
+      ],
+      "foreground_pct": 25.92,
+      "mean_B": 158.08,
+      "mean_G": 142.23,
+      "mean_R": 152.22,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0098.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0098.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 66.43,
+      "otsu_threshold": 131.0,
+      "total_contours": 8,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1033.5,
+        40.0,
+        12.0,
+        11.0,
+        6.5,
+        2.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 19.02,
+      "mean_B": 162.39,
+      "mean_G": 151.1,
+      "mean_R": 162.32,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0099.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0099.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 23.36,
+      "otsu_threshold": 126.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1236.0,
+        172.5,
+        135.5,
+        112.0
+      ],
+      "foreground_pct": 28.52,
+      "mean_B": 155.22,
+      "mean_G": 137.87,
+      "mean_R": 146.99,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0100.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0100.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.48,
+      "otsu_threshold": 129.0,
+      "total_contours": 5,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        1079.5,
+        490.0,
+        372.5,
+        5.5,
+        5.0
+      ],
+      "foreground_pct": 33.12,
+      "mean_B": 154.44,
+      "mean_G": 134.7,
+      "mean_R": 144.13,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0101.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0101.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 19.48,
+      "otsu_threshold": 134.0,
+      "total_contours": 5,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        1233.0,
+        567.5,
+        385.0,
+        176.5,
+        0.0
+      ],
+      "foreground_pct": 40.12,
+      "mean_B": 158.99,
+      "mean_G": 136.1,
+      "mean_R": 143.6,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0102.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0102.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.14,
+      "otsu_threshold": 139.0,
+      "total_contours": 3,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        1336.5,
+        1109.5,
+        324.0
+      ],
+      "foreground_pct": 42.56,
+      "mean_B": 158.49,
+      "mean_G": 139.55,
+      "mean_R": 146.74,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0103.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0103.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 36.16,
+      "otsu_threshold": 132.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1401.5,
+        27.0,
+        18.5,
+        3.0,
+        1.5
+      ],
+      "foreground_pct": 24.25,
+      "mean_B": 163.94,
+      "mean_G": 148.72,
+      "mean_R": 157.71,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0104.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0104.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 21.7,
+      "otsu_threshold": 122.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        758.0,
+        590.0,
+        95.0,
+        39.5
+      ],
+      "foreground_pct": 25.59,
+      "mean_B": 148.05,
+      "mean_G": 135.63,
+      "mean_R": 140.01,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0105.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0105.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 40.81,
+      "otsu_threshold": 129.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1150.0,
+        660.5,
+        286.0
+      ],
+      "foreground_pct": 35.48,
+      "mean_B": 158.37,
+      "mean_G": 134.26,
+      "mean_R": 144.92,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0106.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0106.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 36.31,
+      "otsu_threshold": 126.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        760.5,
+        456.5,
+        60.0,
+        0.0
+      ],
+      "foreground_pct": 22.02,
+      "mean_B": 157.36,
+      "mean_G": 142.26,
+      "mean_R": 152.06,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0107.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0107.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 55.82,
+      "otsu_threshold": 123.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        885.5,
+        162.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "foreground_pct": 18.02,
+      "mean_B": 152.68,
+      "mean_G": 141.29,
+      "mean_R": 150.83,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0108.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0108.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 39.94,
+      "otsu_threshold": 128.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1035.0,
+        125.0,
+        1.5,
+        1.5
+      ],
+      "foreground_pct": 19.69,
+      "mean_B": 162.25,
+      "mean_G": 147.74,
+      "mean_R": 158.99,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0109.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0109.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 35.73,
+      "otsu_threshold": 137.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1059.5,
+        502.5,
+        83.5,
+        3.5
+      ],
+      "foreground_pct": 27.97,
+      "mean_B": 162.09,
+      "mean_G": 146.65,
+      "mean_R": 159.02,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0110.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0110.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 43.66,
+      "otsu_threshold": 132.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        870.5,
+        629.5,
+        216.0,
+        148.5,
+        103.5
+      ],
+      "foreground_pct": 34.2,
+      "mean_B": 158.0,
+      "mean_G": 136.1,
+      "mean_R": 150.42,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0111.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0111.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 25.47,
+      "otsu_threshold": 140.0,
+      "total_contours": 6,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        768.0,
+        11.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 13.31,
+      "mean_B": 162.91,
+      "mean_G": 157.59,
+      "mean_R": 165.39,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0112.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0112.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 16.61,
+      "otsu_threshold": 144.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1424.5,
+        37.0,
+        7.0,
+        5.5,
+        0.0
+      ],
+      "foreground_pct": 24.72,
+      "mean_B": 167.98,
+      "mean_G": 152.09,
+      "mean_R": 160.29,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0113.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0113.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 10.51,
+      "otsu_threshold": 153.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1128.5,
+        40.5,
+        33.5,
+        29.5
+      ],
+      "foreground_pct": 20.92,
+      "mean_B": 167.01,
+      "mean_G": 159.55,
+      "mean_R": 171.03,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0114.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0114.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 19.08,
+      "otsu_threshold": 152.0,
+      "total_contours": 7,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        803.5,
+        87.5,
+        12.5,
+        3.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 15.64,
+      "mean_B": 169.36,
+      "mean_G": 160.96,
+      "mean_R": 173.42,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0115.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0115.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.93,
+      "otsu_threshold": 142.0,
+      "total_contours": 6,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        685.5,
+        64.5,
+        16.5,
+        2.5,
+        1.0,
+        0.5
+      ],
+      "foreground_pct": 13.67,
+      "mean_B": 157.84,
+      "mean_G": 153.35,
+      "mean_R": 165.31,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0116.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0116.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 37.27,
+      "otsu_threshold": 148.0,
+      "total_contours": 11,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        722.0,
+        313.0,
+        307.0,
+        129.0,
+        40.0,
+        8.5,
+        6.0,
+        5.5,
+        1.5,
+        0.0
+      ],
+      "foreground_pct": 26.89,
+      "mean_B": 165.26,
+      "mean_G": 153.73,
+      "mean_R": 162.21,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0118.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0118.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.56,
+      "otsu_threshold": 153.0,
+      "total_contours": 5,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        754.5,
+        635.5,
+        408.0,
+        6.5,
+        0.0
+      ],
+      "foreground_pct": 30.73,
+      "mean_B": 165.37,
+      "mean_G": 154.42,
+      "mean_R": 168.21,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0119.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0119.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 11.37,
+      "otsu_threshold": 152.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        710.5,
+        146.0,
+        6.5,
+        1.0,
+        0.0
+      ],
+      "foreground_pct": 15.06,
+      "mean_B": 168.07,
+      "mean_G": 160.29,
+      "mean_R": 174.33,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0120.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0120.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 16.4,
+      "otsu_threshold": 153.0,
+      "total_contours": 9,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        538.5,
+        395.0,
+        269.0,
+        4.0,
+        3.5,
+        2.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 21.22,
+      "mean_B": 165.36,
+      "mean_G": 157.53,
+      "mean_R": 171.07,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0121.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0121.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 34.52,
+      "otsu_threshold": 146.0,
+      "total_contours": 8,
+      "significant_contours": 4,
+      "all_contour_areas": [
+        803.0,
+        589.0,
+        427.5,
+        363.5,
+        36.5,
+        9.0,
+        4.5,
+        1.5
+      ],
+      "foreground_pct": 38.84,
+      "mean_B": 164.36,
+      "mean_G": 147.03,
+      "mean_R": 154.22,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0122.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0122.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 94.22,
+      "otsu_threshold": 140.0,
+      "total_contours": 12,
+      "significant_contours": 0,
+      "all_contour_areas": [
+        294.0,
+        153.5,
+        81.0,
+        10.0,
+        1.0,
+        0.5,
+        0.5,
+        0.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 10.25,
+      "mean_B": 164.45,
+      "mean_G": 159.43,
+      "mean_R": 167.79,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0123.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0123.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 54.2,
+      "otsu_threshold": 134.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        768.0,
+        82.5,
+        1.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 14.55,
+      "mean_B": 166.59,
+      "mean_G": 157.05,
+      "mean_R": 159.11,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0124.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0124.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 71.83,
+      "otsu_threshold": 142.0,
+      "total_contours": 7,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        887.0,
+        881.0,
+        682.0,
+        76.0,
+        39.0,
+        3.0,
+        0.0
+      ],
+      "foreground_pct": 41.84,
+      "mean_B": 162.82,
+      "mean_G": 139.94,
+      "mean_R": 154.88,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0125.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0125.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 28.62,
+      "otsu_threshold": 147.0,
+      "total_contours": 6,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        817.0,
+        6.0,
+        5.5,
+        5.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 14.37,
+      "mean_B": 169.65,
+      "mean_G": 159.9,
+      "mean_R": 172.94,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0126.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0126.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 45.64,
+      "otsu_threshold": 151.0,
+      "total_contours": 10,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        595.5,
+        370.0,
+        236.0,
+        6.0,
+        5.5,
+        3.0,
+        2.5,
+        1.0,
+        0.5,
+        0.0
+      ],
+      "foreground_pct": 21.55,
+      "mean_B": 165.33,
+      "mean_G": 157.15,
+      "mean_R": 169.02,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0127.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0127.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.77,
+      "otsu_threshold": 153.0,
+      "total_contours": 8,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        785.0,
+        731.5,
+        288.5,
+        7.5,
+        1.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "foreground_pct": 30.89,
+      "mean_B": 164.59,
+      "mean_G": 154.89,
+      "mean_R": 168.69,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0128.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0128.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 12.16,
+      "otsu_threshold": 147.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        831.0,
+        575.5,
+        0.0
+      ],
+      "foreground_pct": 23.66,
+      "mean_B": 163.2,
+      "mean_G": 154.43,
+      "mean_R": 165.3,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0129.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0129.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 63.46,
+      "otsu_threshold": 148.0,
+      "total_contours": 11,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        557.0,
+        407.0,
+        14.5,
+        6.0,
+        3.0,
+        2.5,
+        2.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "foreground_pct": 17.73,
+      "mean_B": 171.42,
+      "mean_G": 162.21,
+      "mean_R": 168.57,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0130.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0130.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 39.14,
+      "otsu_threshold": 142.0,
+      "total_contours": 11,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        654.5,
+        494.0,
+        163.0,
+        18.5,
+        2.5,
+        1.0,
+        0.5,
+        0.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 23.34,
+      "mean_B": 163.94,
+      "mean_G": 151.96,
+      "mean_R": 158.77,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0131.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0131.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 13.67,
+      "otsu_threshold": 143.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        735.0,
+        4.0,
+        0.0
+      ],
+      "foreground_pct": 12.53,
+      "mean_B": 167.0,
+      "mean_G": 157.86,
+      "mean_R": 167.6,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0132.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0132.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 29.85,
+      "otsu_threshold": 148.0,
+      "total_contours": 6,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        553.5,
+        214.0,
+        137.0,
+        20.5,
+        2.5,
+        2.0
+      ],
+      "foreground_pct": 16.61,
+      "mean_B": 167.07,
+      "mean_G": 158.32,
+      "mean_R": 168.97,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0133.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0133.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 36.41,
+      "otsu_threshold": 143.0,
+      "total_contours": 12,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        459.5,
+        259.0,
+        226.0,
+        133.0,
+        37.0,
+        19.0,
+        16.0,
+        14.0,
+        2.0,
+        1.5
+      ],
+      "foreground_pct": 21.45,
+      "mean_B": 164.67,
+      "mean_G": 154.11,
+      "mean_R": 163.06,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0134.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0134.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.06,
+      "otsu_threshold": 148.0,
+      "total_contours": 5,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        673.5,
+        499.0,
+        329.5,
+        94.5,
+        13.5
+      ],
+      "foreground_pct": 27.72,
+      "mean_B": 161.7,
+      "mean_G": 154.09,
+      "mean_R": 157.93,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0135.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0135.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 33.71,
+      "otsu_threshold": 138.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        676.5,
+        653.5,
+        308.5,
+        158.5,
+        78.0,
+        0.0
+      ],
+      "foreground_pct": 32.31,
+      "mean_B": 156.47,
+      "mean_G": 144.61,
+      "mean_R": 146.32,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0136.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0136.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 30.35,
+      "otsu_threshold": 145.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        521.5,
+        438.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 16.47,
+      "mean_B": 165.93,
+      "mean_G": 160.65,
+      "mean_R": 169.27,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0137.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0137.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 40.72,
+      "otsu_threshold": 150.0,
+      "total_contours": 7,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        619.0,
+        356.5,
+        236.5,
+        98.0,
+        4.5,
+        2.0,
+        0.0
+      ],
+      "foreground_pct": 23.25,
+      "mean_B": 165.77,
+      "mean_G": 158.71,
+      "mean_R": 169.13,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0138.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0138.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.17,
+      "otsu_threshold": 139.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        602.5,
+        540.5,
+        264.5,
+        1.5
+      ],
+      "foreground_pct": 24.3,
+      "mean_B": 158.68,
+      "mean_G": 148.76,
+      "mean_R": 152.68,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0139.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0139.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.76,
+      "otsu_threshold": 139.0,
+      "total_contours": 4,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        798.0,
+        644.5,
+        434.0,
+        214.0
+      ],
+      "foreground_pct": 35.55,
+      "mean_B": 157.74,
+      "mean_G": 143.85,
+      "mean_R": 146.67,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0140.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0140.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 23.63,
+      "otsu_threshold": 147.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        526.0,
+        325.0,
+        227.5,
+        40.0,
+        5.0
+      ],
+      "foreground_pct": 19.78,
+      "mean_B": 165.75,
+      "mean_G": 157.97,
+      "mean_R": 169.13,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0141.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0141.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 16.83,
+      "otsu_threshold": 138.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        783.0,
+        2.0
+      ],
+      "foreground_pct": 13.25,
+      "mean_B": 162.26,
+      "mean_G": 157.44,
+      "mean_R": 166.84,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0142.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0142.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.2,
+      "otsu_threshold": 142.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        511.0,
+        395.0,
+        200.5,
+        100.0
+      ],
+      "foreground_pct": 21.16,
+      "mean_B": 162.67,
+      "mean_G": 154.12,
+      "mean_R": 162.91,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0143.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0143.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.56,
+      "otsu_threshold": 136.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        899.5,
+        291.5,
+        284.0,
+        0.0
+      ],
+      "foreground_pct": 25.3,
+      "mean_B": 157.7,
+      "mean_G": 147.29,
+      "mean_R": 150.5,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0144.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0144.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.84,
+      "otsu_threshold": 142.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        925.5,
+        351.5,
+        151.5
+      ],
+      "foreground_pct": 24.36,
+      "mean_B": 162.97,
+      "mean_G": 153.64,
+      "mean_R": 161.35,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0145.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0145.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 23.2,
+      "otsu_threshold": 144.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        728.5,
+        576.0,
+        113.0,
+        3.0,
+        0.0
+      ],
+      "foreground_pct": 24.3,
+      "mean_B": 164.27,
+      "mean_G": 153.63,
+      "mean_R": 163.53,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0146.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0146.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 14.69,
+      "otsu_threshold": 140.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1014.0,
+        49.0,
+        1.5
+      ],
+      "foreground_pct": 18.05,
+      "mean_B": 165.0,
+      "mean_G": 152.82,
+      "mean_R": 159.49,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0147.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0147.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 23.49,
+      "otsu_threshold": 145.0,
+      "total_contours": 7,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        651.0,
+        632.5,
+        541.5,
+        53.5,
+        19.5,
+        12.0,
+        1.5
+      ],
+      "foreground_pct": 32.78,
+      "mean_B": 163.79,
+      "mean_G": 151.14,
+      "mean_R": 157.7,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0148.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0148.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.14,
+      "otsu_threshold": 151.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        604.0,
+        279.0,
+        16.0,
+        3.0,
+        0.0
+      ],
+      "foreground_pct": 15.78,
+      "mean_B": 169.28,
+      "mean_G": 163.01,
+      "mean_R": 173.31,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0149.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0149.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 39.45,
+      "otsu_threshold": 138.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        948.0,
+        6.0,
+        0.0
+      ],
+      "foreground_pct": 16.0,
+      "mean_B": 162.21,
+      "mean_G": 155.43,
+      "mean_R": 163.96,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0151.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0151.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 28.58,
+      "otsu_threshold": 140.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        591.5,
+        334.5,
+        218.0,
+        9.5
+      ],
+      "foreground_pct": 20.06,
+      "mean_B": 159.83,
+      "mean_G": 154.69,
+      "mean_R": 162.83,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0152.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0152.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 47.43,
+      "otsu_threshold": 142.0,
+      "total_contours": 7,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        680.0,
+        475.0,
+        157.0,
+        5.0,
+        3.0,
+        1.5,
+        1.0
+      ],
+      "foreground_pct": 22.92,
+      "mean_B": 160.84,
+      "mean_G": 154.06,
+      "mean_R": 161.05,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0153.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0153.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 39.18,
+      "otsu_threshold": 142.0,
+      "total_contours": 8,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        971.0,
+        508.0,
+        455.5,
+        157.0,
+        12.0,
+        4.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 36.36,
+      "mean_B": 156.23,
+      "mean_G": 146.3,
+      "mean_R": 148.26,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0154.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0154.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 25.69,
+      "otsu_threshold": 149.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        755.5,
+        327.5,
+        72.5,
+        16.5,
+        0.0
+      ],
+      "foreground_pct": 20.48,
+      "mean_B": 163.48,
+      "mean_G": 160.63,
+      "mean_R": 167.41,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0156.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0156.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 32.38,
+      "otsu_threshold": 132.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        792.0,
+        729.5,
+        286.0,
+        31.0,
+        0.0
+      ],
+      "foreground_pct": 31.37,
+      "mean_B": 153.41,
+      "mean_G": 140.07,
+      "mean_R": 143.6,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0157.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0157.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 32.65,
+      "otsu_threshold": 138.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        766.5,
+        433.5,
+        274.5
+      ],
+      "foreground_pct": 25.3,
+      "mean_B": 162.23,
+      "mean_G": 148.93,
+      "mean_R": 154.48,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0158.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0158.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.56,
+      "otsu_threshold": 152.0,
+      "total_contours": 6,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        497.5,
+        259.0,
+        116.5,
+        28.5,
+        18.0,
+        0.5
+      ],
+      "foreground_pct": 16.7,
+      "mean_B": 164.35,
+      "mean_G": 162.88,
+      "mean_R": 172.35,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0159.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0159.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 24.5,
+      "otsu_threshold": 144.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        637.5,
+        345.0,
+        0.0
+      ],
+      "foreground_pct": 16.83,
+      "mean_B": 163.89,
+      "mean_G": 161.34,
+      "mean_R": 169.27,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0160.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0160.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.79,
+      "otsu_threshold": 137.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        867.5,
+        221.5,
+        6.0,
+        1.0
+      ],
+      "foreground_pct": 18.91,
+      "mean_B": 153.7,
+      "mean_G": 151.09,
+      "mean_R": 159.57,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0161.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0161.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 40.17,
+      "otsu_threshold": 144.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        652.5,
+        480.5,
+        292.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "foreground_pct": 24.78,
+      "mean_B": 161.96,
+      "mean_G": 155.59,
+      "mean_R": 160.83,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0162.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0162.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.21,
+      "otsu_threshold": 149.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        760.0,
+        642.0,
+        23.5,
+        0.5,
+        0.0
+      ],
+      "foreground_pct": 21.58,
+      "mean_B": 164.22,
+      "mean_G": 159.91,
+      "mean_R": 167.53,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0163.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0163.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 39.42,
+      "otsu_threshold": 143.0,
+      "total_contours": 9,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        538.0,
+        57.0,
+        3.5,
+        3.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 10.67,
+      "mean_B": 164.72,
+      "mean_G": 162.93,
+      "mean_R": 171.0,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0164.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0164.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 30.98,
+      "otsu_threshold": 148.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        642.0,
+        96.0,
+        11.5,
+        1.0,
+        0.5
+      ],
+      "foreground_pct": 13.31,
+      "mean_B": 165.18,
+      "mean_G": 163.18,
+      "mean_R": 170.04,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0165.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0165.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.14,
+      "otsu_threshold": 140.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        861.0,
+        609.0,
+        257.5,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 29.33,
+      "mean_B": 159.94,
+      "mean_G": 150.28,
+      "mean_R": 157.25,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0166.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0166.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.72,
+      "otsu_threshold": 150.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        830.5,
+        764.5,
+        203.0,
+        38.0,
+        19.0
+      ],
+      "foreground_pct": 31.87,
+      "mean_B": 161.73,
+      "mean_G": 154.78,
+      "mean_R": 161.25,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0167.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0167.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 23.89,
+      "otsu_threshold": 134.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        874.0,
+        394.0,
+        188.0
+      ],
+      "foreground_pct": 24.86,
+      "mean_B": 156.91,
+      "mean_G": 146.45,
+      "mean_R": 149.84,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0168.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0168.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 25.18,
+      "otsu_threshold": 137.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        666.5,
+        413.5,
+        175.5,
+        1.5
+      ],
+      "foreground_pct": 21.55,
+      "mean_B": 157.98,
+      "mean_G": 149.74,
+      "mean_R": 152.91,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0169.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0169.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 32.97,
+      "otsu_threshold": 142.0,
+      "total_contours": 6,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        798.0,
+        547.5,
+        469.5,
+        161.0,
+        12.0,
+        1.0
+      ],
+      "foreground_pct": 33.95,
+      "mean_B": 160.25,
+      "mean_G": 148.33,
+      "mean_R": 154.3,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0170.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0170.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.41,
+      "otsu_threshold": 148.0,
+      "total_contours": 6,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        581.5,
+        177.0,
+        55.0,
+        3.5,
+        2.0,
+        0.0
+      ],
+      "foreground_pct": 14.64,
+      "mean_B": 162.21,
+      "mean_G": 162.28,
+      "mean_R": 173.2,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0171.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0171.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.73,
+      "otsu_threshold": 140.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        719.0,
+        292.0,
+        5.0,
+        4.0,
+        1.0
+      ],
+      "foreground_pct": 17.62,
+      "mean_B": 157.92,
+      "mean_G": 156.16,
+      "mean_R": 164.47,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0172.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0172.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.65,
+      "otsu_threshold": 146.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1050.0,
+        198.5
+      ],
+      "foreground_pct": 21.0,
+      "mean_B": 163.49,
+      "mean_G": 157.04,
+      "mean_R": 169.16,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0173.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0173.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.85,
+      "otsu_threshold": 144.0,
+      "total_contours": 2,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        751.5,
+        602.5
+      ],
+      "foreground_pct": 22.86,
+      "mean_B": 159.8,
+      "mean_G": 153.91,
+      "mean_R": 161.67,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0174.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0174.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 28.88,
+      "otsu_threshold": 138.0,
+      "total_contours": 7,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        641.5,
+        318.5,
+        60.5,
+        24.0,
+        20.5,
+        5.5,
+        3.0
+      ],
+      "foreground_pct": 19.06,
+      "mean_B": 160.3,
+      "mean_G": 151.57,
+      "mean_R": 154.37,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0176.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0176.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.26,
+      "otsu_threshold": 144.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        854.0,
+        559.0,
+        271.5,
+        0.0
+      ],
+      "foreground_pct": 28.48,
+      "mean_B": 164.11,
+      "mean_G": 151.44,
+      "mean_R": 160.41,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0177.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0177.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.6,
+      "otsu_threshold": 145.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        977.5,
+        559.0,
+        13.0
+      ],
+      "foreground_pct": 25.97,
+      "mean_B": 164.37,
+      "mean_G": 154.74,
+      "mean_R": 164.65,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0178.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0178.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 15.35,
+      "otsu_threshold": 147.0,
+      "total_contours": 6,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        780.5,
+        579.0,
+        556.5,
+        110.0,
+        49.0,
+        0.0
+      ],
+      "foreground_pct": 35.66,
+      "mean_B": 160.54,
+      "mean_G": 150.06,
+      "mean_R": 157.1,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0179.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0179.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 13.37,
+      "otsu_threshold": 149.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        983.0,
+        941.5,
+        130.0
+      ],
+      "foreground_pct": 34.47,
+      "mean_B": 163.35,
+      "mean_G": 152.39,
+      "mean_R": 160.7,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0180.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0180.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 19.05,
+      "otsu_threshold": 139.0,
+      "total_contours": 2,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        913.5,
+        329.0
+      ],
+      "foreground_pct": 21.03,
+      "mean_B": 162.04,
+      "mean_G": 154.2,
+      "mean_R": 158.64,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0181.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0181.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 12.58,
+      "otsu_threshold": 154.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        754.0,
+        89.5,
+        7.0
+      ],
+      "foreground_pct": 14.67,
+      "mean_B": 167.75,
+      "mean_G": 164.34,
+      "mean_R": 177.37,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0182.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0182.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.85,
+      "otsu_threshold": 153.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        851.0,
+        483.0,
+        224.5,
+        10.5,
+        1.0
+      ],
+      "foreground_pct": 27.02,
+      "mean_B": 167.35,
+      "mean_G": 158.32,
+      "mean_R": 170.01,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0183.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0183.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 9.7,
+      "otsu_threshold": 152.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        759.0,
+        3.0
+      ],
+      "foreground_pct": 12.98,
+      "mean_B": 171.13,
+      "mean_G": 168.25,
+      "mean_R": 178.22,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0184.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0184.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 31.67,
+      "otsu_threshold": 140.0,
+      "total_contours": 7,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        759.0,
+        750.0,
+        519.5,
+        197.0,
+        31.5,
+        20.5,
+        0.0
+      ],
+      "foreground_pct": 37.45,
+      "mean_B": 154.34,
+      "mean_G": 142.12,
+      "mean_R": 147.19,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0185.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0185.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 25.57,
+      "otsu_threshold": 143.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        546.0,
+        523.5,
+        22.0,
+        11.5
+      ],
+      "foreground_pct": 19.23,
+      "mean_B": 164.08,
+      "mean_G": 159.15,
+      "mean_R": 166.25,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0186.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0186.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 24.93,
+      "otsu_threshold": 148.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1203.5,
+        670.0,
+        40.5
+      ],
+      "foreground_pct": 32.22,
+      "mean_B": 165.2,
+      "mean_G": 153.48,
+      "mean_R": 159.35,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0187.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0187.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 18.93,
+      "otsu_threshold": 145.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        947.5,
+        230.0,
+        85.0,
+        3.0,
+        0.5
+      ],
+      "foreground_pct": 21.81,
+      "mean_B": 159.65,
+      "mean_G": 156.17,
+      "mean_R": 163.9,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0188.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0188.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 29.17,
+      "otsu_threshold": 142.0,
+      "total_contours": 9,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1000.0,
+        336.5,
+        169.5,
+        21.0,
+        6.0,
+        4.0,
+        1.5,
+        0.5,
+        0.0
+      ],
+      "foreground_pct": 26.77,
+      "mean_B": 162.91,
+      "mean_G": 149.2,
+      "mean_R": 161.83,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0189.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0189.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 14.73,
+      "otsu_threshold": 146.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        703.0,
+        326.5,
+        2.0
+      ],
+      "foreground_pct": 18.11,
+      "mean_B": 166.12,
+      "mean_G": 160.35,
+      "mean_R": 169.4,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0190.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0190.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.73,
+      "otsu_threshold": 148.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        807.5,
+        769.0,
+        69.0,
+        43.0,
+        20.5,
+        0.0
+      ],
+      "foreground_pct": 29.45,
+      "mean_B": 166.4,
+      "mean_G": 155.05,
+      "mean_R": 162.17,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0191.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0191.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 11.59,
+      "otsu_threshold": 143.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        792.5,
+        108.0
+      ],
+      "foreground_pct": 15.33,
+      "mean_B": 160.84,
+      "mean_G": 158.63,
+      "mean_R": 162.97,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0192.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0192.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 11.36,
+      "otsu_threshold": 143.0,
+      "total_contours": 2,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        865.5,
+        491.5
+      ],
+      "foreground_pct": 22.98,
+      "mean_B": 162.29,
+      "mean_G": 151.51,
+      "mean_R": 160.58,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0193.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0193.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 29.35,
+      "otsu_threshold": 148.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        773.0,
+        344.0,
+        2.5,
+        1.5,
+        0.0
+      ],
+      "foreground_pct": 19.34,
+      "mean_B": 163.0,
+      "mean_G": 162.44,
+      "mean_R": 169.3,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0194.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0194.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 31.07,
+      "otsu_threshold": 149.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        852.5,
+        460.5,
+        269.0,
+        230.5
+      ],
+      "foreground_pct": 31.37,
+      "mean_B": 165.56,
+      "mean_G": 155.4,
+      "mean_R": 162.01,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0195.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0195.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 23.98,
+      "otsu_threshold": 144.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        870.0,
+        659.5,
+        208.0,
+        137.0
+      ],
+      "foreground_pct": 31.92,
+      "mean_B": 159.73,
+      "mean_G": 151.19,
+      "mean_R": 157.66,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0196.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0196.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.92,
+      "otsu_threshold": 156.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        568.5,
+        247.0
+      ],
+      "foreground_pct": 14.28,
+      "mean_B": 169.49,
+      "mean_G": 170.41,
+      "mean_R": 178.39,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0197.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0197.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 27.1,
+      "otsu_threshold": 138.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        747.0,
+        403.0,
+        240.0,
+        44.5,
+        1.5
+      ],
+      "foreground_pct": 24.88,
+      "mean_B": 160.15,
+      "mean_G": 149.06,
+      "mean_R": 151.84,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0198.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0198.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.42,
+      "otsu_threshold": 143.0,
+      "total_contours": 2,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        612.0,
+        366.5
+      ],
+      "foreground_pct": 17.17,
+      "mean_B": 165.62,
+      "mean_G": 159.58,
+      "mean_R": 166.58,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0200.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0200.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 16.91,
+      "otsu_threshold": 143.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        972.5,
+        431.0,
+        195.5,
+        1.5
+      ],
+      "foreground_pct": 27.36,
+      "mean_B": 164.43,
+      "mean_G": 151.75,
+      "mean_R": 158.24,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0201.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0201.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 43.13,
+      "otsu_threshold": 138.0,
+      "total_contours": 4,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        764.0,
+        591.5,
+        367.5,
+        9.5
+      ],
+      "foreground_pct": 29.77,
+      "mean_B": 155.63,
+      "mean_G": 147.67,
+      "mean_R": 150.61,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0202.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0202.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 31.27,
+      "otsu_threshold": 151.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        798.0,
+        156.5,
+        15.5,
+        15.0,
+        8.0
+      ],
+      "foreground_pct": 17.33,
+      "mean_B": 167.22,
+      "mean_G": 165.28,
+      "mean_R": 175.31,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0203.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0203.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 22.72,
+      "otsu_threshold": 154.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1101.5,
+        926.0,
+        5.0,
+        0.5
+      ],
+      "foreground_pct": 33.88,
+      "mean_B": 162.92,
+      "mean_G": 158.26,
+      "mean_R": 164.76,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0205.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0205.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 33.28,
+      "otsu_threshold": 151.0,
+      "total_contours": 6,
+      "significant_contours": 4,
+      "all_contour_areas": [
+        688.5,
+        628.0,
+        544.0,
+        352.0,
+        24.0,
+        0.0
+      ],
+      "foreground_pct": 38.25,
+      "mean_B": 165.54,
+      "mean_G": 153.44,
+      "mean_R": 160.71,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0206.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0206.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 14.84,
+      "otsu_threshold": 151.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        827.0,
+        301.0,
+        111.0,
+        34.5,
+        0.0
+      ],
+      "foreground_pct": 22.11,
+      "mean_B": 168.87,
+      "mean_G": 159.68,
+      "mean_R": 173.58,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0207.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0207.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 14.9,
+      "otsu_threshold": 155.0,
+      "total_contours": 4,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        758.0,
+        589.5,
+        220.0,
+        205.0
+      ],
+      "foreground_pct": 29.19,
+      "mean_B": 169.08,
+      "mean_G": 159.54,
+      "mean_R": 173.48,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL",
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0208.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0208.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 59.72,
+      "otsu_threshold": 154.0,
+      "total_contours": 9,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        739.0,
+        611.5,
+        328.0,
+        85.5,
+        9.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "foreground_pct": 30.34,
+      "mean_B": 168.53,
+      "mean_G": 158.69,
+      "mean_R": 173.47,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0209.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0209.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 42.13,
+      "otsu_threshold": 140.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        888.0,
+        697.0,
+        22.5,
+        4.5,
+        1.5
+      ],
+      "foreground_pct": 27.42,
+      "mean_B": 158.67,
+      "mean_G": 148.15,
+      "mean_R": 156.35,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0210.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0210.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.13,
+      "otsu_threshold": 149.0,
+      "total_contours": 5,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        778.0,
+        61.0,
+        7.5,
+        3.0,
+        2.5
+      ],
+      "foreground_pct": 14.75,
+      "mean_B": 170.89,
+      "mean_G": 164.4,
+      "mean_R": 174.56,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0211.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0211.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 10.81,
+      "otsu_threshold": 154.0,
+      "total_contours": 1,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        958.0
+      ],
+      "foreground_pct": 15.94,
+      "mean_B": 172.64,
+      "mean_G": 166.81,
+      "mean_R": 174.8,
+      "would_reject": true,
+      "rejection_reasons": [
+        "EXTREME_BLUR"
+      ]
+    },
+    {
+      "filename": "e0212.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0212.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 23.35,
+      "otsu_threshold": 142.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1110.0,
+        69.0,
+        2.0,
+        0.0
+      ],
+      "foreground_pct": 19.83,
+      "mean_B": 164.99,
+      "mean_G": 155.25,
+      "mean_R": 164.07,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0213.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0213.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 29.01,
+      "otsu_threshold": 145.0,
+      "total_contours": 3,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        944.0,
+        940.0,
+        3.5
+      ],
+      "foreground_pct": 31.53,
+      "mean_B": 164.62,
+      "mean_G": 150.0,
+      "mean_R": 161.86,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0214.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0214.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 24.32,
+      "otsu_threshold": 132.0,
+      "total_contours": 5,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1013.5,
+        464.0,
+        82.0,
+        49.0,
+        36.5
+      ],
+      "foreground_pct": 28.17,
+      "mean_B": 158.39,
+      "mean_G": 140.25,
+      "mean_R": 149.53,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0215.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0215.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 26.46,
+      "otsu_threshold": 149.0,
+      "total_contours": 4,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        1226.0,
+        679.5,
+        424.5,
+        0.0
+      ],
+      "foreground_pct": 39.17,
+      "mean_B": 167.51,
+      "mean_G": 147.09,
+      "mean_R": 164.58,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0216.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0216.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 43.25,
+      "otsu_threshold": 154.0,
+      "total_contours": 9,
+      "significant_contours": 4,
+      "all_contour_areas": [
+        753.0,
+        595.5,
+        483.5,
+        328.0,
+        86.0,
+        56.5,
+        26.5,
+        7.5,
+        3.5
+      ],
+      "foreground_pct": 40.67,
+      "mean_B": 165.68,
+      "mean_G": 152.0,
+      "mean_R": 169.12,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0217.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0217.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 15.4,
+      "otsu_threshold": 143.0,
+      "total_contours": 2,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1065.0,
+        138.5
+      ],
+      "foreground_pct": 20.22,
+      "mean_B": 162.5,
+      "mean_G": 154.47,
+      "mean_R": 163.67,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0218.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0218.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.81,
+      "otsu_threshold": 151.0,
+      "total_contours": 8,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        863.5,
+        160.0,
+        71.0,
+        57.5,
+        17.0,
+        1.0,
+        0.5,
+        0.0
+      ],
+      "foreground_pct": 20.83,
+      "mean_B": 166.76,
+      "mean_G": 160.59,
+      "mean_R": 168.71,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0219.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0219.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 33.78,
+      "otsu_threshold": 150.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        734.0,
+        663.0,
+        95.5,
+        73.5,
+        43.5,
+        0.0
+      ],
+      "foreground_pct": 27.8,
+      "mean_B": 166.23,
+      "mean_G": 155.35,
+      "mean_R": 171.44,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0220.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0220.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 35.21,
+      "otsu_threshold": 150.0,
+      "total_contours": 6,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        960.5,
+        544.5,
+        515.0,
+        224.5,
+        2.0,
+        0.0
+      ],
+      "foreground_pct": 38.17,
+      "mean_B": 163.53,
+      "mean_G": 148.91,
+      "mean_R": 167.65,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0221.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0221.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 36.08,
+      "otsu_threshold": 146.0,
+      "total_contours": 6,
+      "significant_contours": 2,
+      "all_contour_areas": [
+        1092.0,
+        989.0,
+        204.5,
+        185.0,
+        57.0,
+        55.5
+      ],
+      "foreground_pct": 43.95,
+      "mean_B": 162.41,
+      "mean_G": 141.66,
+      "mean_R": 160.55,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0223.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0223.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 17.77,
+      "otsu_threshold": 144.0,
+      "total_contours": 3,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        1249.5,
+        149.0,
+        2.5
+      ],
+      "foreground_pct": 23.47,
+      "mean_B": 162.66,
+      "mean_G": 152.33,
+      "mean_R": 164.29,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0224.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0224.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 33.39,
+      "otsu_threshold": 141.0,
+      "total_contours": 6,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        929.0,
+        816.0,
+        639.5,
+        274.5,
+        16.0,
+        11.0
+      ],
+      "foreground_pct": 45.77,
+      "mean_B": 155.75,
+      "mean_G": 138.29,
+      "mean_R": 147.48,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0225.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0225.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 28.94,
+      "otsu_threshold": 149.0,
+      "total_contours": 6,
+      "significant_contours": 3,
+      "all_contour_areas": [
+        972.5,
+        780.5,
+        579.0,
+        5.0,
+        4.0,
+        1.0
+      ],
+      "foreground_pct": 37.48,
+      "mean_B": 160.74,
+      "mean_G": 149.51,
+      "mean_R": 162.47,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    },
+    {
+      "filename": "e0226.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0226.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 15.02,
+      "otsu_threshold": 147.0,
+      "total_contours": 4,
+      "significant_contours": 1,
+      "all_contour_areas": [
+        852.5,
+        46.5,
+        19.0,
+        0.0
+      ],
+      "foreground_pct": 15.89,
+      "mean_B": 173.9,
+      "mean_G": 155.82,
+      "mean_R": 166.03,
+      "would_reject": false,
+      "rejection_reasons": []
+    },
+    {
+      "filename": "e0227.jpg",
+      "path": "D:\\New folder\\ai-backend\\dataset_robust\\raw\\source_erythrocytesIDB\\individual cells\\elongated\\e0227.jpg",
+      "width": 80,
+      "height": 80,
+      "laplacian_variance": 41.98,
+      "otsu_threshold": 144.0,
+      "total_contours": 5,
+      "significant_contours": 5,
+      "all_contour_areas": [
+        976.5,
+        674.5,
+        645.0,
+        531.0,
+        390.0
+      ],
+      "foreground_pct": 54.48,
+      "mean_B": 178.89,
+      "mean_G": 132.59,
+      "mean_R": 146.7,
+      "would_reject": true,
+      "rejection_reasons": [
+        "MULTI_CELL"
+      ]
+    }
+  ],
+  "comparison": {
+    "laplacian_variance": {
+      "accepted_normal_avg": 4.64,
+      "source_circular_avg": 17.93,
+      "rejected_sickle_avg": 26.62,
+      "difference": -21.98
+    },
+    "otsu_threshold": {
+      "accepted_normal_avg": 200.77,
+      "source_circular_avg": 148.35,
+      "rejected_sickle_avg": 141.4,
+      "difference": 59.37
+    },
+    "significant_contours": {
+      "accepted_normal_avg": 1.07,
+      "source_circular_avg": 1.5,
+      "rejected_sickle_avg": 1.79,
+      "difference": -0.72
+    },
+    "foreground_pct": {
+      "accepted_normal_avg": 57.5,
+      "source_circular_avg": 32.9,
+      "rejected_sickle_avg": 25.92,
+      "difference": 31.58
+    },
+    "mean_R": {
+      "accepted_normal_avg": 209.19,
+      "source_circular_avg": 159.85,
+      "rejected_sickle_avg": 159.63,
+      "difference": 49.56
+    },
+    "mean_G": {
+      "accepted_normal_avg": 192.87,
+      "source_circular_avg": 151.81,
+      "rejected_sickle_avg": 150.98,
+      "difference": 41.89
+    },
+    "mean_B": {
+      "accepted_normal_avg": 201.51,
+      "source_circular_avg": 162.11,
+      "rejected_sickle_avg": 162.88,
+      "difference": 38.63
+    },
+    "width": {
+      "accepted_normal_avg": 128.0,
+      "source_circular_avg": 80.0,
+      "rejected_sickle_avg": 82.31,
+      "difference": 45.69
+    },
+    "height": {
+      "accepted_normal_avg": 128.0,
+      "source_circular_avg": 80.0,
+      "rejected_sickle_avg": 82.31,
+      "difference": 45.69
+    }
+  },
+  "recommendation": {
+    "primary_causes": [
+      "MULTI_CELL"
+    ],
+    "multi_cell_count": 129,
+    "extreme_blur_count": 33,
+    "too_empty_count": 0,
+    "would_pass_with_original": 59,
+    "recommendations": [
+      {
+        "change": "disable_multi_cell_for_external_sources",
+        "reason": "MULTI_CELL false positive rate: 61%",
+        "detail": "Otsu segmentation fragments elongated cells into multiple contours"
+      }
+    ]
+  }
+}

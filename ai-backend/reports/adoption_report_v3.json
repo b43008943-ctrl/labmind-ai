@@ -1,0 +1,31 @@
+{
+  "adoption_date": "2026-04-09 07:00:01",
+  "adopted_model": "cell_classifier_2class_robust_v3_best.pth",
+  "replaced_model": "cell_classifier_2class_finetuned_best.pth",
+  "backup_file": "cell_classifier_2class_finetuned_best_pre_v3_backup.pth",
+  "version_label": "V3-ROBUST",
+  "training_data": {
+    "sources": [
+      "dataset_v1_2class (local)",
+      "erythrocytesIDB (Zenodo)",
+      "Kaggle SCD (Uganda)"
+    ],
+    "total_training_images": 1250,
+    "normal_count": 750,
+    "sickle_count": 500
+  },
+  "test_accuracy": 0.9027,
+  "improvements": [
+    "normal_04 FP: 17 \u2192 3",
+    "sickle_05 detection: 0 \u2192 2",
+    "normal_03 FP: 1 \u2192 0",
+    "Overall test accuracy: 71% \u2192 90%",
+    "False positive reduction: 95%"
+  ],
+  "known_limitations": [
+    "normal_02: 8 FP (field-level stays REVIEW, clinically acceptable)",
+    "Sickle detection counts are lower than original (more conservative model)",
+    "sickle_03 and sickle_04 have reduced raw counts but remain POSITIVE"
+  ],
+  "rollback_instructions": "To rollback: change MODEL_CNN_PATH in .env to cell_classifier_2class_finetuned_best_pre_v3_backup.pth"
+}

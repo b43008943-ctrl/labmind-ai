@@ -1,0 +1,197 @@
+import { useState, useEffect } from 'react';
+import { useNavigation } from '../context/NavigationContext';
+
+export default function BattleAftermathScreen() {
+    const { navigate } = useNavigation();
+    const [results, setResults] = useState(null);
+    const [expandedQ, setExpandedQ] = useState(null);
+
+    useEffect(() => {
+        const data = sessionStorage.getItem('battle_results');
+        if (data) setResults(JSON.parse(data));
+        else {
+            // Fallback mock if accessed directly
+            setResults({
+                myScore: 4500, oppScore: 3200,
+                myCorrect: 8, oppCorrect: 6,
+                myAvgTime: 4.2, oppAvgTime: 6.8,
+                myMaxCombo: 4, oppMaxCombo: 2,
+                totalQ: 10,
+                history: [
+                    { question: 'What shape is an Ascaris lumbricoides egg?', myCorrect: true, oppCorrect: false, correctAnswer: 'Oval with mammillated shell' },
+                    { question: 'Gram-positive cocci in clusters suggest:', myCorrect: true, oppCorrect: true, correctAnswer: 'Staphylococcus' },
+                ]
+            });
+        }
+    }, []);
+
+    if (!results) return <div className="min-h-dvh bg-[#0A0E17]" />;
+
+    const isWin = results.myScore > results.oppScore;
+    const isDraw = results.myScore === results.oppScore;
+    const outcomeStr = isWin ? 'VICTORY!' : isDraw ? 'DRAW' : 'DEFEAT';
+    const outColor = isWin ? '#10B981' : isDraw ? '#F59E0B' : '#EF4444';
+    const xpEarned = isWin ? 250 : isDraw ? 100 : 50;
+    
+    const myAcc = Math.round((results.myCorrect / results.totalQ) * 100);
+    const oppAcc = Math.round((results.oppCorrect / results.totalQ) * 100);
+
+    return (
+        <div className="min-h-dvh w-full bg-[#0A0E17] flex flex-col font-sans pb-24 overflow-y-auto no-scrollbar relative">
+            {/* Background effects */}
+            <div className="absolute inset-0 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+            <div className="absolute top-0 left-0 w-full h-96 pointer-events-none" style={{ background: `radial-gradient(ellipse at top, ${outColor}20 0%, transparent 70%)` }} />
+
+            {/* BANNER */}
+            <div className="pt-16 pb-8 flex flex-col items-center justify-center relative z-10">
+                <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', bounce: 0.5 }}>
+                    {isWin ? <Trophy size={64} className="text-emerald-400 drop-shadow-[0_0_20px_rgba(16,185,129,0.8)] mb-2" /> : <ShieldAlert size={64} className="text-red-500 drop-shadow-[0_0_20px_rgba(239,68,68,0.8)] mb-2" />}
+                </motion.div>
+                <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
+                    className="text-5xl font-black italic tracking-widest uppercase font-mono" style={{ color: outColor, textShadow: `0 0 15px ${outColor}` }}>
+                    {outcomeStr}
+                </motion.h1>
+                <p className="text-xs text-slate-400 font-bold uppercase tracking-[0.3em] mt-2">BATTLE RESOLVED</p>
+            </div>
+
+            {/* SCORE COMPARISON */}
+            <div className="px-6 mb-8 relative z-10">
+                <div className="flex items-center justify-between bg-black/40 backdrop-blur-md rounded-3xl p-6 border border-white/5 relative overflow-hidden">
+                    {/* Me */}
+                    <div className="flex flex-col items-center gap-2 z-10">
+                        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border-2 shadow-lg ${isWin ? 'bg-emerald-500/20 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-cyan-500/10 border-cyan-500/30'}`}>
+                            <User size={32} className={isWin ? 'text-emerald-400' : 'text-cyan-400'} />
+                        </div>
+                        <span className="text-[10px] font-bold text-white tracking-widest uppercase">YOU</span>
+                        <span className="text-2xl font-black font-mono text-white">{results.myScore.toLocaleString()}</span>
+                    </div>
+                    
+                    <span className="text-2xl font-black text-white/20 italic z-10">VS</span>
+
+                    {/* Opponent */}
+                    <div className="flex flex-col items-center gap-2 z-10">
+                        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border-2 shadow-lg ${!isWin && !isDraw ? 'bg-emerald-500/20 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-red-500/10 border-red-500/30'}`}>
+                            <User size={32} className={!isWin && !isDraw ? 'text-emerald-400' : 'text-red-500'} />
+                        </div>
+                        <span className="text-[10px] font-bold text-white tracking-widest uppercase truncate max-w-[80px]">Shadow K.</span>
+                        <span className="text-2xl font-black font-mono text-white">{results.oppScore.toLocaleString()}</span>
+                    </div>
+
+                    {/* Score Bar Background */}
+                    <div className="absolute bottom-0 left-0 h-1.5 flex w-full">
+                        <div className="h-full bg-cyan-400" style={{ width: `${(results.myScore / Math.max(results.myScore + results.oppScore, 1)) * 100}%` }} />
+                        <div className="h-full bg-red-500" style={{ flex: 1 }} />
+                    </div>
+                </div>
+            </div>
+
+            {/* REWARDS */}
+            <div className="px-6 mb-8 relative z-10">
+                <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <Star size={24} className="text-amber-400" />
+                        <div>
+                            <p className="text-sm font-bold text-amber-400 uppercase tracking-wider">Rewards Earned</p>
+                            <p className="text-xs text-amber-500/80">Added to your armory balance</p>
+                        </div>
+                    </div>
+                    <span className="text-xl font-black text-amber-400 font-mono">+{xpEarned} XP</span>
+                </div>
+            </div>
+
+            {/* STATS */}
+            <div className="px-6 mb-8 relative z-10">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Performance Specs</h3>
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4 flex flex-col gap-1">
+                        <Target size={16} className="text-cyan-400 mb-1" />
+                        <span className="text-[10px] text-slate-500 font-bold uppercase">Accuracy</span>
+                        <div className="flex items-end justify-between">
+                            <span className="text-lg font-black text-white font-mono">{myAcc}%</span>
+                            <span className="text-xs text-slate-500 font-mono">vs {oppAcc}%</span>
+                        </div>
+                    </div>
+                    <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4 flex flex-col gap-1">
+                        <Clock size={16} className="text-amber-400 mb-1" />
+                        <span className="text-[10px] text-slate-500 font-bold uppercase">Avg Time</span>
+                        <div className="flex items-end justify-between">
+                            <span className="text-lg font-black text-white font-mono">{results.myAvgTime.toFixed(1)}s</span>
+                            <span className="text-xs text-slate-500 font-mono">vs {results.oppAvgTime.toFixed(1)}s</span>
+                        </div>
+                    </div>
+                    <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4 flex flex-col gap-1">
+                        <Flame size={16} className="text-red-400 mb-1" />
+                        <span className="text-[10px] text-slate-500 font-bold uppercase">Best Combo</span>
+                        <div className="flex items-end justify-between">
+                            <span className="text-lg font-black text-white font-mono">{results.myMaxCombo}x</span>
+                            <span className="text-xs text-slate-500 font-mono">vs {results.oppMaxCombo}x</span>
+                        </div>
+                    </div>
+                    <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4 flex flex-col gap-1">
+                        <CheckCircle2 size={16} className="text-emerald-400 mb-1" />
+                        <span className="text-[10px] text-slate-500 font-bold uppercase">Correct Hits</span>
+                        <div className="flex items-end justify-between">
+                            <span className="text-lg font-black text-white font-mono">{results.myCorrect}/{results.totalQ}</span>
+                            <span className="text-xs text-slate-500 font-mono">vs {results.oppCorrect}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* REVIEW LOG */}
+            <div className="px-6 mb-10 relative z-10">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Battle Log Review</h3>
+                <div className="flex flex-col gap-2">
+                    {results.history.map((q, i) => (
+                        <div key={i} className="bg-white/[0.02] border border-white/5 rounded-xl overflow-hidden">
+                            <div className="p-4 flex items-start justify-between cursor-pointer" onClick={() => setExpandedQ(expandedQ === i ? null : i)}>
+                                <div className="flex-1 pr-4">
+                                    <span className="text-[10px] font-bold text-slate-500 font-mono">Q{i + 1}</span>
+                                    <p className="text-sm font-semibold text-white mt-1 leading-snug">{q.question}</p>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <div className={`w-6 h-6 rounded flex items-center justify-center ${q.myCorrect ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-500'}`}>
+                                        <User size={12} />
+                                    </div>
+                                    <div className={`w-6 h-6 rounded flex items-center justify-center ${q.oppCorrect ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-500'}`}>
+                                        <User size={12} />
+                                    </div>
+                                    {expandedQ === i ? <ChevronUp size={16} className="text-slate-500 ml-1" /> : <ChevronDown size={16} className="text-slate-500 ml-1" />}
+                                </div>
+                            </div>
+                            
+                            <AnimatePresence>
+                                {expandedQ === i && (
+                                    <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden">
+                                        <div className="p-4 bg-black/30 border-t border-white/5 flex flex-col gap-2">
+                                            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Correct Answer</span>
+                                            <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
+                                                <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
+                                                <span className="text-sm text-emerald-400 font-semibold">{q.correctAnswer}</span>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ACTIONS */}
+            <div className="px-6 flex flex-col gap-3 relative z-10 pb-8">
+                <button onClick={() => navigate('battle')} className="w-full py-4 rounded-2xl font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 bg-cyan-500 text-black hover:bg-cyan-400 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.3)]">
+                    <RefreshCw size={18} /> Rematch
+                </button>
+                <div className="flex gap-3">
+                    <button onClick={() => navigate('community')} className="flex-1 py-4 rounded-2xl font-bold text-sm tracking-wider uppercase bg-white/10 text-white hover:bg-white/20 transition-colors border border-white/10">
+                        Community
+                    </button>
+                    <button className="flex-1 py-4 rounded-2xl font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 transition-colors border border-purple-500/20">
+                        <Share2 size={16} /> Share
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}

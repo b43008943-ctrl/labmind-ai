@@ -1,0 +1,38 @@
+{
+  "stats_old": {
+    "total": 197,
+    "normal": 197,
+    "sickle": 0,
+    "avg_all": 0,
+    "avg_sickle": 0,
+    "max": 0,
+    "min_sickle": 0
+  },
+  "stats_new": {
+    "total": 202,
+    "normal": 162,
+    "sickle": 40,
+    "avg_all": 0,
+    "avg_sickle": 0.0,
+    "max": 0,
+    "min_sickle": 0
+  },
+  "false_positives": {
+    "count": 40,
+    "score_histogram": {
+      "0.5_0.6": 0,
+      "0.6_0.7": 0,
+      "0.7_0.8": 0,
+      "0.8_0.9": 0,
+      "0.9_1.0": 0
+    },
+    "avg_ar": 1.0,
+    "avg_circ": 1.0,
+    "avg_sol": 1.0,
+    "gates_passed": {
+      "unknown": 40
+    }
+  },
+  "contamination_found": 1,
+  "recommendation": "C) Training data contamination found \u2192 rebuild dataset without contaminated samples"
+}

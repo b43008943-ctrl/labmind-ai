@@ -1,0 +1,475 @@
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { api } from '../services/apiClient';
+import {
+  Upload, Camera, AlertTriangle, CheckCircle,
+  X, FileText, Loader2, Activity, Info, ArrowLeft,
+  ChevronRight, RefreshCw, Droplets
+} from 'lucide-react';
+
+// ═══════════════════════════════════════════════════════════
+//  Constants
+// ═══════════════════════════════════════════════════════════
+
+const CELL_NAMES = {
+  rbc: { name: 'Red Blood Cells', abbr: 'RBC', color: '#ef4444' },
+  pus: { name: 'Pus Cells (WBC)', abbr: 'WBC', color: '#f59e0b' },
+  ep:  { name: 'Epithelial Cells', abbr: 'EP',  color: '#8b5cf6' },
+};
+
+const SEVERITY_COLORS = {
+  low: '#22c55e',
+  mild: '#f59e0b',
+  moderate: '#f59e0b',
+  mild_to_moderate: '#f59e0b',
+  moderate_to_severe: '#ef4444',
+  high: '#ef4444',
+  severe: '#dc2626',
+  critical: '#dc2626',
+};
+
+// ═══════════════════════════════════════════════════════════
+//  Helpers
+// ═══════════════════════════════════════════════════════════
+
+function extractError(err) {
+  if (!err) return 'Unknown error';
+  if (typeof err === 'string') return err;
+  const p = err.payload || err;
+  if (typeof p?.detail === 'string') return p.detail;
+  if (Array.isArray(p?.detail)) return p.detail.map(e => e.msg || '').join(', ');
+  return err.message || 'An error occurred';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Component
+// ═══════════════════════════════════════════════════════════
+
+export default function UrinalysisLabScreen({ onNavigate }) {
+
+  // ── State ──
+  const [image, setImage]               = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isAnalyzing, setIsAnalyzing]   = useState(false);
+  const [analysisResult, setAnalysisResult] = useState(null);
+  const [clinicalReport, setClinicalReport] = useState(null);
+  const [isLoadingReport, setIsLoadingReport] = useState(false);
+  const [showReport, setShowReport]     = useState(false);
+  const [error, setError]               = useState(null);
+  const [showCellDetails, setShowCellDetails] = useState(false);
+
+  const fileInputRef   = useRef(null);
+  const cameraInputRef = useRef(null);
+
+  // ── Handlers ──
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImage(file);
+    setImagePreview(URL.createObjectURL(file));
+    setAnalysisResult(null);
+    setClinicalReport(null);
+    setShowReport(false);
+    setError(null);
+    e.target.value = '';
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+      setAnalysisResult(null);
+      setClinicalReport(null);
+      setShowReport(false);
+      setError(null);
+    }
+  };
+
+  const handleNewSample = () => {
+    setImage(null);
+    setImagePreview(null);
+    setAnalysisResult(null);
+    setClinicalReport(null);
+    setShowReport(false);
+    setError(null);
+    if (fileInputRef.current)   fileInputRef.current.value = '';
+    if (cameraInputRef.current) cameraInputRef.current.value = '';
+  };
+
+  const handleAnalyze = async () => {
+    if (!image) return;
+    setIsAnalyzing(true);
+    setError(null);
+    try {
+      const confidence = parseFloat(localStorage.getItem('labmind_confidence') || '0.3');
+      const result = await api.urinalysis.analyzeAnnotated(image, { confidence });
+      setAnalysisResult(result);
+    } catch (err) {
+      setError(extractError(err));
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleClinicalReport = async () => {
+    if (!analysisResult) return;
+    const aiEnabled = localStorage.getItem('labmind_ai_enhancement') !== 'false';
+    setIsLoadingReport(true);
+    try {
+      const report = await api.urinalysis.clinicalReport({ ...analysisResult, use_ai: aiEnabled });
+      setClinicalReport(report);
+      setShowReport(true);
+    } catch (err) {
+      setError(extractError(err));
+    } finally {
+      setIsLoadingReport(false);
+    }
+  };
+
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+  // ═══════════════════════════════════════════════════════
+  //  JSX
+  // ═══════════════════════════════════════════════════════
+  return (
+    <div style={{ minHeight:'100vh', background:'radial-gradient(ellipse at 30% 20%, rgba(245,158,11,0.08), transparent 50%), linear-gradient(180deg,#0F0A03,#080700)', color:'#E8F4FF', fontFamily:"'Plus Jakarta Sans',sans-serif", display:'flex', flexDirection:'column', alignItems:'center', overflowX:'hidden', overflowY:'auto', WebkitOverflowScrolling:'touch', position:'relative' }}>
+      {/* Hidden inputs */}
+      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelect} style={{ display:'none' }} />
+      <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleFileSelect} style={{ display:'none' }} />
+
+      {/* HEADER */}
+      <div style={{ position:'sticky', top:0, zIndex:20, display:'flex', alignItems:'center', gap:12, padding:'14px 20px', width:'100%', background:'rgba(5,8,16,0.85)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)', borderBottom:'1px solid rgba(245,158,11,0.13)' }}>
+        <button onClick={() => onNavigate('virtual-lab')} style={{ width:36, height:36, borderRadius:10, background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.2)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', color:'#FCD34D', flexShrink:0 }}><ArrowLeft size={16} /></button>
+        <div style={{ flex:1 }}>
+          <h1 style={{ margin:0, fontSize:17, fontWeight:800, color:'#F0F9FF', letterSpacing:-0.3, display:'flex', alignItems:'center', gap:8 }}>
+            <Droplets size={17} style={{ color:'#FCD34D' }} /> URINALYSIS LAB
+          </h1>
+          <p style={{ margin:0, fontSize:10, color:'rgba(255,255,255,0.3)', letterSpacing:1, fontFamily:"'JetBrains Mono',monospace" }}>MICROSCOPIC SEDIMENT ANALYSIS • 3 CELL TYPES</p>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:5, padding:'4px 10px', background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.22)', borderRadius:20 }}>
+          <div style={{ width:5, height:5, borderRadius:'50%', background:'#F59E0B' }} />
+          <span style={{ fontSize:9, fontWeight:700, color:'#F59E0B', fontFamily:"'JetBrains Mono',monospace" }}>79.4% mAP</span>
+        </div>
+      </div>
+
+      {/* MAIN 2-COLUMN */}
+      <div className="uri-main" style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:16, padding:16, width:'100%' }}>
+
+        {/* ── LEFT: Microscope ── */}
+        <div style={{ width:'100%', display:'flex', flexDirection:'column', alignItems:'center', gap:16 }}>
+          {/* Circle */}
+          <div
+            className="uri-circle"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleDrop}
+            style={{
+              width:'100%', maxWidth:'min(460px, 85vw)', aspectRatio:'1/1', margin:'0 auto',
+              borderRadius:'50%', border:'2px solid rgba(245,158,11,0.25)',
+              background:'rgba(245,158,11,0.03)', display:'flex', alignItems:'center', justifyContent:'center',
+              overflow:'hidden', position:'relative'
+            }}
+          >
+            {isAnalyzing && (
+              <div style={{ position:'absolute', inset:0, border:'3px solid transparent', borderTopColor:'#f59e0b', borderRadius:'50%', animation:'labSpin 1s linear infinite', zIndex:5 }} />
+            )}
+            {analysisResult?.annotated_image_base64 ? (
+              <img src={`data:image/jpeg;base64,${analysisResult.annotated_image_base64}`} alt="Annotated" style={{ width:'100%', height:'100%', objectFit:'cover', borderRadius:'50%' }} />
+            ) : imagePreview ? (
+              <img src={imagePreview} alt="Preview" style={{ width:'100%', height:'100%', objectFit:'cover', borderRadius:'50%', opacity: isAnalyzing ? 0.5 : 1 }} />
+            ) : (
+              <div style={{ textAlign:'center', color:'rgba(245,158,11,0.4)' }}>
+                <Droplets size={48} />
+                <p style={{ fontSize:12, marginTop:8 }}>Drop specimen or upload</p>
+              </div>
+            )}
+            {isAnalyzing && (
+              <div style={{ position:'absolute', display:'flex', flexDirection:'column', alignItems:'center', gap:6 }}>
+                <Loader2 size={32} style={{ color:'#fbbf24', animation:'labSpin 1s linear infinite' }} />
+                <span style={{ fontSize:11, color:'#fbbf24', animation:'labPulse 1.5s infinite' }}>Analyzing sediment…</span>
+              </div>
+            )}
+          </div>
+
+          {/* Action bar */}
+          <div style={{ display:'flex', gap:10, flexWrap:'wrap', justifyContent:'center', width:'100%' }}>
+            {(analysisResult || image) && (
+              <button onClick={handleNewSample} style={{ display:'flex', alignItems:'center', gap:4, padding:'8px 14px', borderRadius:12, border:'1px solid rgba(245,158,11,0.3)', background:'rgba(245,158,11,0.07)', color:'#FCD34D', cursor:'pointer', fontSize:12, fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:700 }}>
+                <RefreshCw size={14} /> New Sample
+              </button>
+            )}
+            <button onClick={() => fileInputRef.current?.click()} style={{ display:'flex', alignItems:'center', gap:4, padding:'8px 14px', borderRadius:12, border:'1px solid rgba(245,158,11,0.3)', background:'rgba(245,158,11,0.07)', color:'#FCD34D', cursor:'pointer', fontSize:12, fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:700 }}>
+              <Upload size={14} /> Upload
+            </button>
+            <button onClick={() => cameraInputRef.current?.click()} style={{ display:'flex', alignItems:'center', gap:4, padding:'8px 14px', borderRadius:12, border:'1px solid rgba(245,158,11,0.3)', background:'rgba(245,158,11,0.07)', color:'#FCD34D', cursor:'pointer', fontSize:12, fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:700 }}>
+              <Camera size={14} /> Camera
+            </button>
+            {image && !analysisResult && !isAnalyzing && (
+              <button onClick={handleAnalyze} style={{ display:'flex', alignItems:'center', gap:4, padding:'8px 16px', borderRadius:12, background:'linear-gradient(135deg,#F59E0B,#d97706)', color:'#030712', fontWeight:700, cursor:'pointer', fontSize:12, fontFamily:"'Plus Jakarta Sans',sans-serif", border:'none' }}>
+                <Activity size={14} /> Analyze
+              </button>
+            )}
+          </div>
+
+          {error && (
+            <div style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 14px', background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', borderRadius:8, color:'#fca5a5', fontSize:12, maxWidth:460 }}>
+              <AlertTriangle size={16} /> {error}
+            </div>
+          )}
+        </div>
+
+        {/* ── RIGHT: Info / Results ── */}
+        <div style={{ width:'100%', maxWidth:460, margin:'0 auto', display:'flex', flexDirection:'column', gap:16 }}>
+
+          {/* IDLE */}
+          {!analysisResult && !isAnalyzing && (
+            <>
+              {/* Lab card */}
+              <div style={{ padding:16, background:'rgba(245,158,11,0.04)', border:'1px solid rgba(245,158,11,0.14)', borderRadius:14 }}>
+                <h3 style={{ margin:'0 0 8px', color:'#FCD34D', fontSize:16, fontWeight:800 }}>💧 Urinalysis Lab</h3>
+                <p style={{ margin:0, fontSize:12, color:'rgba(255,255,255,0.4)' }}>YOLOv8 microscopic sediment analysis for RBC, WBC/Pus, and Epithelial cells.</p>
+                <div style={{ display:'flex', gap:16, marginTop:12 }}>
+                  {[['3','Types'],['79.4%','Accuracy'],['YOLOv8','Model']].map(([v,l]) => (
+                    <div key={l} style={{ textAlign:'center' }}>
+                      <div style={{ fontSize:18, fontWeight:800, color:'#FCD34D', fontFamily:"'JetBrains Mono',monospace" }}>{v}</div>
+                      <div style={{ fontSize:10, color:'rgba(255,255,255,0.3)' }}>{l}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Collapsible cell types */}
+              <div style={{ padding:14, background:'rgba(255,255,255,0.02)', border:'1px solid rgba(245,158,11,0.12)', borderRadius:12 }}>
+                <button
+                  onClick={() => setShowCellDetails(!showCellDetails)}
+                  style={{ width:'100%', background:'none', border:'none', color:'#fbbf24', display:'flex', justifyContent:'space-between', alignItems:'center', cursor:'pointer', fontSize:13, fontWeight:600, padding:0 }}
+                >
+                  <span>Cell Types (3)</span>
+                  <ChevronRight size={16} style={{ transform: showCellDetails ? 'rotate(90deg)' : 'none', transition:'transform 0.2s' }} />
+                </button>
+                <AnimatePresence>
+                  {showCellDetails && (
+                    <motion.div initial={{ height:0, opacity:0 }} animate={{ height:'auto', opacity:1 }} exit={{ height:0, opacity:0 }} style={{ overflow:'hidden', marginTop:8 }}>
+                      {Object.entries(CELL_NAMES).map(([key, { name, abbr, color }]) => (
+                        <div key={key} style={{ display:'flex', alignItems:'center', gap:8, padding:'6px 0', borderBottom:'1px solid rgba(255,255,255,0.04)' }}>
+                          <div style={{ width:10, height:10, borderRadius:'50%', background:color }} />
+                          <span style={{ fontSize:12, color:'#d1d5db' }}>{abbr} — {name}</span>
+                        </div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </>
+          )}
+
+          {/* ANALYZING */}
+          {isAnalyzing && (
+            <div style={{ padding:24, textAlign:'center', background:'rgba(245,158,11,0.04)', border:'1px solid rgba(245,158,11,0.15)', borderRadius:12 }}>
+              <Loader2 size={28} style={{ color:'#fbbf24', animation:'labSpin 1s linear infinite', margin:'0 auto' }} />
+              <p style={{ marginTop:12, fontSize:13, color:'#fbbf24' }}>Analyzing urine sediment…</p>
+            </div>
+          )}
+
+          {/* RESULTS */}
+          {analysisResult && !isAnalyzing && (
+            <>
+              {/* Assessment badge */}
+              <div style={{ padding:14, borderRadius:12, background:'rgba(245,158,11,0.06)', border:'1px solid rgba(245,158,11,0.2)', textAlign:'center' }}>
+                <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, marginBottom:6 }}>
+                  {analysisResult.overall_assessment?.includes('ABNORMAL')
+                    ? <AlertTriangle size={18} style={{ color:'#f59e0b' }} />
+                    : <CheckCircle size={18} style={{ color:'#22c55e' }} />}
+                  <span style={{ fontWeight:700, fontSize:14, color: analysisResult.overall_assessment?.includes('ABNORMAL') ? '#f59e0b' : '#22c55e' }}>
+                    {analysisResult.overall_assessment || 'Analysis Complete'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Interpretation */}
+              {analysisResult.interpretation && (
+                <div style={{ padding:14, borderRadius:12, background:'rgba(255,255,255,0.02)', border:'1px solid rgba(245,158,11,0.12)' }}>
+                  <h4 style={{ margin:'0 0 8px', fontSize:13, color:'#fbbf24', display:'flex', alignItems:'center', gap:6 }}>
+                    <Info size={14} /> Interpretation
+                  </h4>
+                  {Object.entries(analysisResult.interpretation).map(([key, info]) => (
+                    <div key={key} style={{ padding:'6px 0', borderBottom:'1px solid rgba(255,255,255,0.04)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                      <span style={{ fontSize:12, color:'#d1d5db' }}>{CELL_NAMES[key]?.abbr || key}</span>
+                      <span style={{ fontSize:11, color: info.status === 'normal' ? '#22c55e' : '#f59e0b', fontWeight:600 }}>{info.message}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Cell count cards */}
+              {analysisResult.cell_counts && (
+                <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+                  {Object.entries(analysisResult.cell_counts).map(([key, count]) => {
+                    const meta = CELL_NAMES[key];
+                    if (!meta) return null;
+                    return (
+                      <div key={key} style={{ flex:'1 1 80px', padding:'10px 12px', borderRadius:10, background:'rgba(0,0,0,0.3)', border:`1px solid ${meta.color}33`, textAlign:'center' }}>
+                        <div style={{ fontSize:22, fontWeight:700, color:meta.color }}>{count}</div>
+                        <div style={{ fontSize:10, color:'#9ca3af' }}>{meta.abbr}</div>
+                      </div>
+                    );
+                  })}
+                  <div style={{ flex:'1 1 80px', padding:'10px 12px', borderRadius:10, background:'rgba(0,0,0,0.3)', border:'1px solid rgba(245,158,11,0.2)', textAlign:'center' }}>
+                    <div style={{ fontSize:22, fontWeight:700, color:'#fbbf24' }}>{analysisResult.total_cells}</div>
+                    <div style={{ fontSize:10, color:'#9ca3af' }}>Total</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Clinical Report button */}
+              <button
+                onClick={handleClinicalReport}
+                disabled={isLoadingReport}
+                style={{
+                  width:'100%', padding:'12px 0', borderRadius:10, border:'none', cursor:'pointer',
+                  background:'linear-gradient(135deg,#f59e0b,#d97706)', color:'#030712', fontWeight:700,
+                  fontSize:13, display:'flex', alignItems:'center', justifyContent:'center', gap:8,
+                  opacity: isLoadingReport ? 0.6 : 1
+                }}
+              >
+                {isLoadingReport ? <Loader2 size={16} style={{ animation:'labSpin 1s linear infinite' }} /> : <FileText size={16} />}
+                {isLoadingReport ? 'Generating Report…' : 'Clinical Report'}
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* CLINICAL REPORT MODAL */}
+      <AnimatePresence>
+        {showReport && clinicalReport?.rule_based && (
+          <motion.div
+            initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+            style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.85)', zIndex:50, display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}
+          >
+            <motion.div
+              initial={{ scale:0.9, opacity:0 }} animate={{ scale:1, opacity:1 }} exit={{ scale:0.9, opacity:0 }}
+              style={{ background:'#0f172a', border:'1px solid rgba(245,158,11,0.25)', borderRadius:16, padding:24, maxWidth:560, width:'100%', maxHeight:'85vh', overflowY:'auto', position:'relative' }}
+            >
+              {/* Close */}
+              <button onClick={() => setShowReport(false)} style={{ position:'absolute', top:12, right:12, background:'none', border:'none', color:'#9ca3af', cursor:'pointer' }}>
+                <X size={20} />
+              </button>
+
+              {/* Severity badge */}
+              {(() => {
+                const rb = clinicalReport.rule_based;
+                const sevColor = rb.severity_color || SEVERITY_COLORS[rb.severity] || '#f59e0b';
+                return (
+                  <>
+                    <div style={{ textAlign:'center', marginBottom:16 }}>
+                      <span style={{ display:'inline-block', padding:'4px 16px', borderRadius:99, background:`${sevColor}22`, color:sevColor, fontWeight:700, fontSize:12, textTransform:'uppercase', border:`1px solid ${sevColor}44` }}>
+                        {rb.severity}
+                      </span>
+                    </div>
+
+                    {/* Primary diagnosis */}
+                    <h2 style={{ margin:'0 0 4px', fontSize:18, color:'#fbbf24', textAlign:'center' }}>
+                      {rb.primary_diagnosis?.english || 'Clinical Report'}
+                    </h2>
+                    {rb.primary_diagnosis?.arabic && (
+                      <p style={{ margin:'0 0 16px', fontSize:13, color:'#9ca3af', textAlign:'center', direction:'rtl' }}>
+                        {rb.primary_diagnosis.arabic}
+                      </p>
+                    )}
+
+                    {/* Summary */}
+                    {rb.summary_for_clinician && (
+                      <div style={{ padding:12, background:'rgba(245,158,11,0.06)', border:'1px solid rgba(245,158,11,0.15)', borderRadius:8, marginBottom:12, fontSize:12, color:'#d1d5db', lineHeight:1.6 }}>
+                        {rb.summary_for_clinician}
+                      </div>
+                    )}
+
+                    {/* Differential diagnosis */}
+                    {rb.differential_diagnosis?.length > 0 && (
+                      <div style={{ marginBottom:12 }}>
+                        <h4 style={{ fontSize:12, color:'#fbbf24', margin:'0 0 6px', fontWeight:600 }}>Differential Diagnosis</h4>
+                        {rb.differential_diagnosis.map((d, i) => (
+                          <div key={i} style={{ padding:'6px 8px', borderBottom:'1px solid rgba(255,255,255,0.04)', fontSize:11, color:'#d1d5db', display:'flex', justifyContent:'space-between' }}>
+                            <span>{d.condition}</span>
+                            <span style={{ color: d.likelihood === 'most_likely' ? '#f59e0b' : '#6b7280', fontSize:10 }}>{d.likelihood}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Recommended investigations */}
+                    {rb.recommended_investigations?.length > 0 && (
+                      <div style={{ marginBottom:12 }}>
+                        <h4 style={{ fontSize:12, color:'#fbbf24', margin:'0 0 6px', fontWeight:600 }}>Recommended Investigations</h4>
+                        {rb.recommended_investigations.map((inv, i) => (
+                          <div key={i} style={{ padding:'6px 8px', borderBottom:'1px solid rgba(255,255,255,0.04)', fontSize:11, color:'#d1d5db', display:'flex', justifyContent:'space-between' }}>
+                            <span>{inv.test}</span>
+                            <span style={{ color: inv.priority === 'high' ? '#ef4444' : '#f59e0b', fontSize:10, textTransform:'uppercase' }}>{inv.priority}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Red flags */}
+                    {rb.red_flags?.length > 0 && (
+                      <div style={{ marginBottom:12, padding:10, background:'rgba(239,68,68,0.08)', border:'1px solid rgba(239,68,68,0.2)', borderRadius:8 }}>
+                        <h4 style={{ fontSize:12, color:'#ef4444', margin:'0 0 6px', fontWeight:600, display:'flex', alignItems:'center', gap:4 }}>
+                          <AlertTriangle size={14} /> Red Flags
+                        </h4>
+                        {rb.red_flags.map((rf, i) => (
+                          <div key={i} style={{ fontSize:11, color:'#fca5a5', marginBottom:4 }}>
+                            ⚠ {rf.flag} — <em>{rf.action}</em>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Ruled out */}
+                    {rb.ruled_out?.length > 0 && (
+                      <div style={{ marginBottom:12 }}>
+                        <h4 style={{ fontSize:12, color:'#6b7280', margin:'0 0 6px', fontWeight:600 }}>Ruled Out</h4>
+                        {rb.ruled_out.map((r, i) => (
+                          <div key={i} style={{ fontSize:11, color:'#4b5563', textDecoration:'line-through', padding:'2px 0' }}>
+                            {typeof r === 'string' ? r : r.condition}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Educational note */}
+                    {rb.educational_note && (
+                      <div style={{ padding:12, background:'rgba(245,158,11,0.04)', border:'1px solid rgba(245,158,11,0.12)', borderRadius:8, marginBottom:12 }}>
+                        <h4 style={{ fontSize:12, color:'#fbbf24', margin:'0 0 6px', fontWeight:600, display:'flex', alignItems:'center', gap:4 }}>
+                          <Info size={14} /> Educational Note
+                        </h4>
+                        <p style={{ fontSize:11, color:'#d1d5db', margin:0, lineHeight:1.6 }}>
+                          {rb.educational_note?.english || rb.educational_note}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Disclaimer */}
+                    {rb.disclaimer && (
+                      <p style={{ fontSize:10, color:'#4b5563', textAlign:'center', marginTop:12, fontStyle:'italic' }}>
+                        {rb.disclaimer}
+                      </p>
+                    )}
+                  </>
+                );
+              })()}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* CSS */}
+      <style>{`
+        @keyframes labSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        @keyframes labPulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .uri-circle { max-width: 85vw !important; }
+      `}</style>
+    </div>
+  );
+}

@@ -1,0 +1,305 @@
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { User, Lock, LogOut, Trash2, Globe, Moon, Bell, Cpu, Sparkles, Info, FileText, Shield, Key, Mail, ChevronLeft, ChevronRight, X, Check, AlertTriangle, SlidersHorizontal } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigation } from '../context/NavigationContext';
+import { useAppSettings } from '../context/AppSettingsContext';
+
+// ─── REUSABLE UI COMPONENTS ───
+
+const SettingsSection = ({ title, children }) => (
+    <div className="mb-8">
+        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 px-4">{title}</h3>
+        <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
+            {children}
+        </div>
+    </div>
+);
+
+const SettingsRow = ({ icon: Icon, iconColor = 'bg-slate-700 text-white', title, subtitle, rightElement, onClick, isDestructive, hideBorder }) => (
+    <div 
+        onClick={onClick}
+        className={`flex items-center justify-between p-4 ${!hideBorder ? 'border-b border-white/5' : ''} ${onClick ? 'cursor-pointer hover:bg-white/5 transition-colors active:bg-white/10' : ''}`}
+    >
+        <div className="flex items-center gap-3.5 flex-1 min-w-0">
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow-inner ${iconColor}`}>
+                <Icon size={16} />
+            </div>
+            <div className="flex flex-col flex-1 min-w-0 pr-4">
+                <span className={`text-[15px] font-medium tracking-wide ${isDestructive ? 'text-red-400' : 'text-white'}`}>{title}</span>
+                {subtitle && <span className="text-xs text-slate-500 truncate">{subtitle}</span>}
+            </div>
+        </div>
+        <div className="flex items-center shrink-0">
+            {rightElement !== undefined ? rightElement : <ChevronRight size={18} className="text-slate-500" />}
+        </div>
+    </div>
+);
+
+const SettingsToggle = ({ checked, onChange }) => (
+    <button 
+        onClick={(e) => { e.stopPropagation(); onChange(!checked); }}
+        className={`w-11 h-6 rounded-full transition-colors relative flex items-center px-0.5 ${checked ? 'bg-indigo-500' : 'bg-slate-700'}`}
+    >
+        <motion.div 
+            layout 
+            initial={false}
+            animate={{ x: checked ? 20 : 0 }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            className="w-5 h-5 bg-white rounded-full shadow-sm"
+        />
+    </button>
+);
+
+const ModalOverlay = ({ isOpen, onClose, title, children }) => (
+    <AnimatePresence>
+        {isOpen && (
+            <motion.div 
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                onClick={onClose}
+            >
+                <motion.div 
+                    initial={{ scale: 0.95, opacity: 0, y: 10 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 10 }}
+                    onClick={e => e.stopPropagation()}
+                    className="w-full max-w-sm bg-[#0A0E17] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+                >
+                    <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/5">
+                        <h3 className="text-base font-bold text-white tracking-wide">{title}</h3>
+                        <button onClick={onClose} className="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+                            <X size={16} />
+                        </button>
+                    </div>
+                    <div className="p-5">
+                        {children}
+                    </div>
+                </motion.div>
+            </motion.div>
+        )}
+    </AnimatePresence>
+);
+
+// ─── MAIN SCREEN ───
+
+export default function SettingsScreen() {
+    const { logout, currentUser } = useAuth();
+    const { navigate, goBack } = useNavigation();
+    const { language, setLanguage } = useAppSettings();
+
+    // Local state for UI toggles
+    const [useAI, setUseAI] = useState(true);
+    const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+    const [confidenceThreshold, setConfidenceThreshold] = useState(0.3);
+    const [themeEnabled, setThemeEnabled] = useState(true); // Hardcoded to dark mode for now
+
+    // Modals state
+    const [activeModal, setActiveModal] = useState(null); // 'password' | 'logout' | 'delete' | 'clear' | 'language' | 'tos' | 'privacy' | 'licenses'
+
+    const handleLogout = () => {
+        logout();
+        navigate('login');
+    };
+
+    return (
+        <div className="min-h-dvh w-full bg-[#0A0E17] flex flex-col relative pb-32 overflow-y-auto no-scrollbar">
+            
+            {/* Header */}
+            <header className="px-6 pt-12 pb-4 flex items-center justify-between sticky top-0 bg-[#0A0E17]/80 backdrop-blur-xl z-40 border-b border-white/5">
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={goBack}
+                        className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                    >
+                        <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <h1 className="text-xl font-bold text-white tracking-wide">Settings</h1>
+                </div>
+            </header>
+
+            {/* Content List */}
+            <div className="px-4 md:px-8 pt-6 w-full max-w-2xl mx-auto flex flex-col pb-10">
+
+                {/* ── SECTION 1: ACCOUNT ── */}
+                <SettingsSection title="Account">
+                    <SettingsRow 
+                        icon={User} iconColor="bg-slate-700 text-slate-200" 
+                        title="Edit Profile" 
+                        subtitle={currentUser?.full_name || 'Personalize your identity'}
+                        onClick={() => navigate('profile')} 
+                    />
+                    <SettingsRow 
+                        icon={Lock} iconColor="bg-slate-700 text-slate-200" 
+                        title="Change Password" 
+                        onClick={() => setActiveModal('password')} 
+                    />
+                    <SettingsRow 
+                        icon={LogOut} iconColor="bg-slate-700 text-slate-200" 
+                        title="Log Out" 
+                        hideBorder
+                        onClick={() => setActiveModal('logout')} 
+                    />
+                </SettingsSection>
+
+                {/* ── SECTION 2: PREFERENCES ── */}
+                <SettingsSection title="Preferences">
+                    <SettingsRow 
+                        icon={Globe} iconColor="bg-blue-500/20 text-blue-400 border border-blue-500/30" 
+                        title="Language" 
+                        rightElement={<span className="text-sm text-slate-400 flex items-center gap-2">{language === 'en' ? 'English' : 'العربية'}<ChevronRight size={18}/></span>}
+                        onClick={() => setActiveModal('language')} 
+                    />
+                    <SettingsRow 
+                        icon={Moon} iconColor="bg-purple-500/20 text-purple-400 border border-purple-500/30" 
+                        title="Dark Theme" 
+                        subtitle="Always enabled for LabMind AI"
+                        rightElement={<SettingsToggle checked={themeEnabled} onChange={() => {}} />} 
+                    />
+                    <SettingsRow 
+                        icon={Bell} iconColor="bg-green-500/20 text-green-400 border border-green-500/30" 
+                        title="Notifications" 
+                        hideBorder
+                        rightElement={<SettingsToggle checked={notificationsEnabled} onChange={setNotificationsEnabled} />} 
+                    />
+                </SettingsSection>
+
+                {/* ── SECTION 3: AI SETTINGS ── */}
+                <SettingsSection title="AI Diagnostics">
+                    <SettingsRow 
+                        icon={Key} iconColor="bg-amber-500/20 text-amber-400 border border-amber-500/30" 
+                        title="Gemini API Key" 
+                        subtitle="Configured securely on backend"
+                        rightElement={<span className="text-xs text-emerald-400 font-bold uppercase tracking-wider bg-emerald-500/10 px-2 py-1 rounded">Active</span>}
+                    />
+                    <SettingsRow 
+                        icon={Sparkles} iconColor="bg-indigo-500/20 text-indigo-400 border border-indigo-500/30" 
+                        title="AI Enhancement" 
+                        subtitle="Use generative AI for clinical reports"
+                        rightElement={<SettingsToggle checked={useAI} onChange={setUseAI} />} 
+                    />
+                    
+                    {/* Custom Slider Row */}
+                    <div className="flex flex-col p-4">
+                        <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-3.5">
+                                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow-inner bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                                    <SlidersHorizontal size={16} />
+                                </div>
+                                <span className="text-[15px] font-medium tracking-wide text-white">Confidence Threshold</span>
+                            </div>
+                            <span className="text-sm font-bold text-cyan-400">{(confidenceThreshold * 100).toFixed(0)}%</span>
+                        </div>
+                        <input 
+                            type="range" 
+                            min="0.1" max="0.9" step="0.05" 
+                            value={confidenceThreshold}
+                            onChange={(e) => setConfidenceThreshold(parseFloat(e.target.value))}
+                            className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                        />
+                        <div className="flex justify-between w-full mt-2 px-1">
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">High Sensitivity</span>
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">High Specificity</span>
+                        </div>
+                    </div>
+                </SettingsSection>
+
+                {/* ── SECTION 4: ABOUT ── */}
+                <SettingsSection title="About">
+                    <SettingsRow icon={Info} title="App Version" rightElement={<span className="text-sm text-slate-400">1.0.0 Beta</span>} />
+                    <SettingsRow icon={FileText} title="Terms of Service" onClick={() => setActiveModal('tos')} />
+                    <SettingsRow icon={Shield} title="Privacy Policy" onClick={() => setActiveModal('privacy')} />
+                    <SettingsRow icon={Cpu} title="Data & Licenses" onClick={() => setActiveModal('licenses')} />
+                    <SettingsRow 
+                        icon={Mail} title="Contact Support" 
+                        rightElement={<span className="text-sm text-indigo-400">support@labmind.ai</span>}
+                        hideBorder
+                        onClick={() => window.location.href = 'mailto:support@labmind.ai'} 
+                    />
+                </SettingsSection>
+
+                {/* ── SECTION 5: DANGER ZONE ── */}
+                <div className="mb-4">
+                    <h3 className="text-xs font-bold text-red-500/70 uppercase tracking-wider mb-2 px-4">Danger Zone</h3>
+                    <div className="bg-white/5 border border-red-500/20 rounded-2xl overflow-hidden backdrop-blur-xl">
+                        <SettingsRow icon={Trash2} iconColor="bg-red-500/10 text-red-400" title="Clear Local Data" isDestructive onClick={() => setActiveModal('clear')} />
+                        <SettingsRow icon={Trash2} iconColor="bg-red-500/10 text-red-400" title="Delete Account" hideBorder isDestructive onClick={() => setActiveModal('delete')} />
+                    </div>
+                </div>
+            </div>
+
+            {/* ─── MODALS ─── */}
+
+            {/* Password Modal */}
+            <ModalOverlay isOpen={activeModal === 'password'} onClose={() => setActiveModal(null)} title="Change Password">
+                <div className="flex flex-col gap-3">
+                    <input type="password" placeholder="Current Password" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-indigo-500 outline-none transition-colors" />
+                    <input type="password" placeholder="New Password" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-indigo-500 outline-none transition-colors" />
+                    <input type="password" placeholder="Confirm New Password" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-indigo-500 outline-none transition-colors" />
+                    <button 
+                        onClick={() => setActiveModal(null)}
+                        className="mt-2 w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold tracking-wider uppercase transition-colors"
+                    >
+                        Save Password
+                    </button>
+                </div>
+            </ModalOverlay>
+
+            {/* Language Modal */}
+            <ModalOverlay isOpen={activeModal === 'language'} onClose={() => setActiveModal(null)} title="App Language">
+                <div className="flex flex-col gap-2">
+                    <button onClick={() => { setLanguage('en'); setActiveModal(null); }} className={`flex items-center justify-between p-4 rounded-xl border ${language === 'en' ? 'bg-indigo-500/20 border-indigo-500/40' : 'bg-white/5 border-white/10'} hover:bg-white/10 transition-colors`}>
+                        <span className="text-white font-medium">English</span>
+                        {language === 'en' && <Check size={18} className="text-indigo-400" />}
+                    </button>
+                    <button onClick={() => { setLanguage('ar'); setActiveModal(null); }} className={`flex items-center justify-between p-4 rounded-xl border ${language === 'ar' ? 'bg-indigo-500/20 border-indigo-500/40' : 'bg-white/5 border-white/10'} hover:bg-white/10 transition-colors`}>
+                        <span className="text-white font-medium" dir="rtl">العربية (Arabic)</span>
+                        {language === 'ar' && <Check size={18} className="text-indigo-400" />}
+                    </button>
+                </div>
+            </ModalOverlay>
+
+            {/* Log Out Modal */}
+            <ModalOverlay isOpen={activeModal === 'logout'} onClose={() => setActiveModal(null)} title="Log Out">
+                <p className="text-slate-300 text-sm mb-6 text-center">Are you sure you want to log out of your session?</p>
+                <div className="flex gap-3">
+                    <button onClick={() => setActiveModal(null)} className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-colors">Cancel</button>
+                    <button onClick={handleLogout} className="flex-1 py-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-400 text-xs font-bold uppercase tracking-wider hover:bg-red-500/30 transition-colors">Log Out</button>
+                </div>
+            </ModalOverlay>
+
+            {/* Delete Account Modal */}
+            <ModalOverlay isOpen={activeModal === 'delete'} onClose={() => setActiveModal(null)} title="Delete Account">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 text-red-400 mx-auto mb-4 border border-red-500/20">
+                    <AlertTriangle size={24} />
+                </div>
+                <p className="text-slate-300 text-sm mb-6 text-center">This action is permanent and cannot be undone. All your patient records, analyses, and history will be securely erased from our servers.</p>
+                <div className="flex flex-col gap-3">
+                    <button onClick={() => setActiveModal(null)} className="w-full py-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-400 text-xs font-bold uppercase tracking-wider hover:bg-red-500/30 transition-colors">Delete Permanently</button>
+                    <button onClick={() => setActiveModal(null)} className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-colors">Cancel</button>
+                </div>
+            </ModalOverlay>
+            
+            {/* Clear Data Modal */}
+            <ModalOverlay isOpen={activeModal === 'clear'} onClose={() => setActiveModal(null)} title="Clear Local Data">
+                <p className="text-slate-300 text-sm mb-6 text-center">This will clear all cached images, offline patient data, and reset your local settings. You will need to log in again.</p>
+                <div className="flex flex-col gap-3">
+                    <button onClick={() => { localStorage.clear(); handleLogout(); }} className="w-full py-3 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 text-xs font-bold uppercase tracking-wider hover:bg-amber-500/30 transition-colors">Clear Data</button>
+                    <button onClick={() => setActiveModal(null)} className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-colors">Cancel</button>
+                </div>
+            </ModalOverlay>
+
+            {/* Legal / Licenses Placeholder Modals */}
+            <ModalOverlay isOpen={['tos', 'privacy', 'licenses'].includes(activeModal)} onClose={() => setActiveModal(null)} title={activeModal === 'tos' ? 'Terms of Service' : activeModal === 'privacy' ? 'Privacy Policy' : 'Data & Licenses'}>
+                <div className="bg-black/30 border border-white/5 rounded-xl p-4 h-48 overflow-y-auto">
+                    <p className="text-xs text-slate-400 leading-relaxed">
+                        {activeModal === 'licenses' 
+                            ? 'LabMind AI is powered by open-source computer vision models and diagnostic datasets.\n\n• Training data from UMID, Chula-ParasiteEgg-11, and Clinical Bacteria Dataset.\n• All models and data are licensed under Creative Commons or corresponding Open Source licenses.\n• The AI enhancer utilizes Google Gemini via secure API endpoints.' 
+                            : 'This is a placeholder for the official legal document. In a production environment, this would contain the full legal text.'
+                        }
+                    </p>
+                </div>
+                <button onClick={() => setActiveModal(null)} className="mt-4 w-full py-3 rounded-xl bg-white/10 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/20 transition-colors">Close</button>
+            </ModalOverlay>
+
+        </div>
+    );
+}

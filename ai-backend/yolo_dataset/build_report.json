@@ -1,0 +1,18 @@
+{
+  "dataset_path": "D:\\New folder\\ai-backend\\yolo_dataset",
+  "total_images": 87,
+  "train_images": 71,
+  "val_images": 16,
+  "total_annotations": 3654,
+  "class_counts": {
+    "circular": 3043,
+    "elongated": 480,
+    "other": 131
+  },
+  "avg_cells_per_image": 42.0,
+  "validation_smears_added": 10,
+  "pseudo_label_boxes": 1419,
+  "idb2_subfolders": 50,
+  "idb3_subfolders": 30,
+  "data_yaml": "D:\\New folder\\ai-backend\\yolo_dataset\\data.yaml"
+}

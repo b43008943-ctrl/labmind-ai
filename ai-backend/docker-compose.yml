@@ -1,0 +1,26 @@
+# LabMind AI — Local Development Services
+# Start with: docker compose up -d
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: labmind_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: labmind
+      POSTGRES_PASSWORD: labmind_secret
+      POSTGRES_DB: labmind_db
+    volumes:
+      - labmind_pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: labmind_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+volumes:
+  labmind_pgdata:

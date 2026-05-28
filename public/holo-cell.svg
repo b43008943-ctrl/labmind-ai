@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <defs>
+    <filter id="glow-purple"><feGaussianBlur stdDeviation="10" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <radialGradient id="grad-cell">
+      <stop offset="0%" stop-color="#C084FC" stop-opacity="0.2"/>
+      <stop offset="70%" stop-color="#8B5CF6" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#4C1D95" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="150" cy="150" r="100" fill="url(#grad-cell)" filter="url(#glow-purple)" opacity="0.5"/>
+  <circle cx="150" cy="150" r="40" fill="#E879F9" filter="url(#glow-purple)" opacity="0.4"/>
+  <circle cx="110" cy="110" r="10" fill="#fff" opacity="0.8" filter="url(#glow-purple)"/>
+  <circle cx="180" cy="170" r="5" fill="#fff" opacity="0.5" filter="url(#glow-purple)"/>
+  <path d="M 150,40 C 220,30 270,80 260,150 C 250,220 200,270 150,260 C 80,250 30,200 40,150 C 50,80 80,50 150,40 Z" stroke="#38BDF8" stroke-width="3" fill="none" opacity="0.5" filter="url(#glow-purple)" stroke-dasharray="10 5"/>
+</svg>

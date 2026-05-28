@@ -1,0 +1,384 @@
+{
+  "generated_at": "2026-04-07T22:41:11.402088+00:00",
+  "base_directory": "D:\\New folder\\ai-backend",
+  "dataset_v1_2class": {
+    "exists": true,
+    "splits": {
+      "train": {
+        "normal": {
+          "count": 393,
+          "dimensions": {
+            "count": 393,
+            "width_min": 20,
+            "width_max": 128,
+            "width_mean": 71.5,
+            "width_stdev": 42.3,
+            "height_min": 20,
+            "height_max": 128,
+            "height_mean": 71.5,
+            "height_stdev": 42.0,
+            "file_size_kb_min": 0.87,
+            "file_size_kb_max": 6.25,
+            "file_size_kb_mean": 1.8
+          }
+        },
+        "sickle": {
+          "count": 155,
+          "dimensions": {
+            "count": 155,
+            "width_min": 128,
+            "width_max": 128,
+            "width_mean": 128,
+            "width_stdev": 0.0,
+            "height_min": 128,
+            "height_max": 128,
+            "height_mean": 128,
+            "height_stdev": 0.0,
+            "file_size_kb_min": 1.59,
+            "file_size_kb_max": 9.02,
+            "file_size_kb_mean": 3.3
+          }
+        }
+      },
+      "val": {
+        "normal": {
+          "count": 32,
+          "dimensions": {
+            "count": 32,
+            "width_min": 128,
+            "width_max": 128,
+            "width_mean": 128,
+            "width_stdev": 0.0,
+            "height_min": 128,
+            "height_max": 128,
+            "height_mean": 128,
+            "height_stdev": 0.0,
+            "file_size_kb_min": 2.29,
+            "file_size_kb_max": 6.28,
+            "file_size_kb_mean": 3.1
+          }
+        },
+        "sickle": {
+          "count": 39,
+          "dimensions": {
+            "count": 39,
+            "width_min": 128,
+            "width_max": 128,
+            "width_mean": 128,
+            "width_stdev": 0.0,
+            "height_min": 128,
+            "height_max": 128,
+            "height_mean": 128,
+            "height_stdev": 0.0,
+            "file_size_kb_min": 2.47,
+            "file_size_kb_max": 8.96,
+            "file_size_kb_mean": 3.4
+          }
+        }
+      }
+    },
+    "totals": {
+      "normal": 425,
+      "sickle": 194,
+      "total": 619,
+      "balance_ratio": 2.19,
+      "is_balanced": false
+    }
+  },
+  "validation_cells": {
+    "exists": true,
+    "active": {
+      "normal": {
+        "count": 9,
+        "dimensions": {
+          "count": 9,
+          "width_min": 24,
+          "width_max": 49,
+          "width_mean": 38,
+          "width_stdev": 8.7,
+          "height_min": 26,
+          "height_max": 51,
+          "height_mean": 39.9,
+          "height_stdev": 9.0,
+          "file_size_kb_min": 1.0,
+          "file_size_kb_max": 1.72,
+          "file_size_kb_mean": 1.4
+        }
+      },
+      "sickle": {
+        "count": 42,
+        "dimensions": {
+          "count": 42,
+          "width_min": 34,
+          "width_max": 128,
+          "width_mean": 49.2,
+          "width_stdev": 19.3,
+          "height_min": 34,
+          "height_max": 128,
+          "height_mean": 49.3,
+          "height_stdev": 19.3,
+          "file_size_kb_min": 1.31,
+          "file_size_kb_max": 8.96,
+          "file_size_kb_mean": 2.1
+        }
+      },
+      "artifact": {
+        "count": 15,
+        "dimensions": {
+          "count": 15,
+          "width_min": 30,
+          "width_max": 64,
+          "width_mean": 48,
+          "width_stdev": 9.0,
+          "height_min": 46,
+          "height_max": 66,
+          "height_mean": 52.2,
+          "height_stdev": 5.8,
+          "file_size_kb_min": 1.03,
+          "file_size_kb_max": 2.27,
+          "file_size_kb_mean": 1.6
+        }
+      }
+    },
+    "raw": {
+      "normal": {
+        "count": 0
+      },
+      "sickle": {
+        "count": 0
+      },
+      "artifact": {
+        "count": 0
+      }
+    },
+    "rejected": {
+      "normal": {
+        "count": 71
+      },
+      "sickle": {
+        "count": 38
+      },
+      "artifact": {
+        "count": 25
+      }
+    },
+    "rejected_total": 134,
+    "original_backup": {
+      "normal": {
+        "count": 80
+      },
+      "sickle": {
+        "count": 80
+      },
+      "artifact": {
+        "count": 40
+      }
+    },
+    "original_backup_total": 200,
+    "clean_count": 0,
+    "crop_log_entries": 0
+  },
+  "validation_smears": {
+    "exists": true,
+    "categories": {
+      "normal": {
+        "count": 5,
+        "dimensions": {
+          "count": 5,
+          "width_min": 410,
+          "width_max": 1000,
+          "width_mean": 764,
+          "width_stdev": 323.2,
+          "height_min": 307,
+          "height_max": 761,
+          "height_mean": 574,
+          "height_stdev": 243.8,
+          "file_size_kb_min": 30.82,
+          "file_size_kb_max": 81.26,
+          "file_size_kb_mean": 60.2
+        },
+        "smears": [
+          {
+            "filename": "normal_01.jpg.jpg",
+            "file_size_bytes": 31563,
+            "file_size_kb": 30.82,
+            "width": 410,
+            "height": 307,
+            "channels": 3,
+            "sharpness_laplacian_var": 312.87488927330344,
+            "mean_rgb": {
+              "B": 193.51,
+              "G": 194.04,
+              "R": 207.33
+            }
+          },
+          {
+            "filename": "normal_02.jpg.jpg",
+            "file_size_bytes": 83215,
+            "file_size_kb": 81.26,
+            "width": 1000,
+            "height": 742,
+            "channels": 3,
+            "sharpness_laplacian_var": 45.98579443647604,
+            "mean_rgb": {
+              "B": 197.24,
+              "G": 185.53,
+              "R": 213.89
+            }
+          },
+          {
+            "filename": "normal_03.jpg.jpg",
+            "file_size_bytes": 52137,
+            "file_size_kb": 50.92,
+            "width": 1000,
+            "height": 753,
+            "channels": 3,
+            "sharpness_laplacian_var": 18.049098974074486,
+            "mean_rgb": {
+              "B": 214.91,
+              "G": 217.12,
+              "R": 230.77
+            }
+          },
+          {
+            "filename": "normal_04.jpg.jpg",
+            "file_size_bytes": 80110,
+            "file_size_kb": 78.23,
+            "width": 1000,
+            "height": 761,
+            "channels": 3,
+            "sharpness_laplacian_var": 23.428240681999096,
+            "mean_rgb": {
+              "B": 226.59,
+              "G": 220.04,
+              "R": 230.52
+            }
+          },
+          {
+            "filename": "normal_05.jpg.jpg",
+            "file_size_bytes": 61288,
+            "file_size_kb": 59.85,
+            "width": 410,
+            "height": 307,
+            "channels": 3,
+            "sharpness_laplacian_var": 1859.1189916202775,
+            "mean_rgb": {
+              "B": 220.56,
+              "G": 201.17,
+              "R": 212.78
+            }
+          }
+        ]
+      },
+      "sickle": {
+        "count": 5,
+        "dimensions": {
+          "count": 5,
+          "width_min": 960,
+          "width_max": 1000,
+          "width_mean": 976,
+          "width_stdev": 21.9,
+          "height_min": 749,
+          "height_max": 767,
+          "height_mean": 760,
+          "height_stdev": 9.6,
+          "file_size_kb_min": 47.09,
+          "file_size_kb_max": 171.93,
+          "file_size_kb_mean": 113.8
+        },
+        "smears": [
+          {
+            "filename": "sickle_01.jpg.jpg",
+            "file_size_bytes": 176052,
+            "file_size_kb": 171.93,
+            "width": 960,
+            "height": 767,
+            "channels": 3,
+            "sharpness_laplacian_var": 92.58191498279922,
+            "mean_rgb": {
+              "B": 195.72,
+              "G": 202.98,
+              "R": 222.37
+            }
+          },
+          {
+            "filename": "sickle_02.jpg.jpg",
+            "file_size_bytes": 174502,
+            "file_size_kb": 170.41,
+            "width": 960,
+            "height": 767,
+            "channels": 3,
+            "sharpness_laplacian_var": 131.9310416060433,
+            "mean_rgb": {
+              "B": 204.17,
+              "G": 211.81,
+              "R": 225.62
+            }
+          },
+          {
+            "filename": "sickle_03.jpg.jpg",
+            "file_size_bytes": 133242,
+            "file_size_kb": 130.12,
+            "width": 960,
+            "height": 767,
+            "channels": 3,
+            "sharpness_laplacian_var": 74.10688206823912,
+            "mean_rgb": {
+              "B": 182.61,
+              "G": 184.28,
+              "R": 214.4
+            }
+          },
+          {
+            "filename": "sickle_04.jpg.jpg",
+            "file_size_bytes": 50503,
+            "file_size_kb": 49.32,
+            "width": 1000,
+            "height": 750,
+            "channels": 3,
+            "sharpness_laplacian_var": 66.83330360393956,
+            "mean_rgb": {
+              "B": 165.9,
+              "G": 169.46,
+              "R": 176.14
+            }
+          },
+          {
+            "filename": "sickle_05.jpg.jpg",
+            "file_size_bytes": 48221,
+            "file_size_kb": 47.09,
+            "width": 1000,
+            "height": 749,
+            "channels": 3,
+            "sharpness_laplacian_var": 18.87696388803407,
+            "mean_rgb": {
+              "B": 211.52,
+              "G": 210.0,
+              "R": 210.29
+            }
+          }
+        ]
+      },
+      "borderline": {
+        "count": 0,
+        "dimensions": {
+          "count": 0
+        },
+        "smears": []
+      }
+    },
+    "total": 10
+  },
+  "summary": {
+    "training_normal": 425,
+    "training_sickle": 194,
+    "training_total": 619,
+    "balance_ratio": 2.19,
+    "is_balanced": false,
+    "validation_cells_active": 66,
+    "validation_cells_rejected": 134,
+    "validation_smears_total": 10,
+    "recommended_min_per_class": 500,
+    "is_sufficient": false
+  }
+}

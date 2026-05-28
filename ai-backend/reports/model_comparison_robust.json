@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-04-08T02:44:26.577520+00:00",
+  "old_model": "D:\\New folder\\ai-backend\\cell_classifier_2class_finetuned_best.pth",
+  "new_model": "D:\\New folder\\ai-backend\\cell_classifier_2class_robust_best.pth",
+  "comparison": {
+    "accuracy": {
+      "old": 0.7135,
+      "new": 0.9027,
+      "change": 0.1892
+    },
+    "normal_precision": {
+      "old": 0.7973,
+      "new": 0.8559,
+      "change": 0.0586
+    },
+    "normal_recall": {
+      "old": 0.6082,
+      "new": 0.9794,
+      "change": 0.3712
+    },
+    "normal_f1": {
+      "old": 0.6901,
+      "new": 0.9135,
+      "change": 0.2234
+    },
+    "sickle_precision": {
+      "old": 0.6577,
+      "new": 0.973,
+      "change": 0.3153
+    },
+    "sickle_recall": {
+      "old": 0.8295,
+      "new": 0.8182,
+      "change": -0.0113
+    },
+    "sickle_f1": {
+      "old": 0.7337,
+      "new": 0.8889,
+      "change": 0.1552
+    },
+    "macro_f1": {
+      "old": 0.7119,
+      "new": 0.9012,
+      "change": 0.1893
+    }
+  },
+  "old_confusion_matrix": [
+    [
+      59,
+      38
+    ],
+    [
+      15,
+      73
+    ]
+  ],
+  "new_confusion_matrix": [
+    [
+      95,
+      2
+    ],
+    [
+      16,
+      72
+    ]
+  ]
+}

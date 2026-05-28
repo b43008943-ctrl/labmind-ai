@@ -1,0 +1,416 @@
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { api } from '../services/apiClient';
+import {
+  Upload, Camera, Microscope, AlertTriangle, CheckCircle,
+  X, FileText, Loader2, Activity, Shield, Info, ArrowLeft,
+  ChevronRight, RefreshCw
+} from 'lucide-react';
+
+// ═══════════════════════════════════════════════════════════
+//  Constants
+// ═══════════════════════════════════════════════════════════
+
+const SPECIES_NAMES = {
+  Ascaris_lumbricoides: 'Roundworm',
+  Capillaria_philippinensis: 'Capillaria',
+  Enterobius_vermicularis: 'Pinworm',
+  Fasciolopsis_buski: 'Giant Intestinal Fluke',
+  Hookworm: 'Hookworm',
+  Hymenolepis_diminuta: 'Rat Tapeworm',
+  Hymenolepis_nana: 'Dwarf Tapeworm',
+  Opisthorchis_viverrine: 'Liver Fluke',
+  Paragonimus_spp: 'Lung Fluke',
+  Taenia_spp: 'Tapeworm',
+  Trichuris_trichiura: 'Whipworm',
+};
+
+const SEVERITY_COLORS = {
+  low: '#22c55e',
+  mild: '#22c55e',
+  moderate: '#f59e0b',
+  mild_to_moderate: '#f59e0b',
+  moderate_to_severe: '#ef4444',
+  high: '#ef4444',
+  severe: '#dc2626',
+  critical: '#dc2626',
+};
+
+// ═══════════════════════════════════════════════════════════
+//  Helpers
+// ═══════════════════════════════════════════════════════════
+
+function extractError(err) {
+  if (!err) return 'Unknown error';
+  if (typeof err === 'string') return err;
+  const p = err.payload || err;
+  if (typeof p?.detail === 'string') return p.detail;
+  if (Array.isArray(p?.detail)) return p.detail.map(e => e.msg || '').join(', ');
+  return err.message || 'An error occurred';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Component
+// ═══════════════════════════════════════════════════════════
+
+export default function ParasitologyLabScreen({ onNavigate }) {
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState(null);
+  const [clinicalReport, setClinicalReport] = useState(null);
+  const [isLoadingReport, setIsLoadingReport] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+  const [error, setError] = useState(null);
+  const [showSpecies, setShowSpecies] = useState(false);
+  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+
+  // ── File selection (gallery + camera) ──
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImage(file);
+    setImagePreview(URL.createObjectURL(file));
+    setAnalysisResult(null);
+    setClinicalReport(null);
+    setShowReport(false);
+    setError(null);
+    e.target.value = '';
+  };
+
+  // ── Drag & drop ──
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+      setAnalysisResult(null);
+      setClinicalReport(null);
+      setError(null);
+    }
+  };
+
+  // ── Analyze ──
+  const handleAnalyze = async () => {
+    if (!image || isAnalyzing) return;
+    setIsAnalyzing(true);
+    setError(null);
+    setAnalysisResult(null);
+    setClinicalReport(null);
+    try {
+      const confidence = parseFloat(localStorage.getItem('labmind_confidence') || '0.3');
+      const result = await api.parasitology.analyzeAnnotated(image, { confidence });
+      setAnalysisResult(result);
+    } catch (err) {
+      setError(extractError(err));
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  // ── Clinical report ──
+  const handleClinicalReport = async () => {
+    if (!analysisResult || isLoadingReport) return;
+    const aiEnabled = localStorage.getItem('labmind_ai_enhancement') !== 'false';
+    setIsLoadingReport(true);
+    try {
+      const report = await api.parasitology.clinicalReport({ ...analysisResult, use_ai: aiEnabled });
+      setClinicalReport(report);
+      setShowReport(true);
+    } catch (err) {
+      setError(extractError(err));
+    } finally {
+      setIsLoadingReport(false);
+    }
+  };
+
+  // ── Navigation ──
+  const handleBack = () => {
+    if (onNavigate) onNavigate('virtual-lab');
+  };
+
+  // ═══════════════════════════════════════════════════════
+  //  JSX
+  // ═══════════════════════════════════════════════════════
+  return (
+    <div style={{ minHeight:'100vh', background:'radial-gradient(ellipse at 30% 20%, rgba(16,185,129,0.08), transparent 50%), linear-gradient(180deg,#030F08,#020805)', color:'#E8F4FF', fontFamily:"'Plus Jakarta Sans',sans-serif", display:'flex', flexDirection:'column', alignItems:'center', overflowX:'hidden', overflowY:'auto', WebkitOverflowScrolling:'touch', position:'relative' }}>
+      {/* Hidden inputs */}
+      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelect} style={{ display:'none' }} />
+      <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleFileSelect} style={{ display:'none' }} />
+
+      {/* ── HEADER ── */}
+      <div className="para-header" style={{ position:'sticky', top:0, zIndex:20, display:'flex', alignItems:'center', gap:12, padding:'14px 20px', width:'100%', background:'rgba(5,8,16,0.85)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)', borderBottom:'1px solid rgba(16,185,129,0.13)' }}>
+        <button onClick={handleBack} style={{ width:36, height:36, borderRadius:10, background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.2)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', color:'#34D399', flexShrink:0 }}><ArrowLeft size={16} /></button>
+        <div style={{ flex:1 }}>
+          <h1 style={{ margin:0, fontSize:17, fontWeight:800, color:'#F0F9FF', letterSpacing:-0.3 }}>🔬 PARASITE SCANNER</h1>
+          <p style={{ margin:0, fontSize:10, color:'rgba(255,255,255,0.3)', letterSpacing:1, fontFamily:"'JetBrains Mono',monospace" }}>AI-POWERED PARASITOLOGY • 11 SPECIES</p>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:5, padding:'4px 10px', background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.22)', borderRadius:20 }}>
+          <div style={{ width:5, height:5, borderRadius:'50%', background:'#10B981' }} />
+          <span style={{ fontSize:9, fontWeight:700, color:'#10B981', fontFamily:"'JetBrains Mono',monospace" }}>98.8% mAP</span>
+        </div>
+      </div>
+
+      {/* ── MAIN 2-COLUMN ── */}
+      <div className="para-main-content" style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:16, padding:16, width:'100%' }}>
+
+        {/* LEFT — Microscope */}
+        <div style={{ width:'100%', display:'flex', flexDirection:'column', alignItems:'center', gap:16 }}>
+          <div
+            className="para-circle"
+            onDragOver={e => e.preventDefault()}
+            onDrop={handleDrop}
+            onClick={() => !image && fileInputRef.current?.click()}
+            style={{ position:'relative', width:'100%', maxWidth:'min(460px, 85vw)', aspectRatio:'1 / 1', margin:'0 auto', borderRadius:'50%', border: analysisResult ? '3px solid #10b981' : '2px dashed rgba(16,185,129,0.35)', overflow:'hidden', background:'#050f0a', display:'flex', alignItems:'center', justifyContent:'center', boxShadow: analysisResult ? '0 0 40px rgba(16,185,129,0.2)' : 'none', cursor: !image ? 'pointer' : 'default', transition:'all 0.3s ease' }}
+          >
+            {/* Empty */}
+            {!imagePreview && !isAnalyzing && (
+              <div style={{ textAlign:'center', padding:40 }}>
+                <Microscope size={72} color="#10b981" style={{ opacity:0.4, marginBottom:16 }} />
+                <p style={{ color:'#6b7280', margin:0, fontSize:14 }}>Upload or capture a specimen image</p>
+                <p style={{ color:'#374151', margin:'4px 0 0', fontSize:12 }}>JPG, PNG, TIFF — Max 20MB</p>
+              </div>
+            )}
+            {/* Preview */}
+            {imagePreview && !analysisResult && !isAnalyzing && (
+              <img src={imagePreview} alt="specimen" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+            )}
+            {/* Annotated */}
+            {analysisResult?.annotated_image_base64 && (
+              <img src={`data:image/jpeg;base64,${analysisResult.annotated_image_base64}`} alt="analyzed" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+            )}
+            {/* Scanning */}
+            {isAnalyzing && (
+              <div style={{ position:'absolute', inset:0, background:'rgba(3,7,18,0.8)', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16 }}>
+                <Loader2 size={48} color="#10b981" className="animate-spin" />
+                <p style={{ color:'#34d399', fontSize:14, margin:0 }}>Scanning tissue sample...</p>
+                <p style={{ color:'#6b7280', fontSize:12, margin:0 }}>AI model analyzing parasite signatures</p>
+              </div>
+            )}
+          </div>
+
+          {/* Action bar */}
+          <div className="para-action-bar" style={{ display:'flex', gap:10, marginTop:16, justifyContent:'center', flexWrap:'wrap', padding:'0 8px', width:'100%' }}>
+            {analysisResult && (
+              <button
+                onClick={() => { setImage(null); setImagePreview(null); setAnalysisResult(null); setClinicalReport(null); setShowReport(false); setError(null); if (fileInputRef.current) fileInputRef.current.value = ''; if (cameraInputRef.current) cameraInputRef.current.value = ''; }}
+                style={{ display:'flex', alignItems:'center', gap:7, padding:'10px 18px', background:'rgba(239,68,68,0.08)', border:'1px solid rgba(239,68,68,0.25)', borderRadius:12, color:'#f87171', cursor:'pointer', fontSize:13, fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:700 }}>
+                <RefreshCw size={15} /> New Sample
+              </button>
+            )}
+            <button onClick={() => fileInputRef.current?.click()} style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 20px', background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.3)', borderRadius:12, color:'#10B981', cursor:'pointer', fontSize:14, fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:700 }}>
+              <Upload size={16} /> Upload
+            </button>
+            <button onClick={() => cameraInputRef.current?.click()} style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 20px', background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.3)', borderRadius:12, color:'#10B981', cursor:'pointer', fontSize:14, fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:700 }}>
+              <Camera size={16} /> Camera
+            </button>
+            <button onClick={handleAnalyze} disabled={!image || isAnalyzing}
+              style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 28px', background: image && !isAnalyzing ? 'linear-gradient(135deg,#059669,#10b981)' : 'rgba(55,65,81,0.5)', border:'none', borderRadius:12, color: image && !isAnalyzing ? '#fff' : '#6b7280', cursor: image && !isAnalyzing ? 'pointer' : 'not-allowed', fontSize:14, fontWeight:700, fontFamily:"'Plus Jakarta Sans',sans-serif", boxShadow: image && !isAnalyzing ? '0 0 20px rgba(16,185,129,0.3)' : 'none', transition:'all 0.2s' }}>
+              {isAnalyzing ? <><Loader2 size={16} className="animate-spin" /> Analyzing...</> : <><Activity size={16} /> Analyze</>}
+            </button>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div style={{ marginTop:16, padding:'12px 16px', background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', borderRadius:10, color:'#fca5a5', fontSize:13, display:'flex', alignItems:'flex-start', gap:8 }}>
+              <AlertTriangle size={16} style={{ flexShrink:0, marginTop:2 }} />
+              <span>{error}</span>
+              <button onClick={() => setError(null)} style={{ marginLeft:'auto', background:'none', border:'none', color:'#fca5a5', cursor:'pointer' }}><X size={14} /></button>
+            </div>
+          )}
+
+          {/* Detection dots */}
+          {analysisResult?.detections?.length > 0 && (
+            <div style={{ marginTop:16, display:'flex', gap:8, justifyContent:'center', flexWrap:'wrap' }}>
+              {analysisResult.detections.map((d, i) => (
+                <div key={i} title={`${d.class.replace(/_/g,' ')} — ${(d.confidence * 100).toFixed(1)}%`}
+                  style={{ display:'flex', alignItems:'center', gap:4, padding:'4px 10px', background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.2)', borderRadius:20, fontSize:11, color:'#d1fae5' }}>
+                  <span style={{ width:6, height:6, borderRadius:'50%', background:'#10b981' }} />
+                  {SPECIES_NAMES[d.class] || d.class} • {(d.confidence * 100).toFixed(0)}%
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* RIGHT — Results panel */}
+        <div style={{ width:'100%', maxWidth:460, margin:'0 auto', display:'flex', flexDirection:'column', gap:14 }}>
+
+          {/* IDLE */}
+          {!analysisResult && !isAnalyzing && (
+            <div>
+              <div style={{ padding:20, background:'rgba(16,185,129,0.04)', border:'1px solid rgba(16,185,129,0.14)', borderRadius:14, marginBottom:16 }}>
+                <h3 style={{ margin:'0 0 8px', color:'#34D399', fontSize:16, fontWeight:800 }}>🦠 Parasitology Lab</h3>
+                <p style={{ margin:'0 0 12px', fontSize:13, color:'rgba(255,255,255,0.4)' }}>YOLOv8 model — 11 parasite species detection</p>
+                <div style={{ display:'flex', gap:16 }}>
+                  <div style={{ textAlign:'center' }}><p style={{ margin:0, fontSize:22, fontWeight:800, color:'#10B981', fontFamily:"'JetBrains Mono',monospace" }}>11</p><p style={{ margin:0, fontSize:11, color:'rgba(255,255,255,0.3)' }}>Species</p></div>
+                  <div style={{ textAlign:'center' }}><p style={{ margin:0, fontSize:22, fontWeight:800, color:'#10B981', fontFamily:"'JetBrains Mono',monospace" }}>v8n</p><p style={{ margin:0, fontSize:11, color:'rgba(255,255,255,0.3)' }}>Model</p></div>
+                </div>
+              </div>
+              <div style={{ padding:14, background:'rgba(255,255,255,0.02)', border:'1px solid rgba(255,255,255,0.05)', borderRadius:12 }}>
+                <button
+                  onClick={() => setShowSpecies(s => !s)}
+                  style={{ width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center', background:'none', border:'none', cursor:'pointer', padding:0, marginBottom: showSpecies ? 10 : 0 }}>
+                  <span style={{ fontSize:11, color:'#6b7280', textTransform:'uppercase', letterSpacing:0.8 }}>
+                    Detectable Species (11)
+                  </span>
+                  <ChevronRight
+                    size={14}
+                    color="#6b7280"
+                    style={{ transform: showSpecies ? 'rotate(90deg)' : 'rotate(0deg)', transition:'transform 0.2s' }}
+                  />
+                </button>
+                {showSpecies && (
+                  <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
+                    {Object.entries(SPECIES_NAMES).map(([key, name]) => (
+                      <div key={key} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'5px 8px', background:'rgba(16,185,129,0.03)', borderRadius:6, borderLeft:'2px solid rgba(16,185,129,0.2)' }}>
+                        <span style={{ fontSize:12, color:'#d1fae5' }}>{name}</span>
+                        <span style={{ fontSize:10, color:'#4b5563', fontStyle:'italic' }}>{key.replace(/_/g,' ')}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ANALYZING */}
+          {isAnalyzing && (
+            <div style={{ padding:24, textAlign:'center', background:'rgba(16,185,129,0.05)', border:'1px solid rgba(16,185,129,0.2)', borderRadius:12 }}>
+              <Loader2 size={32} color="#10b981" className="animate-spin" style={{ marginBottom:12 }} />
+              <p style={{ color:'#34d399', margin:'0 0 4px', fontWeight:600 }}>AI Model Active</p>
+              <p style={{ color:'#6b7280', margin:0, fontSize:13 }}>Detecting parasite signatures...</p>
+            </div>
+          )}
+
+          {/* RESULTS */}
+          {analysisResult && (
+            <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+              {/* Assessment */}
+              <div style={{ padding:16, background: analysisResult.total_eggs_detected > 0 ? 'rgba(239,68,68,0.08)' : 'rgba(34,197,94,0.08)', border:`1px solid ${analysisResult.total_eggs_detected > 0 ? 'rgba(239,68,68,0.3)' : 'rgba(34,197,94,0.3)'}`, borderRadius:12 }}>
+                <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8 }}>
+                  {analysisResult.total_eggs_detected > 0 ? <AlertTriangle size={18} color="#ef4444" /> : <CheckCircle size={18} color="#22c55e" />}
+                  <span style={{ fontWeight:700, fontSize:14, color: analysisResult.total_eggs_detected > 0 ? '#fca5a5' : '#86efac' }}>
+                    {analysisResult.total_eggs_detected > 0 ? 'POSITIVE' : 'NEGATIVE'}
+                  </span>
+                  <span style={{ marginLeft:'auto', fontSize:13, color:'#6b7280' }}>{analysisResult.total_eggs_detected} detected</span>
+                </div>
+                <p style={{ margin:0, fontSize:13, color:'#9ca3af' }}>{analysisResult.overall_assessment}</p>
+              </div>
+
+              {/* Species cards */}
+              {analysisResult.species_info?.map((sp, i) => (
+                <motion.div key={i} initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }} transition={{ delay: i * 0.08 }}
+                  style={{ padding:14, background:'rgba(255,255,255,0.03)', border:'1px solid rgba(16,185,129,0.15)', borderRadius:10 }}>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
+                    <div>
+                      <p style={{ margin:0, fontWeight:600, fontSize:14, color:'#d1fae5' }}>{sp.common_name}</p>
+                      <p style={{ margin:'2px 0 0', fontSize:11, color:'#6b7280', fontStyle:'italic' }}>{sp.species?.replace(/_/g,' ')}</p>
+                    </div>
+                    <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:4 }}>
+                      <span style={{ fontSize:11, padding:'2px 8px', borderRadius:12, background:`${SEVERITY_COLORS[sp.severity]||'#6b7280'}22`, color: SEVERITY_COLORS[sp.severity]||'#6b7280', border:`1px solid ${SEVERITY_COLORS[sp.severity]||'#6b7280'}44`, textTransform:'capitalize' }}>{sp.severity}</span>
+                      <span style={{ fontSize:12, color:'#9ca3af' }}>×{sp.count}</span>
+                    </div>
+                  </div>
+                  <p style={{ margin:'8px 0 0', fontSize:12, color:'#6b7280' }}>{sp.disease} — {sp.description}</p>
+                </motion.div>
+              ))}
+
+              {/* Clinical report button */}
+              <button onClick={handleClinicalReport} disabled={isLoadingReport}
+                style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8, padding:'12px 20px', background:'linear-gradient(135deg,#059669,#10b981)', border:'none', borderRadius:10, color:'#fff', cursor: isLoadingReport ? 'wait' : 'pointer', fontSize:14, fontWeight:600, marginTop:4, boxShadow:'0 0 20px rgba(16,185,129,0.25)' }}>
+                {isLoadingReport ? <Loader2 size={16} className="animate-spin" /> : <FileText size={16} />}
+                {isLoadingReport ? 'Generating Report...' : 'Clinical Report'}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* CLINICAL REPORT MODAL */}
+      <AnimatePresence>
+        {showReport && clinicalReport?.rule_based && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 50, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '24px 16px', overflowY: 'auto' }}
+            onClick={(e) => e.target === e.currentTarget && setShowReport(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 40 }}
+              style={{ background: '#0d1f17', border: '1px solid rgba(16,185,129,0.25)', borderRadius: 16, width: '100%', maxWidth: 720, padding: 32, position: 'relative' }}
+            >
+              {/* Close */}
+              <button onClick={() => setShowReport(false)} style={{ position: 'absolute', top: 16, right: 16, background: 'rgba(255,255,255,0.06)', border: 'none', borderRadius: 8, padding: 8, color: '#9ca3af', cursor: 'pointer' }}><X size={18} /></button>
+
+              {/* Header */}
+              <div style={{ marginBottom: 24 }}>
+                <h2 style={{ margin: '0 0 4px', color: '#34d399', fontSize: 20 }}>Clinical Analysis Report</h2>
+                <p style={{ margin: 0, color: '#6b7280', fontSize: 13 }}>{new Date(clinicalReport.timestamp).toLocaleString()}</p>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, padding: '4px 12px', borderRadius: 20, background: `${clinicalReport.rule_based.severity_color || '#f59e0b'}22`, border: `1px solid ${clinicalReport.rule_based.severity_color || '#f59e0b'}55` }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: clinicalReport.rule_based.severity_color || '#f59e0b', textTransform: 'capitalize' }}>{clinicalReport.rule_based.severity} severity</span>
+                </div>
+              </div>
+
+              {/* Assessment */}
+              <div style={{ padding: 16, background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 10, marginBottom: 20 }}>
+                <p style={{ margin: 0, fontSize: 14, color: '#fca5a5', lineHeight: 1.6 }}>{clinicalReport.rule_based.overall_assessment}</p>
+              </div>
+
+              {/* Parasites found */}
+              {clinicalReport.rule_based.parasites_found?.map((p, i) => (
+                <div key={i} style={{ marginBottom: 20, padding: 16, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(16,185,129,0.1)', borderRadius: 10 }}>
+                  <h3 style={{ margin: '0 0 12px', color: '#d1fae5', fontSize: 16 }}>{p.common_name} <span style={{ fontWeight: 400, fontSize: 13, color: '#6b7280', fontStyle: 'italic' }}>({p.species?.replace(/_/g, ' ')})</span></h3>
+                  {p.symptoms?.length > 0 && <div style={{ marginBottom: 10 }}><p style={{ margin: '0 0 4px', fontSize: 12, color: '#6b7280', textTransform: 'uppercase' }}>Symptoms</p>{p.symptoms.map((s, j) => <p key={j} style={{ margin: '2px 0', fontSize: 13, color: '#9ca3af' }}>• {s}</p>)}</div>}
+                  {p.treatment?.length > 0 && <div style={{ marginBottom: 10 }}><p style={{ margin: '0 0 4px', fontSize: 12, color: '#6b7280', textTransform: 'uppercase' }}>Treatment</p>{p.treatment.map((t, j) => <p key={j} style={{ margin: '2px 0', fontSize: 13, color: '#86efac' }}>💊 {t}</p>)}</div>}
+                  {p.red_flags?.length > 0 && <div style={{ marginBottom: 10 }}><p style={{ margin: '0 0 4px', fontSize: 12, color: '#ef4444', textTransform: 'uppercase' }}>⚠ Red Flags</p>{p.red_flags.map((r, j) => <p key={j} style={{ margin: '2px 0', fontSize: 13, color: '#fca5a5' }}>{r}</p>)}</div>}
+                  {p.recommended_tests?.length > 0 && <div><p style={{ margin: '0 0 4px', fontSize: 12, color: '#6b7280', textTransform: 'uppercase' }}>Recommended Tests</p>{p.recommended_tests.map((t, j) => <p key={j} style={{ margin: '2px 0', fontSize: 13, color: '#9ca3af' }}>🔬 {t}</p>)}</div>}
+                </div>
+              ))}
+
+              {/* Educational summary */}
+              {clinicalReport.rule_based.educational_summary && (
+                <div style={{ padding: 14, background: 'rgba(16,185,129,0.04)', border: '1px solid rgba(16,185,129,0.1)', borderRadius: 10, marginBottom: 16 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}><Info size={14} color="#10b981" /><span style={{ fontSize: 12, color: '#10b981', textTransform: 'uppercase', letterSpacing: 0.5 }}>Educational Note</span></div>
+                  <p style={{ margin: 0, fontSize: 13, color: '#9ca3af', lineHeight: 1.6 }}>{clinicalReport.rule_based.educational_summary}</p>
+                </div>
+              )}
+
+              {/* Disclaimer */}
+              <p style={{ margin: 0, fontSize: 11, color: '#4b5563', fontStyle: 'italic', textAlign: 'center' }}>{clinicalReport.rule_based.disclaimer || 'AI-assisted analysis only. Not a clinical diagnosis.'}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @media (max-width: 480px) {
+          .para-header h1 { font-size: 16px !important; }
+          .para-header p  { font-size: 11px !important; }
+        }
+        .para-circle img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+        @media (max-width: 600px) {
+          .para-main-content {
+            padding: 12px !important;
+            gap: 12px !important;
+          }
+          .para-action-bar {
+            gap: 6px !important;
+          }
+          .para-action-bar button {
+            padding: 8px 12px !important;
+            font-size: 12px !important;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}

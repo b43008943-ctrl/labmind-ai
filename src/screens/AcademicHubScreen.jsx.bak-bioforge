@@ -1,0 +1,136 @@
+import { BookOpen, Box, Film, BrainCircuit, Archive, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { useNavigation } from '../context/NavigationContext';
+
+/* ═══════════════════════════════════════════════════════════════
+   ACADEMIC HUB — Clean Navigation Hub
+   5 cards linking to Academy sub-screens
+   ═══════════════════════════════════════════════════════════════ */
+
+const CARDS = [
+    {
+        title: 'Digital Library',
+        subtitle: 'Browse textbooks, notes & reference materials',
+        icon: BookOpen,
+        accentColor: '#3B82F6',        // blue
+        bgGlow: 'rgba(59,130,246,0.08)',
+        viewKey: 'knowledge-library',
+    },
+    {
+        title: 'Holographic Models',
+        subtitle: 'Interactive 3D visualizations of cells & organisms',
+        icon: Box,
+        accentColor: '#22D3EE',        // cyan
+        bgGlow: 'rgba(34,211,238,0.08)',
+        viewKey: 'holo-lab',
+    },
+    {
+        title: 'AI Video Generator',
+        subtitle: 'Upload study material → AI creates explanation videos',
+        icon: Film,
+        accentColor: '#A855F7',        // purple
+        bgGlow: 'rgba(168,85,247,0.08)',
+        viewKey: 'ailab',
+        badge: 'AI POWERED',
+    },
+    {
+        title: 'Smart Quiz Center',
+        subtitle: 'AI-generated quizzes to test your knowledge',
+        icon: BrainCircuit,
+        accentColor: '#22C55E',        // green
+        bgGlow: 'rgba(34,197,94,0.08)',
+        viewKey: 'ai-testing-center',
+        badge: 'AI POWERED',
+    },
+    {
+        title: 'Curriculum Vault',
+        subtitle: 'Save & read your textbooks, notes & study materials',
+        icon: Archive,
+        accentColor: '#F59E0B',        // amber
+        bgGlow: 'rgba(245,158,11,0.08)',
+        viewKey: 'curriculum-vault',
+    },
+];
+
+export default function AcademicHubScreen() {
+    const { navigate, goBack } = useNavigation();
+
+    return (
+        <div className="min-h-dvh w-full bg-[#0A0E17] flex flex-col relative pb-32 overflow-y-auto no-scrollbar">
+
+            {/* Header */}
+            <header className="px-6 pt-12 pb-6 flex items-center gap-4 sticky top-0 bg-[#0A0E17]/80 backdrop-blur-xl z-40 border-b border-white/5">
+                <button
+                    onClick={goBack}
+                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
+                >
+                    <ChevronLeft className="w-5 h-5" />
+                </button>
+                <div>
+                    <h1 className="text-[22px] font-bold text-white tracking-wide">ACADEMY</h1>
+                    <p className="text-[13px] text-slate-400 font-medium mt-0.5">Learn, Practice & Master</p>
+                </div>
+            </header>
+
+            {/* Card Stack */}
+            <div className="px-6 pt-6 flex flex-col gap-4 w-full max-w-2xl mx-auto">
+                {CARDS.map((card, i) => {
+                    const Icon = card.icon;
+                    return (
+                        <button
+                            key={i}
+                            onClick={() => navigate(card.viewKey)}
+                            className="w-full flex items-center gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 text-left hover:bg-white/10 active:scale-[0.98] transition-all duration-200 group relative overflow-hidden"
+                        >
+                            {/* Colored left accent bar */}
+                            <div
+                                className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl"
+                                style={{ backgroundColor: card.accentColor }}
+                            />
+
+                            {/* Background glow on hover */}
+                            <div
+                                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
+                                style={{ background: `radial-gradient(circle at 20% 50%, ${card.bgGlow}, transparent 70%)` }}
+                            />
+
+                            {/* Icon */}
+                            <div
+                                className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 relative z-10 border"
+                                style={{
+                                    backgroundColor: `${card.accentColor}15`,
+                                    borderColor: `${card.accentColor}30`,
+                                }}
+                            >
+                                <Icon size={28} style={{ color: card.accentColor }} />
+                            </div>
+
+                            {/* Text */}
+                            <div className="flex-1 min-w-0 relative z-10">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <h3 className="text-[16px] font-bold text-white group-hover:text-cyan-400 transition-colors">{card.title}</h3>
+                                    {card.badge && (
+                                        <span
+                                            className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border flex items-center gap-1 shrink-0"
+                                            style={{
+                                                color: card.accentColor,
+                                                backgroundColor: `${card.accentColor}10`,
+                                                borderColor: `${card.accentColor}30`,
+                                            }}
+                                        >
+                                            <Sparkles size={8} />
+                                            {card.badge}
+                                        </span>
+                                    )}
+                                </div>
+                                <p className="text-[13px] text-slate-400 leading-relaxed line-clamp-2">{card.subtitle}</p>
+                            </div>
+
+                            {/* Chevron */}
+                            <ChevronRight size={18} className="text-slate-500 group-hover:text-white transition-colors shrink-0 relative z-10" />
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}

@@ -1,0 +1,456 @@
+import { useState, useEffect, useRef } from 'react';
+import { ArrowLeft, TestTube, ClipboardList, Activity, FileText, Zap, Search, ShieldCheck, FlaskConical, Radio } from 'lucide-react';
+import FinalReportModal from '../components/FinalReportModal';
+import SidebarNavigation from '../components/SidebarNavigation';
+import ScientificTooltip from '../components/ScientificTooltip';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// ─── Sample Dataset with MIC-based Antibiogram ───
+const samples = [
+    { id: 'blood-culture', name: 'Blood Culture', desc: 'Sepsis Panel', colorClass: 'bg-red-500/60', icon: '🩸' },
+    { id: 'urine-culture', name: 'Urine Culture', desc: 'UTI Screen', colorClass: 'bg-amber-400/60', icon: '🧪' },
+    { id: 'sputum-culture', name: 'Sputum Culture', desc: 'Respiratory Panel', colorClass: 'bg-emerald-400/60', icon: '🫁' },
+];
+
+const resultsData = {
+    'blood-culture': {
+        organism: 'Staphylococcus aureus',
+        gramStain: 'Gram-Positive Cocci in Clusters',
+        colonyMorphology: 'Golden-yellow, beta-hemolytic on Blood Agar',
+        finding: 'Staphylococcus aureus', findingLabel: 'Pathogen Identified', findingStatus: 'CRITICAL', status: 'Critical',
+        insight: 'MRSA detected via mecA gene confirmation. Vancomycin recommended as empiric therapy. Contact precautions advised.',
+        antibiogram: [
+            { antibiotic: 'Oxacillin', mic: '>=4', interpretation: 'R' },
+            { antibiotic: 'Vancomycin', mic: '1', interpretation: 'S' },
+            { antibiotic: 'Clindamycin', mic: '0.5', interpretation: 'S' },
+            { antibiotic: 'Trimethoprim/Sulfa', mic: '<=0.5/9.5', interpretation: 'S' },
+            { antibiotic: 'Gentamicin', mic: '>=16', interpretation: 'R' },
+            { antibiotic: 'Linezolid', mic: '2', interpretation: 'S' },
+        ],
+        challengeBank: [
+            { question: 'An S. aureus isolate with Oxacillin MIC >=4 µg/mL is classified as:', options: ['MSSA', 'MRSA', 'VRSA'], correctAnswer: 'MRSA', explanation: 'Oxacillin MIC >=4 µg/mL indicates methicillin resistance (MRSA), mediated by the mecA gene encoding PBP2a.' },
+            { question: 'Which antibiotic is the drug of choice for serious MRSA infections?', options: ['Ampicillin', 'Vancomycin', 'Ciprofloxacin'], correctAnswer: 'Vancomycin', explanation: 'Vancomycin remains the gold-standard treatment for invasive MRSA infections, including bacteremia and endocarditis.' },
+            { question: 'S. aureus is differentiated from other Staphylococci primarily by which test?', options: ['Catalase', 'Coagulase', 'Oxidase'], correctAnswer: 'Coagulase', explanation: 'S. aureus is coagulase-positive, meaning it can clot plasma. This distinguishes it from coagulase-negative species like S. epidermidis.' },
+        ],
+    },
+    'urine-culture': {
+        organism: 'Escherichia coli',
+        gramStain: 'Gram-Negative Bacilli',
+        colonyMorphology: 'Pink lactose-fermenting colonies on MacConkey Agar',
+        finding: 'Escherichia coli', findingLabel: 'Pathogen Identified', findingStatus: 'CRITICAL', status: 'Critical',
+        insight: 'Colony count >10⁵ CFU/mL. ESBL screen negative. Oral Ciprofloxacin or Nitrofurantoin recommended for uncomplicated UTI.',
+        antibiogram: [
+            { antibiotic: 'Ampicillin', mic: '>=32', interpretation: 'R' },
+            { antibiotic: 'Ciprofloxacin', mic: '<=0.25', interpretation: 'S' },
+            { antibiotic: 'Nitrofurantoin', mic: '<=16', interpretation: 'S' },
+            { antibiotic: 'Trimethoprim/Sulfa', mic: '>=320', interpretation: 'R' },
+            { antibiotic: 'Ceftriaxone', mic: '<=1', interpretation: 'S' },
+            { antibiotic: 'Meropenem', mic: '<=0.25', interpretation: 'S' },
+        ],
+        challengeBank: [
+            { question: 'An E. coli with Ampicillin MIC >=32 µg/mL should be reported as:', options: ['Sensitive', 'Intermediate', 'Resistant'], correctAnswer: 'Resistant', explanation: 'An Ampicillin MIC of >=32 µg/mL far exceeds the susceptibility breakpoint (<=8), indicating clinical resistance.' },
+            { question: 'Which selective agar differentiates lactose-fermenters like E. coli from non-fermenters?', options: ['Blood Agar', 'MacConkey Agar', 'Chocolate Agar'], correctAnswer: 'MacConkey Agar', explanation: 'MacConkey agar contains bile salts, crystal violet (inhibiting Gram-positives), and lactose with neutral red indicator. E. coli ferments lactose, producing pink colonies.' },
+            { question: 'What does a colony count of >10⁵ CFU/mL in a midstream urine indicate?', options: ['Contamination', 'Significant bacteriuria', 'Normal flora'], correctAnswer: 'Significant bacteriuria', explanation: 'By the Kass criteria, a count above 100,000 CFU/mL in a properly collected midstream specimen strongly indicates a true urinary tract infection.' },
+        ],
+    },
+    'sputum-culture': {
+        organism: 'Streptococcus pneumoniae',
+        gramStain: 'Gram-Positive Lancet-Shaped Diplococci',
+        colonyMorphology: 'Alpha-hemolytic, mucoid colonies; Optochin sensitive',
+        finding: 'Streptococcus pneumoniae', findingLabel: 'Pathogen Identified', findingStatus: 'WARNING', status: 'Warning',
+        insight: 'Moderate growth. Optochin zone >14mm confirms S. pneumoniae. Penicillin-susceptible strain. Standard therapy recommended.',
+        antibiogram: [
+            { antibiotic: 'Penicillin', mic: '<=0.06', interpretation: 'S' },
+            { antibiotic: 'Erythromycin', mic: '4', interpretation: 'I' },
+            { antibiotic: 'Levofloxacin', mic: '<=2', interpretation: 'S' },
+            { antibiotic: 'Ceftriaxone', mic: '<=0.5', interpretation: 'S' },
+            { antibiotic: 'Vancomycin', mic: '<=0.5', interpretation: 'S' },
+            { antibiotic: 'Azithromycin', mic: '>=64', interpretation: 'R' },
+        ],
+        challengeBank: [
+            { question: 'S. pneumoniae with a Penicillin MIC of <=0.06 µg/mL (non-meningitis) is classified as:', options: ['Resistant', 'Intermediate', 'Susceptible'], correctAnswer: 'Susceptible', explanation: 'For non-meningitis S. pneumoniae, CLSI breakpoints define <=0.06 µg/mL as susceptible to Penicillin.' },
+            { question: 'Which test differentiates S. pneumoniae from other alpha-hemolytic Streptococci?', options: ['Bacitracin', 'Optochin', 'Coagulase'], correctAnswer: 'Optochin', explanation: 'S. pneumoniae is Optochin-sensitive (zone >=14mm), while other alpha-hemolytic streptococci like Viridans group are Optochin-resistant.' },
+            { question: 'A "rust-colored" sputum is a classic sign of pneumonia caused by:', options: ['Klebsiella', 'S. pneumoniae', 'P. aeruginosa'], correctAnswer: 'S. pneumoniae', explanation: 'The classic rust/brown sputum is pathognomonic for lobar pneumonia caused by S. pneumoniae, resulting from RBC lysis in alveoli.' },
+        ],
+    },
+};
+
+// ─── Workflow Step Config ───
+const STEP_DURATIONS = [8000, 4000, 5000]; // ms per step: Incubation 8s, MALDI 4s, VITEK 5s
+
+const WORKFLOW_STEPS = [
+    { id: 'incubation', icon: FlaskConical, label: 'INCUBATION', subtitle: 'Smart Culture System', doneText: 'POSITIVE — Growth Detected at 48h' },
+    { id: 'maldi', icon: Search, label: 'MALDI-TOF MS', subtitle: 'Bacterial Identification', doneText: null },
+    { id: 'vitek', icon: ShieldCheck, label: 'VITEK AST', subtitle: 'Antimicrobial Susceptibility', doneText: 'AST COMPLETE — Report Ready' },
+];
+
+export default function MicrobiologyLabScreen({ onNavigate }) {
+    const [screenState, setScreenState] = useState('screen-transition-hidden');
+    const [activeSample, setActiveSample] = useState(null);
+    const [workflowStep, setWorkflowStep] = useState(-1); // -1=idle, 0/1/2=running, 3=done
+    const [isReportOpen, setIsReportOpen] = useState(false);
+    const [incubationHour, setIncubationHour] = useState(0);
+    const [logs, setLogs] = useState([]);
+    const timeoutsRef = useRef([]);
+
+    const isRunning = workflowStep >= 0 && workflowStep < 3;
+
+    useEffect(() => {
+        const t = setTimeout(() => setScreenState('screen-visible'), 50);
+        return () => clearTimeout(t);
+    }, []);
+
+    // Cleanup all timeouts on unmount
+    useEffect(() => {
+        return () => timeoutsRef.current.forEach(t => clearTimeout(t));
+    }, []);
+
+    const handleNavigation = (target) => {
+        setScreenState('screen-exit');
+        setTimeout(() => onNavigate(target), 600);
+    };
+
+    const selectSample = (sample) => {
+        if (isRunning) return;
+        setActiveSample(sample);
+        setWorkflowStep(-1);
+        setIncubationHour(0);
+        setLogs([]);
+        setIsReportOpen(false);
+    };
+
+    const addLog = (text, delayMs) => {
+        const t = setTimeout(() => {
+            setLogs(prev => [...prev, text]);
+        }, delayMs);
+        timeoutsRef.current.push(t);
+    };
+
+    const startAnalysis = () => {
+        if (!activeSample || isRunning) return;
+
+        // Clear previous
+        timeoutsRef.current.forEach(t => clearTimeout(t));
+        timeoutsRef.current = [];
+        setLogs([]);
+        setIncubationHour(0);
+
+        const organism = resultsData[activeSample.id]?.organism || 'Unknown';
+        const S1 = STEP_DURATIONS[0]; // 8000
+        const S2 = STEP_DURATIONS[1]; // 4000
+        const S3 = STEP_DURATIONS[2]; // 5000
+
+        // ── STEP 0: Incubation ──
+        setWorkflowStep(0);
+
+        // Hour counter: ramp 0→48 over S1 duration
+        const hourInterval = setInterval(() => {
+            setIncubationHour(prev => {
+                if (prev >= 48) { clearInterval(hourInterval); return 48; }
+                return prev + 1;
+            });
+        }, S1 / 50); // 50 ticks → each tick = ~160ms
+        timeoutsRef.current.push(hourInterval);
+
+        // Progressive logs for Step 1
+        addLog('> Inoculating sample into enrichment broth...', 0);
+        addLog('> BacT/ALERT incubator sealed. Monitoring initiated.', 1500);
+        addLog('> Incubating at 37°C... (24h simulated)', S1 * 0.4);
+        addLog('> Turbidity detected. Positive growth at 48h.', S1 * 0.85);
+
+        // ── STEP 1: MALDI-TOF ──
+        const t1 = setTimeout(() => {
+            setWorkflowStep(1);
+            clearInterval(hourInterval);
+            setIncubationHour(48);
+        }, S1);
+        timeoutsRef.current.push(t1);
+
+        addLog('> POSITIVE flag raised — Transferring to MALDI-TOF.', S1 + 200);
+        addLog('> Laser desorption/ionization in progress...', S1 + 1200);
+        addLog('> Protein fingerprint captured. Matching database...', S1 + 2500);
+
+        // ── STEP 2: VITEK AST ──
+        const t2 = setTimeout(() => {
+            setWorkflowStep(2);
+        }, S1 + S2);
+        timeoutsRef.current.push(t2);
+
+        addLog(`> ID Result: ${organism}`, S1 + S2 + 200);
+        addLog('> Loading VITEK 2 AST card...', S1 + S2 + 1000);
+        addLog('> Calculating MIC (Minimum Inhibitory Concentration)...', S1 + S2 + 2500);
+        addLog('> Cross-referencing CLSI breakpoint tables...', S1 + S2 + 3800);
+
+        // ── DONE ──
+        const t3 = setTimeout(() => {
+            setWorkflowStep(3);
+        }, S1 + S2 + S3);
+        timeoutsRef.current.push(t3);
+
+        addLog('> ✓ AST Complete. Final sensitivity report generated.', S1 + S2 + S3 + 200);
+    };
+
+    const getStepStatus = (stepIndex) => {
+        if (workflowStep < stepIndex) return 'pending';
+        if (workflowStep === stepIndex) return 'active';
+        return 'done';
+    };
+
+    return (
+        <div id="microbiology-lab-screen" className={`absolute inset-0 z-40 flex flex-col backdrop-blur-3xl min-h-dvh w-full overflow-y-auto overflow-x-hidden scroll-smooth pb-32 ${screenState}`}>
+            <div className="w-full h-full max-w-[1400px] mx-auto flex flex-col relative">
+
+                {/* ═══ Header ═══ */}
+                <header className="pt-6 md:pt-8 pb-3 px-4 md:px-6 flex justify-between items-center border-b border-white/5 bg-linear-to-b from-violet-900/10 to-transparent shrink-0">
+                    <div className="flex items-center gap-3">
+                        <button onClick={() => handleNavigation('virtual-lab')} className="bg-slate-800/60 border border-white/10 w-8 h-8 rounded-lg flex items-center justify-center text-violet-300 hover:text-violet-400 hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.8)] transition-all">
+                            <ArrowLeft className="w-4 h-4" />
+                        </button>
+                        <div>
+                            <h2 className="text-base md:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+                                <span className="text-violet-400 drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]"><TestTube className="w-4 h-4 inline" /></span>
+                                <span className="text-violet-100">Automated Microbiology System</span>
+                            </h2>
+                            <p className="text-[9px] text-violet-400/60 mt-0.5 uppercase tracking-widest font-mono">VITEK 2 / MALDI-TOF Simulator — Culture & Sensitivity</p>
+                        </div>
+                    </div>
+                </header>
+
+                <SidebarNavigation onNavigate={handleNavigation} />
+
+                {/* ═══ Main Workspace ═══ */}
+                <div className={`flex-1 flex flex-col md:flex-row overflow-visible p-4 md:p-6 gap-6 md:gap-8 ${isReportOpen ? 'hidden' : ''}`}>
+
+                    {/* ═══ CENTER: Analyzer Dashboard ═══ */}
+                    <div className="flex-1 flex flex-col gap-5">
+                        <div className="w-full bg-slate-900/60 border border-violet-500/10 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-[0_0_40px_rgba(139,92,246,0.06)]">
+
+                            {/* Machine Title Bar */}
+                            <div className="flex items-center justify-between mb-6 pb-4 border-b border-violet-500/15">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
+                                        <Radio className="w-5 h-5 text-violet-400" />
+                                    </div>
+                                    <div>
+                                        <span className="text-sm font-bold text-white tracking-wide">AUTOMATED ID/AST ANALYZER</span>
+                                        <p className="text-[9px] text-violet-400/50 uppercase tracking-widest font-mono mt-0.5">
+                                            {activeSample ? `Sample Loaded: ${activeSample.name}` : 'Awaiting Sample Selection'}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className={`w-3 h-3 rounded-full ${isRunning ? 'bg-violet-400 animate-pulse shadow-[0_0_12px_rgba(139,92,246,0.8)]' : (workflowStep === 3 ? 'bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.8)]' : 'bg-slate-600')}`} />
+                            </div>
+
+                            {/* ═══ 3-Step Workflow Pipeline ═══ */}
+                            <div className="flex flex-col gap-4">
+                                {WORKFLOW_STEPS.map((step, idx) => {
+                                    const status = getStepStatus(idx);
+                                    const StepIcon = step.icon;
+                                    const isPending = status === 'pending';
+                                    const isActive = status === 'active';
+                                    const isDone = status === 'done';
+                                    const duration = STEP_DURATIONS[idx];
+
+                                    let doneText = step.doneText;
+                                    if (idx === 1 && isDone && activeSample) {
+                                        doneText = `${resultsData[activeSample.id]?.organism || 'Unknown'} DETECTED`;
+                                    }
+
+                                    const renderedStep = (
+                                        <motion.div
+                                            key={step.id === 'maldi' ? 'inner-maldi' : step.id}
+                                            initial={false}
+                                            animate={{ opacity: isPending ? 0.4 : 1, scale: isActive ? 1.02 : 1 }}
+                                            transition={{ duration: 0.4 }}
+                                            className={`relative rounded-2xl border w-full p-4 md:p-5 transition-colors duration-500 ${isActive ? 'border-violet-500/50 bg-violet-900/20 shadow-[0_0_25px_rgba(139,92,246,0.15)]' :
+                                                isDone ? 'border-emerald-500/30 bg-emerald-900/10' :
+                                                    'border-white/5 bg-slate-800/30'
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                {/* Step Circle */}
+                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border transition-all duration-500 ${isActive ? 'bg-violet-500/20 border-violet-500/50 shadow-[0_0_15px_rgba(139,92,246,0.4)]' :
+                                                    isDone ? 'bg-emerald-500/20 border-emerald-500/50' :
+                                                        'bg-slate-800/50 border-white/10'
+                                                    }`}>
+                                                    {isDone ? (
+                                                        <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 13l4 4L19 7" /></motion.svg>
+                                                    ) : (
+                                                        <StepIcon className={`w-4 h-4 ${isActive ? 'text-violet-400' : 'text-slate-500'}`} />
+                                                    )}
+                                                </div>
+
+                                                {/* Step Info */}
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className={`text-[10px] font-bold uppercase tracking-widest ${isActive ? 'text-violet-300' : isDone ? 'text-emerald-300' : 'text-slate-500'}`}>
+                                                            Step {idx + 1}: {step.label}
+                                                        </span>
+                                                        <span className="text-[8px] text-slate-600 font-mono tracking-widest hidden md:inline">— {step.subtitle}</span>
+                                                    </div>
+
+                                                    <div className="mt-1.5">
+                                                        {isActive && (
+                                                            <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col gap-1.5">
+                                                                <div className="flex items-center gap-2">
+                                                                    <div className="flex-1 bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
+                                                                        <motion.div
+                                                                            initial={{ width: '0%' }}
+                                                                            animate={{ width: '100%' }}
+                                                                            transition={{ duration: duration / 1000, ease: 'linear' }}
+                                                                            className="h-full rounded-full bg-linear-to-r from-violet-500 to-violet-400 shadow-[0_0_8px_rgba(139,92,246,0.6)]"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                {/* Dynamic content per step */}
+                                                                {idx === 0 && (
+                                                                    <div className="flex items-center justify-between">
+                                                                        <span className="text-[10px] text-violet-300 font-mono tracking-wider animate-pulse">
+                                                                            Incubation Time: <span className="text-violet-200 font-bold">{String(incubationHour).padStart(2, '0')}h</span> / 48h
+                                                                        </span>
+                                                                        <span className="text-[8px] text-violet-400/50 font-mono tracking-widest">(Simulating 48 Hours of Bacterial Growth...)</span>
+                                                                    </div>
+                                                                )}
+                                                                {idx === 1 && (
+                                                                    <span className="text-[10px] text-violet-300 font-mono tracking-wider animate-pulse">MALDI-TOF Protein Profiling...</span>
+                                                                )}
+                                                                {idx === 2 && (
+                                                                    <span className="text-[10px] text-violet-300 font-mono tracking-wider animate-pulse">Calculating MIC Values...</span>
+                                                                )}
+                                                            </motion.div>
+                                                        )}
+                                                        {isDone && (
+                                                            <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xs text-emerald-400 font-mono tracking-wider">
+                                                                ✓ {doneText}
+                                                            </motion.span>
+                                                        )}
+                                                        {isPending && (
+                                                            <span className="text-[10px] text-slate-600 font-mono tracking-wider">Awaiting previous step...</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    );
+
+                                    if (step.id === 'maldi') {
+                                        return (
+                                            <ScientificTooltip
+                                                key={step.id}
+                                                text="MALDI-TOF MS: Uses laser ionization to identify the exact bacterial species based on its protein fingerprint."
+                                                className="block w-full"
+                                            >
+                                                {renderedStep}
+                                            </ScientificTooltip>
+                                        );
+                                    }
+
+                                    return renderedStep;
+                                })}
+                            </div>
+
+                            {/* ═══ Action Button Row ═══ */}
+                            <div className="mt-6 flex gap-3">
+                                {workflowStep === -1 && activeSample && (
+                                    <motion.button
+                                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                                        onClick={startAnalysis}
+                                        className="flex-1 h-12 rounded-xl bg-violet-600 border border-violet-400 text-white hover:bg-violet-500 flex items-center justify-center gap-2 tracking-widest uppercase text-xs font-bold transition-all shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(139,92,246,0.6)]"
+                                    >
+                                        <Zap className="w-4 h-4" /> Start Automated Analysis
+                                    </motion.button>
+                                )}
+                                {isRunning && (
+                                    <div className="flex-1 h-12 rounded-xl bg-slate-800 border border-violet-500/30 text-violet-400 flex items-center justify-center gap-2 tracking-widest uppercase text-xs font-bold animate-pulse cursor-not-allowed">
+                                        <Activity className="w-4 h-4" /> Analysis In Progress...
+                                    </div>
+                                )}
+                                <AnimatePresence>
+                                    {workflowStep === 3 && (
+                                        <motion.button
+                                            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+                                            onClick={() => setIsReportOpen(true)}
+                                            className="flex-1 h-12 rounded-xl border border-emerald-500/50 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-500 hover:text-white flex items-center justify-center gap-2 tracking-widest uppercase text-xs font-bold transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                                        >
+                                            <FileText className="w-4 h-4" /> View Final Report
+                                        </motion.button>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {/* ═══ RIGHT: Specimen Queue ═══ */}
+                    <div className="w-full md:w-[320px] lg:w-[360px] flex flex-col gap-4 md:gap-6 shrink-0">
+                        <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-5 border border-white/5 shadow-[0_0_30px_rgba(139,92,246,0.05)]">
+                            <h3 className="text-[10px] font-bold text-violet-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <ClipboardList className="w-3 h-3" /> Specimen Queue
+                            </h3>
+                            <div className="flex flex-col gap-3">
+                                {samples.map((s) => (
+                                    <button
+                                        key={s.id}
+                                        onClick={() => selectSample(s)}
+                                        disabled={isRunning}
+                                        className={`group relative rounded-2xl p-3 w-full overflow-hidden text-left transition-all duration-300 border ${isRunning ? 'opacity-50 cursor-not-allowed border-white/5 bg-slate-800/30' :
+                                            (activeSample?.id === s.id ? 'border-violet-500/50 bg-violet-900/20 scale-[1.02]' : 'border-white/10 bg-slate-800/40 hover:bg-slate-800 hover:border-violet-500/30')
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-3 relative z-10">
+                                            <div className="w-10 h-10 rounded-xl bg-black border border-white/10 flex items-center justify-center text-lg">
+                                                {s.icon}
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="font-bold text-slate-200 text-sm">{s.name}</span>
+                                                <span className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">{s.desc}</span>
+                                            </div>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Live Telemetry Card */}
+                        <div className="flex-1 min-h-[250px] bg-slate-900/60 backdrop-blur-md rounded-3xl p-5 border border-white/5 shadow-[0_0_30px_rgba(139,92,246,0.05)] flex flex-col">
+                            <h3 className="text-[10px] font-bold text-violet-400 uppercase tracking-widest pb-3 border-b border-white/10 mb-3 flex items-center gap-2">
+                                <Activity className="w-3 h-3" /> Analyzer Telemetry
+                            </h3>
+                            <div className="flex flex-col gap-2 overflow-y-auto flex-1 no-scrollbar pb-2">
+                                {logs.length === 0 ? (
+                                    <div className="m-auto text-center opacity-30">
+                                        <Radio className="w-8 h-8 text-violet-400 mx-auto mb-2 opacity-50" />
+                                        <span className="text-[10px] uppercase tracking-widest font-mono text-slate-400">System Idle</span>
+                                    </div>
+                                ) : (
+                                    logs.map((log, i) => (
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ duration: 0.4 }}
+                                            className="text-[11px] font-mono text-violet-200/80 tracking-wider leading-relaxed bg-black/30 px-3 py-2 rounded-lg border-l-2 border-violet-500/50"
+                                        >
+                                            {log}
+                                        </motion.div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ═══ Report Modal ═══ */}
+                <FinalReportModal
+                    isOpen={isReportOpen}
+                    onClose={() => { setIsReportOpen(false); }}
+                    reportData={activeSample ? resultsData[activeSample.id] : null}
+                    activeSample={activeSample}
+                    sampleType="microbiology"
+                    labTechName="Dr. L. Pasteur"
+                />
+
+            </div>
+        </div>
+    );
+}

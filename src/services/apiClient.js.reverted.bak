@@ -1,0 +1,338 @@
+/* ═══════════════════════════════════════════════════════════════
+   LABMIND AI — Centralized Authenticated API Client
+   ═══════════════════════════════════════════════════════════════
+   All backend requests go through this module.
+   JWT token is stored in localStorage and attached to every request.
+   Phase 1: auth + AI proxy
+   Phase 2: patients, cases, assets, analyses, reports, alerts
+   ═══════════════════════════════════════════════════════════════ */
+
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
+
+// ─── Token helpers ───
+
+export function getToken() {
+    return localStorage.getItem('labmind_token');
+}
+
+export function setToken(token) {
+    localStorage.setItem('labmind_token', token);
+}
+
+export function clearToken() {
+    localStorage.removeItem('labmind_token');
+}
+
+// ─── Core fetch wrapper (JSON) ───
+
+async function request(endpoint, options = {}) {
+    const token = getToken();
+    const headers = { ...options.headers };
+
+    if (options.body && !(options.body instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+    }
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${API_BASE}${endpoint}`, {
+        ...options,
+        headers,
+    });
+
+    if (response.status === 401) {
+        const hadToken = !!token;
+        clearToken();
+        throw new ApiError(
+            hadToken ? 'Session expired. Please log in again.' : 'Authentication required.',
+            401,
+        );
+    }
+
+    let data;
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+        data = await response.json();
+    } else {
+        data = await response.text();
+    }
+
+    if (!response.ok) {
+        const message = data?.detail || data?.message || `Request failed (${response.status})`;
+        throw new ApiError(message, response.status, data);
+    }
+
+    return data;
+}
+
+// ─── Binary fetch wrapper (images, files) ───
+
+async function requestBlob(endpoint) {
+    const token = getToken();
+    const headers = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const response = await fetch(`${API_BASE}${endpoint}`, { headers });
+
+    if (response.status === 401) {
+        const hadToken = !!token;
+        clearToken();
+        throw new ApiError(
+            hadToken ? 'Session expired.' : 'Authentication required.',
+            401,
+        );
+    }
+    if (!response.ok) {
+        throw new ApiError(`Download failed (${response.status})`, response.status);
+    }
+
+    return response.blob();
+}
+
+// ─── Custom error class ───
+
+export class ApiError extends Error {
+    constructor(message, status, data) {
+        super(message);
+        this.name = 'ApiError';
+        this.status = status;
+        this.data = data;
+    }
+}
+
+// ═══════════════════════════════════
+// AUTH
+// ═══════════════════════════════════
+
+export async function login(email, password) {
+    const data = await request('/api/auth/token', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+    });
+    if (data.access_token) setToken(data.access_token);
+    return data;
+}
+
+export async function register(email, password, fullName) {
+    return request('/api/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ email, password, full_name: fullName }),
+    });
+}
+
+export async function fetchCurrentUser() {
+    return request('/api/auth/me');
+}
+
+/**
+ * Update the authenticated user's profile.
+ * @param {{ full_name?: string, rank_title?: string, avatar_url?: string }} updates
+ * @returns {Promise<object>} Updated user object
+ */
+export async function updateUserProfile(updates) {
+    return request('/api/auth/profile', {
+        method: 'PUT',
+        body: JSON.stringify(updates),
+    });
+}
+
+// ═══════════════════════════════════
+// AI PROXY
+// ═══════════════════════════════════
+
+export async function askRasha(message, context = null, sessionId = null) {
+    return request('/api/ai/ask-rasha', {
+        method: 'POST',
+        body: JSON.stringify({
+            message,
+            context: context || undefined,
+            session_id: sessionId || undefined,
+        }),
+    });
+}
+
+export async function generateQuiz(topic, numQuestions = 5) {
+    return request('/api/ai/generate-quiz', {
+        method: 'POST',
+        body: JSON.stringify({ topic, num_questions: numQuestions }),
+    });
+}
+
+export async function summarizeText(text) {
+    return request('/api/ai/summarize', {
+        method: 'POST',
+        body: JSON.stringify({ text }),
+    });
+}
+
+// ═══════════════════════════════════
+// PATIENTS
+// ═══════════════════════════════════
+
+export async function createPatient(data) {
+    return request('/api/patients/', {
+        method: 'POST',
+        body: JSON.stringify(data),
+    });
+}
+
+export async function listPatients({ skip = 0, limit = 50, search = null } = {}) {
+    const params = new URLSearchParams();
+    if (skip) params.set('skip', skip);
+    if (limit) params.set('limit', limit);
+    if (search) params.set('search', search);
+    return request(`/api/patients/?${params}`);
+}
+
+export async function getPatient(patientId) {
+    return request(`/api/patients/${patientId}`);
+}
+
+export async function updatePatient(patientId, data) {
+    return request(`/api/patients/${patientId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+    });
+}
+
+// ═══════════════════════════════════
+// LAB CASES
+// ═══════════════════════════════════
+
+export async function createCase(data) {
+    return request('/api/cases/', {
+        method: 'POST',
+        body: JSON.stringify(data),
+    });
+}
+
+export async function listCases({ skip = 0, limit = 50, status = null, department = null } = {}) {
+    const params = new URLSearchParams();
+    if (skip) params.set('skip', skip);
+    if (limit) params.set('limit', limit);
+    if (status) params.set('status', status);
+    if (department) params.set('department', department);
+    return request(`/api/cases/?${params}`);
+}
+
+export async function getCase(caseId) {
+    return request(`/api/cases/${caseId}`);
+}
+
+export async function updateCaseStatus(caseId, status) {
+    return request(`/api/cases/${caseId}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+    });
+}
+
+// ═══════════════════════════════════
+// CASE ASSETS (file upload)
+// ═══════════════════════════════════
+
+export async function uploadAsset(caseId, file, assetType = 'blood_smear') {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('asset_type', assetType);
+    return request(`/api/cases/${caseId}/assets`, {
+        method: 'POST',
+        body: formData,
+    });
+}
+
+export async function listAssets(caseId) {
+    return request(`/api/cases/${caseId}/assets`);
+}
+
+export async function downloadAsset(assetId) {
+    return requestBlob(`/api/assets/${assetId}/download`);
+}
+
+export async function deleteAsset(assetId) {
+    return request(`/api/assets/${assetId}`, { method: 'DELETE' });
+}
+
+// ═══════════════════════════════════
+// ANALYSIS
+// ═══════════════════════════════════
+
+export async function triggerAnalysis(caseId, assetId) {
+    return request('/api/analyses/trigger', {
+        method: 'POST',
+        body: JSON.stringify({ case_id: caseId, asset_id: assetId }),
+    });
+}
+
+export async function getAnalysisStatus(runId) {
+    return request(`/api/analyses/runs/${runId}`);
+}
+
+export async function listCaseAnalyses(caseId) {
+    return request(`/api/analyses/cases/${caseId}`);
+}
+
+export async function getAnnotatedImage(runId) {
+    return requestBlob(`/api/analyses/runs/${runId}/annotated-image`);
+}
+
+// ═══════════════════════════════════
+// DIAGNOSTIC REPORTS
+// ═══════════════════════════════════
+
+export async function createReport(data) {
+    return request('/api/reports/', {
+        method: 'POST',
+        body: JSON.stringify(data),
+    });
+}
+
+export async function listMyReports({ skip = 0, limit = 50 } = {}) {
+    const params = new URLSearchParams({ skip, limit });
+    return request(`/api/reports/my-reports?${params}`);
+}
+
+export async function listMyArchive() {
+    return request('/api/reports/my-archive');
+}
+
+export async function getReport(reportId) {
+    return request(`/api/reports/${reportId}`);
+}
+
+export async function updateReport(reportId, data) {
+    return request(`/api/reports/${reportId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+    });
+}
+
+export async function submitForReview(reportId) {
+    return request(`/api/reports/${reportId}/submit`, { method: 'POST' });
+}
+
+export async function archiveReport(reportId) {
+    return request(`/api/reports/${reportId}/archive`, { method: 'POST' });
+}
+
+// ═══════════════════════════════════
+// ALERTS
+// ═══════════════════════════════════
+
+export async function listAlerts(includeDismissed = false) {
+    return request(`/api/alerts/?include_dismissed=${includeDismissed}`);
+}
+
+export async function getUnreadAlertCount() {
+    return request('/api/alerts/unread-count');
+}
+
+export async function markAlertRead(alertId) {
+    return request(`/api/alerts/${alertId}/read`, { method: 'POST' });
+}
+
+export async function dismissAlert(alertId) {
+    return request(`/api/alerts/${alertId}/dismiss`, { method: 'POST' });
+}
+

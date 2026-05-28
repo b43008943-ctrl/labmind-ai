@@ -1,0 +1,757 @@
+import { useState, useEffect, useRef } from 'react';
+import { ArrowLeft, Upload, Activity, ShieldAlert, Minimize, Maximize, Scan, Database } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { createPatient, createCase, uploadAsset, triggerAnalysis, getAnalysisStatus, createReport } from '../services/apiClient';
+
+// Rasha AI Avatars
+import idleGif from '../assets/idle.gif';
+import warningGif from '../assets/warning.gif';
+import analyzingGif from '../assets/analyzing.gif';
+
+
+
+export default function HematologyLabScreen({ onNavigate }) {
+    const [screenState, setScreenState] = useState('screen-transition-hidden');
+
+    // Core states
+    const [isScanning, setIsScanning] = useState(false);
+    const [activeImage, setActiveImage] = useState(null);
+    const [telemetry, setTelemetry] = useState(null);
+    const [report, setReport] = useState(null);
+    const [detections, setDetections] = useState([]); // Computer Vision Bounding Boxes
+
+    // Interaction States
+    const [zoomLevel, setZoomLevel] = useState(1);
+    const [panY, setPanY] = useState(0); // Y-axis panning state
+    const containerRef = useRef(null);
+    const fileInputRef = useRef(null);
+    const imageRef = useRef(null);
+    const activeBlobs = useRef(new Set());
+
+    // Archive / Slots 
+    const [sampleTray, setSampleTray] = useState([]);
+
+    useEffect(() => {
+        const t = setTimeout(() => setScreenState('screen-visible'), 50);
+
+        // Clear only hematology archive (NOT the JWT token!)
+        localStorage.removeItem('hematology_archive_v2');
+        setSampleTray([]);
+
+        // Merge localStorage archives into sample slots
+        /*
+        try {
+            const saved = JSON.parse(localStorage.getItem('hematology_archive_v2')) || [];
+            if (saved.length > 0) {
+                const formattedSaved = saved.map((s, idx) => ({
+                    id: s.id,
+                    fileName: `UPLOAD #${String(idx + 1).padStart(2, '0')}`,
+                    imageUrl: s.imageUrl,
+                    wbc: s.wbc, rbc: s.rbc, hgb: s.hgb, platelets: s.platelets, sickleCells: s.sickleCells,
+                    diagnosis: s.diagnosis,
+                    rashaText: s.diagnosis === 'Normal Morphology'
+                        ? "Everything looks perfectly normal! The blood smear is nominal in terms of morphology and cellular density."
+                        : s.diagnosis === 'Acute Leukemia'
+                            ? "Critical Blast Cells detected! This leukocyte proliferation is alarming. I highly recommend immediate hematological intervention."
+                            : "Warning, Anemia detected. Notice the severe lack of healthy erythrocytes! Oxygen transport capacity is severely compromised.",
+                    detail: s.detail || "Archived scan record loaded into simulation engine."
+                }));
+                // setSampleTray(formattedSaved.slice(0, 50));
+            } else {
+                // setSampleTray([]);
+            }
+        } catch (e) {
+            console.error('Archive load failed', e);
+        }
+        */
+
+        return () => {
+            clearTimeout(t);
+            // BLOB LIFECYCLE: Clean up all object URLs when component unmounts
+            activeBlobs.current.forEach(url => URL.revokeObjectURL(url));
+            activeBlobs.current.clear();
+        };
+    }, []);
+
+    const handleFileUpload = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            // Only create URL, do NOT revoke immediately
+            const tempUrl = URL.createObjectURL(file);
+            activeBlobs.current.add(tempUrl);
+            analyzeImage(file, tempUrl, file.name);
+        }
+        if (e.target) e.target.value = ''; // FIX: Allow consecutive uploads of the same file
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files?.[0];
+        if (file) {
+            // Only create URL, do NOT revoke immediately
+            const tempUrl = URL.createObjectURL(file);
+            activeBlobs.current.add(tempUrl);
+            analyzeImage(file, tempUrl, file.name);
+        }
+    };
+
+    const handleNavigation = (target) => {
+        setScreenState('screen-exit');
+        setTimeout(() => onNavigate(target), 600);
+    };
+
+    const loadSlotData = (slot) => {
+        setIsScanning(true);
+        setActiveImage(slot.imageUrl);
+        setTelemetry({ wbc: '...', rbc: '...', hgb: '...' });
+        setReport({ diagnosis: 'Loading Archive...', detail: 'Retrieving data...', rashaText: 'Accessing archived morphology records...' });
+        setDetections([]);
+        setZoomLevel(1); // Reset zoom
+        setPanY(0); // Reset Pan Y
+
+        // Laser Loading Animation Delay
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            if (progress >= 100) {
+                clearInterval(interval);
+                setIsScanning(false);
+                setTelemetry({
+                    detectedCells: slot.detectedCells ?? slot.rbc ?? 0,
+                    normalCells: slot.normalCells ?? ((slot.rbc || 0) - (slot.sickleCells || 0)),
+                    sickleCells: slot.sickleCells ?? 0,
+                    sicklePct: slot.sicklePct ?? 0,
+                });
+                setReport({ diagnosis: slot.diagnosis, detail: slot.detail, rashaText: slot.rashaText, sickleCells: slot.sickleCells });
+                setDetections(slot.detections || []);
+            }
+        }, 120);
+    };
+
+    // Real Backend Integration — Full Clinical Pipeline
+    // patient → case → asset upload → trigger analysis → poll → results
+    const analyzeImage = async (file, imageUrl, fileName) => {
+        setIsScanning(true);
+        setActiveImage(imageUrl);
+        setTelemetry(null);
+        setReport({ diagnosis: 'Analyzing...', detail: 'Uploading to clinical pipeline...', rashaText: 'Uploading to Neural Network... Please wait.' });
+        setDetections([]);
+        setZoomLevel(1);
+        setPanY(0);
+
+        try {
+            // Step 1: Create a quick patient for this scan
+            setReport(prev => ({ ...prev, detail: 'Registering patient record...' }));
+            const patient = await createPatient({
+                patient_code: `SCAN-${Date.now()}`,
+                full_name: `Scan Patient ${new Date().toLocaleDateString()}`,
+            });
+
+            // Step 2: Create a hematology case
+            setReport(prev => ({ ...prev, detail: 'Creating lab case...' }));
+            const labCase = await createCase({
+                patient_id: patient.id,
+                department: 'hematology',
+                test_type: 'blood_smear',
+            });
+
+            // Step 3: Upload the blood smear image as a case asset
+            setReport(prev => ({ ...prev, detail: 'Uploading blood smear image...' }));
+            const asset = await uploadAsset(labCase.id, file, 'blood_smear');
+
+            // Step 4: Trigger the V34 analysis
+            setReport(prev => ({ ...prev, detail: 'Triggering V34 diagnostic engine...' }));
+            const run = await triggerAnalysis(labCase.id, asset.id);
+
+            // Step 5: Poll for completion (max 60s)
+            let detail = null;
+            const maxPolls = 30;
+            for (let i = 0; i < maxPolls; i++) {
+                await new Promise(r => setTimeout(r, 2000));
+                detail = await getAnalysisStatus(run.id);
+                const status = detail.run?.status;
+                setReport(prev => ({ ...prev, detail: `Analysis status: ${status}...` }));
+                if (status === 'completed' || status === 'failed') break;
+            }
+
+            if (detail?.run?.status === 'completed' && detail.result) {
+                const result = detail.result;
+                // Use the original uploaded image — the backend's annotated image
+                // has OpenCV text overlays baked in that compete with frontend boxes
+                processBackendResult(result, imageUrl, labCase.id, run.id);
+            } else if (detail?.run?.status === 'failed') {
+                throw new Error(detail.run.error_message || 'Analysis failed');
+            } else {
+                throw new Error('Analysis timed out');
+            }
+
+        } catch (error) {
+            console.error('Pipeline error:', error.message);
+
+            // Show error directly — legacy endpoint has been retired
+            setIsScanning(false);
+            setTelemetry(null);
+            setReport({
+                diagnosis: 'Pipeline Error',
+                detail: error.message || 'Backend pipeline is unreachable.',
+                rashaText: 'The analysis pipeline encountered an error. Ensure the backend, Celery worker, and Redis are all running.',
+                sickleCells: 0
+            });
+            setDetections([]);
+        }
+    };
+
+    // ── Convert backend pixel-corner detections to frontend percentage boxes ──
+    const convertDetections = (rawDetections) => {
+        const img = imageRef.current;
+        const imgW = img?.naturalWidth || 1280;
+        const imgH = img?.naturalHeight || 960;
+
+        return rawDetections.map((d, i) => {
+            const xPct = (d.x1 / imgW) * 100;
+            const yPct = (d.y1 / imgH) * 100;
+            const wPct = ((d.x2 - d.x1) / imgW) * 100;
+            const hPct = ((d.y2 - d.y1) / imgH) * 100;
+            const isSickle = (d.label || '').toLowerCase().includes('sickle');
+            return {
+                id: `det-${i}`,
+                x: xPct,
+                y: yPct,
+                width: wPct,
+                height: hPct,
+                type: d.label || 'Cell',
+                color: isSickle ? '#ff3c3c' : '#00e5ff',
+                confidence: d.confidence ?? d.cnn_probability ?? 0,
+            };
+        });
+    };
+
+    // Process Sprint 3 pipeline results
+    const processBackendResult = (result, imageUrl, caseId, runId) => {
+        const totalCells = result.total_cells || 0;
+        const rawSickleCount = result.sickle_count || 0;
+        const normalCount = result.normal_count || 0;
+        const rawSicklePct = result.sickle_percentage || 0;
+
+        // ── Use backend field_interpretation as the authoritative screening decision ──
+        const fi = result.field_interpretation || {};
+        const screeningResult = fi.screening_result || 'NEGATIVE';
+        const evidenceStrength = fi.evidence_strength || 'none';
+        const backendSummary = fi.summary || '';
+        const backendSickleCount = fi.sickle_count ?? rawSickleCount;
+        const backendSicklePct = fi.sickle_percentage ?? rawSicklePct;
+
+        // ── Map backend screening result to UI alert level ──
+        let diagnosis, rashaText, alertLevel;
+
+        if (screeningResult === 'SICKLE_SCREEN_POSITIVE') {
+            diagnosis = 'Sickle Screen Positive';
+            alertLevel = 'critical';
+            rashaText = backendSummary;
+        } else if (screeningResult === 'REVIEW') {
+            diagnosis = 'Manual Review Suggested';
+            alertLevel = 'review';
+            rashaText = backendSummary;
+        } else {
+            diagnosis = 'Normal Morphology';
+            alertLevel = 'none';
+            rashaText = backendSummary || `Analysis complete. ${totalCells} cells analyzed — no confident sickle-like morphology detected.`;
+        }
+
+        // Convert backend pixel detections to percentage-based boxes for rendering
+        const detectionsList = result.cell_details?.detections || [];
+
+        setIsScanning(false);
+        setTelemetry({
+            detectedCells: totalCells,
+            normalCells: totalCells - backendSickleCount,
+            sickleCells: backendSickleCount,
+            sicklePct: backendSicklePct,
+            evidenceStrength,
+            screeningResult,
+        });
+        setReport({ diagnosis, detail: `${totalCells} cells analyzed. ${backendSickleCount} sickle cells.`, rashaText, sickleCells: backendSickleCount, alertLevel, screeningResult, evidenceStrength });
+
+        if (detectionsList.length > 0) {
+            setDetections(convertDetections(detectionsList));
+        }
+
+        const record = {
+            id: `hem-${Date.now()}`, timestamp: Date.now(), fileName: 'ANALYSIS RESULT',
+            imageUrl, detectedCells: totalCells, normalCells: totalCells - backendSickleCount,
+            sickleCells: backendSickleCount, sicklePct: backendSicklePct, diagnosis, rashaText,
+            detail: `${totalCells} cells, ${backendSickleCount} sickle`,
+            detections: detectionsList,
+            screeningResult, evidenceStrength,
+            caseId, runId
+        };
+        setSampleTray(prev => [record, ...prev]);
+    };
+
+    const processRealData = (data, imageUrl) => {
+        // Read NEW backend field names from the updated main.py schema
+        const wbc = typeof data.wbc_count === 'number' ? data.wbc_count : 0.0;
+        const rbc = typeof data.rbc_count === 'number' ? data.rbc_count : 0.0;
+        const hgb = typeof data.hgb_value === 'number' ? data.hgb_value : 0.0;
+        const platelets = typeof data.platelets_count === 'number' ? data.platelets_count : 0.0;
+        const sickleCells = typeof data.sickle_cells === 'number' ? data.sickle_cells : 0;
+
+        // Map Python backend status strings to frontend UI diagnosis titles
+        let diagnosis = "Unknown Analysis";
+        if (data.status === "success" || data.status === "Normal Morphology") diagnosis = "Normal Morphology";
+        else if (data.status === "sickle_cell_anemia_detected") diagnosis = "Sickle Cell Anemia";
+        else if (data.status === "general_anemia_suspected") diagnosis = "General Anemia";
+        else if (data.status === "leukemia_suspected") diagnosis = "Leukemia Suspected";
+        else if (data.status === "no_cells_detected") diagnosis = "No Cells Detected";
+        else if (data.status === "error") diagnosis = "Analysis Error";
+        else if (data.diagnosis) diagnosis = data.diagnosis; // Fallback
+
+        const backendInsight = data.message || data.insight || "";
+
+        // Build Rasha AI text and detail from the backend's diagnosis and insight
+        let rashaText = backendInsight || "Everything looks perfectly normal! The blood smear is nominal in terms of morphology and cellular density.";
+        let detail = "Cellular markers within reference ranges. Morphology is stable and healthy.";
+
+        setIsScanning(false);
+        setTelemetry({
+            detectedCells: rbc || 0,
+            normalCells: (rbc || 0) - (sickleCells || 0),
+            sickleCells: sickleCells || 0,
+            sicklePct: rbc > 0 ? ((sickleCells / rbc) * 100) : 0,
+        });
+        setReport({ diagnosis, detail, rashaText, sickleCells });
+        setDetections(data.detections || []);
+
+        // Save History and push to slots
+        const record = {
+            id: `hem-${Date.now()}`,
+            timestamp: Date.now(),
+            fileName: `NEW RECORD`,
+            imageUrl, wbc, rbc, hgb, platelets, sickleCells, diagnosis, rashaText, detail, detections: data.detections || []
+        };
+
+        /*
+        const existing = JSON.parse(localStorage.getItem('hematology_archive_v2')) || [];
+        const updated = [record, ...existing].slice(0, 50);
+        localStorage.setItem('hematology_archive_v2', JSON.stringify(updated));
+        */
+
+        setSampleTray(prev => [record, ...prev]);
+    };
+
+    const getRashaState = () => {
+        if (isScanning) return analyzingGif;
+        if (!report) return idleGif;
+        const dg = String(report.diagnosis).toUpperCase();
+        if (dg.includes('LEUKEMIA') || dg.includes('ANEMIA') || dg.includes('SICKLE') || dg.includes('MALARIA') || dg.includes('THROMBOCYTOPENIA') || dg.includes('INFECTION')) return warningGif;
+        return idleGif;
+    };
+
+    return (
+        <div id="hematology-microscope" className={`absolute inset-0 z-30 flex flex-col bg-[#02050A] ${screenState} overflow-y-auto overflow-x-hidden custom-scrollbar`}>
+
+            {/* IMMERSIVE TACTICAL GRID */}
+            <div className="absolute inset-0 z-0 pointer-events-none pattern-grid-lg opacity-25" style={{ backgroundImage: `linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px)`, backgroundSize: '60px 60px' }}></div>
+            <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#02050A_90%)]"></div>
+
+            {/* IMMERSIVE HEADER (Cleaned Up) */}
+            <div className="absolute top-6 left-6 z-50">
+                <button
+                    onClick={() => handleNavigation('virtual-lab')}
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-cyan-400 hover:text-white transition-all border-2 border-cyan-800 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,229,255,0.6)] bg-black/80 backdrop-blur-md group"
+                >
+                    <ArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" />
+                </button>
+            </div>
+            <div className="absolute top-6 right-6 z-50 flex items-center gap-3">
+                {/* THE IMMORTAL UPLOAD BUTTON */}
+                <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="mr-2 px-4 py-2 bg-cyan-950/60 hover:bg-cyan-800/80 border-2 border-cyan-500 rounded-lg flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(0,229,255,0.4)] group overflow-hidden relative"
+                >
+                    <div className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-cyan-400/20 to-transparent -translate-x-full group-hover:animate-[scanLaser_1.5s_ease-in-out_infinite]"></div>
+                    <Upload className="w-4 h-4 text-cyan-300 relative z-10" />
+                    <span className="text-[10px] font-black text-white uppercase tracking-widest hidden sm:inline relative z-10">Mount Sample</span>
+                </button>
+
+                <div className="hidden sm:flex flex-col text-right">
+                    <span className="font-black text-white text-lg drop-shadow-[0_0_8px_rgba(0,229,255,0.8)] tracking-widest uppercase">Simulation Engine</span>
+                    <span className="text-cyan-500 text-[10px] uppercase tracking-[0.3em] font-mono font-bold">LIVE OPTICS FEED</span>
+                </div>
+                <Activity className="w-8 h-8 text-cyan-400 drop-shadow-[0_0_10px_rgba(0,229,255,0.8)] hidden sm:block" />
+            </div>
+
+            {/* THE IMMORTAL FILE INPUT (Moved outside conditionals) */}
+            <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileUpload} />
+
+            {/* MAIN INTERACTIVE WORKSPACE */}
+            <div className="flex-1 w-full max-w-[1700px] mx-auto flex flex-col lg:flex-row relative z-10 pt-28 pb-10 px-4 md:px-8 lg:px-12 gap-8 lg:gap-12 items-center lg:items-start justify-center">
+
+                {/* SIDE ARCHIVE (Left) */}
+                <div className="hidden xl:flex w-[260px] h-[600px] flex-col shrink-0 bg-black/60 border border-cyan-900/50 rounded-2xl p-4 shadow-lg backdrop-blur-md">
+                    <h2 className="text-[11px] font-bold text-cyan-500 uppercase tracking-widest flex items-center gap-2 mb-4 border-b border-cyan-900/60 pb-3">
+                        <Database className="w-4 h-4" /> Slide Archive
+                    </h2>
+
+                    {/* Persistent Upload Button */}
+                    <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full mb-4 py-3 rounded-lg bg-cyan-950/40 border border-dashed border-cyan-600 hover:border-cyan-400 hover:bg-cyan-900/50 flex flex-col items-center justify-center gap-1 transition-all group shadow-[inset_0_0_15px_rgba(0,229,255,0.1)]"
+                    >
+                        <Upload className="w-5 h-5 text-cyan-500 group-hover:text-cyan-300 drop-shadow-[0_0_5px_rgba(0,229,255,0.5)]" />
+                        <span className="text-[9px] font-bold text-cyan-400 uppercase tracking-widest font-mono">Mount New Slide</span>
+                    </button>
+
+                    <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3 pr-2">
+                        {sampleTray.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center h-full opacity-40 text-center">
+                                <Scan className="w-8 h-8 text-cyan-600 mb-2" />
+                                <p className="text-[10px] text-cyan-500 font-mono tracking-widest uppercase">Drive Empty<br />Mount a Slide</p>
+                            </div>
+                        ) : (
+                            sampleTray.map((slot, index) => (
+                                <div
+                                    key={slot.id || index}
+                                    onClick={() => loadSlotData(slot)}
+                                    className={`w-full rounded-lg flex items-center p-2 cursor-pointer transition-all border ${activeImage === slot.imageUrl ? 'bg-cyan-950/80 border-cyan-400 shadow-[0_0_15px_rgba(0,229,255,0.2)]' : 'bg-black/50 border-cyan-900/40 hover:border-cyan-500/60'}`}
+                                >
+                                    <div className="w-10 h-10 rounded-md overflow-hidden shrink-0 border border-cyan-900/50 bg-cyan-950/20">
+                                        <img
+                                            src={slot.imageUrl}
+                                            className="w-full h-full object-cover opacity-80"
+                                            alt="slide"
+                                            onError={(e) => {
+                                                // Suppress ERR_FILE_NOT_FOUND on dead archive blobs
+                                                e.target.style.display = 'none';
+                                                e.target.onerror = null;
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="ml-3 flex flex-col overflow-hidden">
+                                        <span className="text-[9px] font-mono text-cyan-400 font-bold tracking-widest truncate">{slot.fileName || `SLIDE #${index + 1}`}</span>
+                                        <span className={`text-[8px] font-bold uppercase tracking-wider truncate ${String(slot.diagnosis).toUpperCase().includes('NORMAL') ? 'text-emerald-500' : 'text-rose-500'}`}>{slot.diagnosis}</span>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+
+                {/* LENS WORKSTATION (Center/Top) */}
+                <div className="flex flex-col items-center shrink-0 w-full lg:w-auto relative">
+
+                    {/* The Interactive Optic Lens */}
+                    <div className="relative flex items-center justify-center">
+                        {/* High-Tech HUD Outer Rings */}
+                        <div className="absolute inset-[-40px] border border-cyan-500/20 rounded-full animate-[spin_20s_linear_infinite] pointer-events-none">
+                            <div className="absolute top-0 left-1/2 -ml-px w-[2px] h-[10px] bg-cyan-400"></div>
+                            <div className="absolute bottom-0 left-1/2 -ml-px w-[2px] h-[10px] bg-cyan-400"></div>
+                        </div>
+                        <div className="absolute inset-[-20px] border-2 border-dashed border-cyan-600/30 rounded-full animate-[spin_15s_linear_infinite_reverse] pointer-events-none"></div>
+                        <div className="absolute inset-[-60px] rounded-full border border-cyan-900/40 pointer-events-none flex items-center justify-center">
+                            <span className="absolute top-[-10px] text-[8px] text-cyan-500 font-mono tracking-widest bg-[#02050A] px-1">NORTH.000</span>
+                            <span className="absolute bottom-[-10px] text-[8px] text-cyan-500 font-mono tracking-widest bg-[#02050A] px-1">SOUTH.180</span>
+                            <span className="absolute left-[-15px] text-[8px] text-cyan-500 font-mono tracking-widest bg-[#02050A] px-1 -rotate-90">WEST.270</span>
+                            <span className="absolute right-[-15px] text-[8px] text-cyan-500 font-mono tracking-widest bg-[#02050A] px-1 rotate-90">EAST.090</span>
+                        </div>
+
+
+                        {/* Y-Axis Panning Ruler (Vertical Slider) */}
+                        <div className="absolute -left-12 top-1/2 -translate-y-1/2 h-[60%] flex flex-col items-center justify-center pointer-events-auto z-40 bg-black/40 backdrop-blur-sm p-1.5 rounded-full border border-cyan-900/40">
+                            <span className="text-[8px] font-mono font-bold text-cyan-600 mb-2">Y-AXIS</span>
+                            <input
+                                type="range"
+                                min="-200" max="200" value={panY}
+                                onChange={(e) => setPanY(Number(e.target.value))}
+                                className="h-full w-2 appearance-none bg-cyan-950/50 rounded-[100px] outline-none"
+                                style={{ writingMode: 'bt-lr', WebkitAppearance: 'slider-vertical' }}
+                            />
+                            <div className="w-4 h-px bg-cyan-400 shadow-[0_0_5px_#00E5FF] absolute top-1/2 -translate-y-1/2 pointer-events-none"></div>
+                        </div>
+
+                        <div
+                            ref={containerRef}
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={handleDrop}
+                            className={`w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] lg:w-[480px] lg:h-[480px] rounded-full overflow-hidden relative border-[3px] md:border-4 flex items-center justify-center transition-all duration-700 bg-black/80 shadow-[0_30px_60px_rgba(0,0,0,0.8)] z-20 ${isScanning
+                                ? 'border-cyan-400 shadow-[0_0_100px_rgba(0,229,255,0.4),inset_0_0_80px_rgba(0,229,255,0.3)]'
+                                : 'border-cyan-800 hover:border-cyan-400 shadow-[0_0_40px_rgba(0,229,255,0.2),inset_0_0_40px_rgba(0,229,255,0.1)]'
+                                }`}
+                        >
+                            {/* HUD Inner Grid & Continuous Scan Line */}
+                            <div className="absolute inset-0 z-20 pointer-events-none mix-blend-screen opacity-40" style={{ backgroundImage: `linear-gradient(rgba(0, 229, 255, 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.4) 1px, transparent 1px)`, backgroundSize: '40px 40px' }}></div>
+                            <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
+                                <div className="w-full h-[2px] bg-cyan-300 shadow-[0_0_15px_#00E5FF] absolute top-[-10px] animate-[scanLaser_3s_linear_infinite]"></div>
+                            </div>
+
+                            {/* Target Brackets [ ] */}
+                            <div className="absolute inset-0 pointer-events-none z-30 flex items-center justify-center">
+                                <div className="absolute w-1/2 h-1/2 border-2 border-transparent">
+                                    <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-400/80"></div>
+                                    <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-cyan-400/80"></div>
+                                    <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-cyan-400/80"></div>
+                                    <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-cyan-400/80"></div>
+                                </div>
+                            </div>
+
+                            {/* Tactical Crosshair Overlay */}
+                            <div className="absolute inset-0 pointer-events-none z-30 flex items-center justify-center mix-blend-screen opacity-70">
+                                <div className="w-full h-px bg-cyan-400/80 shadow-[0_0_5px_#00E5FF]"></div>
+                                <div className="h-full w-px bg-cyan-400/80 absolute left-1/2 -ml-px shadow-[0_0_5px_#00E5FF]"></div>
+                                <div className="w-4 h-4 border border-cyan-300 rounded-full absolute bg-cyan-400/10"></div>
+
+                                {/* Reticle Notches */}
+                                <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[9px] text-cyan-300 font-mono font-bold tracking-[0.2em] bg-black/50 px-1 rounded">0.00°N</div>
+                                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] text-cyan-300 font-mono font-bold tracking-[0.2em] bg-black/50 px-1 rounded">180.00°S</div>
+                                <div className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] text-cyan-300 font-mono font-bold tracking-[0.2em] -rotate-90 bg-black/50 px-1 rounded">270.00°W</div>
+                                <div className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] text-cyan-300 font-mono font-bold tracking-[0.2em] rotate-90 bg-black/50 px-1 rounded">90.00°E</div>
+                            </div>
+
+                            {/* Interactive Image Layer */}
+                            {activeImage ? (
+                                <div className="absolute inset-0 z-20 overflow-hidden mix-blend-screen">
+                                    <motion.div
+                                        style={{ scale: zoomLevel, y: panY }}
+                                        initial={{ scale: 0.8, opacity: 0 }}
+                                        animate={{ scale: zoomLevel, y: panY, opacity: 0.9 }}
+                                        transition={{ scale: { type: 'spring', stiffness: 200, damping: 20 }, y: { type: 'spring', stiffness: 300, damping: 30 }, opacity: { duration: 0.5 } }}
+                                        className="w-full h-full origin-center relative"
+                                    >
+                                        <motion.img
+                                            ref={imageRef}
+                                            src={activeImage}
+                                            alt="Sample"
+                                            drag
+                                            dragConstraints={containerRef}
+                                            dragElastic={0.2}
+                                            className="w-full h-full object-cover cursor-grab active:cursor-grabbing max-w-none"
+                                            onError={(e) => e.target.style.display = 'none'}
+                                        />
+
+                                        {/* CV YOLOv8 BOUNDING BOXES OVERLAY */}
+                                        {!isScanning && detections.length > 0 && (
+                                            <div className="absolute inset-0 pointer-events-none">
+                                                {detections.map((box, idx) => {
+                                                    const isSickle = (box.type || '').toLowerCase().includes('sickle');
+                                                    const isHighConf = isSickle && (box.confidence ?? 0) >= 0.70;
+                                                    const isWeakSickle = isSickle && !isHighConf;
+                                                    return (
+                                                        <motion.div
+                                                            key={`bbox-${box.id}-${idx}`}
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: 1 }}
+                                                            transition={{ duration: 0.3, delay: Math.min(idx * 0.008, 2) }}
+                                                            className={`absolute pointer-events-none ${isHighConf
+                                                                    ? 'border-2 shadow-[0_0_12px_rgba(255,60,60,0.5)]'
+                                                                    : isWeakSickle
+                                                                        ? 'border border-dashed border-amber-500/40'
+                                                                        : 'border-2 border-cyan-400/60'
+                                                                }`}
+                                                            style={{
+                                                                left: `${box.x}%`,
+                                                                top: `${box.y}%`,
+                                                                width: `${box.width}%`,
+                                                                height: `${box.height}%`,
+                                                                borderColor: isHighConf ? '#ff3c3c' : undefined,
+                                                            }}
+                                                        >
+                                                            {/* Label only for HIGH-CONFIDENCE sickle detections */}
+                                                            {isHighConf && (
+                                                                <div
+                                                                    className="absolute -top-4 left-[-2px] px-1.5 py-0.5 text-[7px] font-mono font-black text-white tracking-widest uppercase whitespace-nowrap rounded-sm"
+                                                                    style={{ backgroundColor: '#ff3c3c' }}
+                                                                >
+                                                                    SICKLE {(box.confidence * 100).toFixed(0)}%
+                                                                </div>
+                                                            )}
+                                                        </motion.div>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                </div>
+                            ) : (
+                                <div onClick={() => fileInputRef.current?.click()} className="text-center p-8 opacity-60 hover:opacity-100 transition-opacity cursor-pointer z-40 relative">
+                                    <Upload className="w-20 h-20 mx-auto mb-6 text-cyan-600 drop-shadow-[0_0_15px_rgba(0,229,255,0.6)]" />
+                                    <p className="font-mono text-lg text-cyan-300 tracking-[0.3em] uppercase font-bold text-shadow-glow">OPEN OPTICS</p>
+                                    <p className="font-mono text-[10px] text-cyan-600 mt-4 tracking-widest border border-cyan-800/80 rounded-full px-5 py-2 inline-block bg-black/80 shadow-[inset_0_0_10px_rgba(0,229,255,0.2)]">CLICK TO MOUNT</p>
+                                </div>
+                            )}
+
+                            {/* Laser Scan Animation Layer */}
+                            <AnimatePresence>
+                                {isScanning && (
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="absolute inset-0 z-40 pointer-events-none overflow-hidden rounded-full"
+                                    >
+                                        <motion.div
+                                            initial={{ top: '-10%' }}
+                                            animate={{ top: ['-10%', '110%', '-10%'] }}
+                                            transition={{ duration: 2.5, ease: 'linear', repeat: Infinity }}
+                                            className="absolute left-0 w-full h-[5px] bg-white shadow-[0_0_30px_#00E5FF,0_0_60px_#00E5FF]"
+                                        />
+                                        <motion.div
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: [0.1, 0.4, 0.1] }}
+                                            transition={{ duration: 1, repeat: Infinity }}
+                                            className="absolute inset-0 bg-cyan-400 mix-blend-overlay"
+                                        />
+                                        <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
+                                            <span className="text-cyan-300 font-bold tracking-[0.5em] text-[16px] drop-shadow-[0_0_10px_rgba(0,229,255,1)] animate-pulse bg-black/60 px-4 py-2 rounded-lg border border-cyan-500/50 backdrop-blur-sm">SCANNING CELLS...</span>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </div> {/* End Relative Lens wrapper */}
+
+                    {/* Futuristic Stepped Zoom Controls */}
+                    <div className="flex flex-col items-center w-full max-w-[320px] sm:max-w-[450px] lg:max-w-[480px] mt-6 p-2 z-20 gap-3">
+                        <div className="flex items-center justify-between w-full">
+                            <span className="font-mono text-[10px] text-cyan-500 tracking-[0.3em] font-bold shadow-sm">MAGNIFICATION</span>
+                            <span className="font-mono text-[12px] text-cyan-300 font-black tracking-widest drop-shadow-[0_0_10px_rgba(0,229,255,0.8)]">
+                                {zoomLevel.toFixed(1)}X
+                            </span>
+                        </div>
+                        <div className="flex items-center w-full gap-1">
+                            <button onClick={() => setZoomLevel(z => Math.max(1, z - 0.5))} className="p-1 px-3 text-cyan-600 hover:text-cyan-300 transition-colors"><Minimize className="w-5 h-5" /></button>
+                            <div className="flex-1 flex items-center justify-between gap-1 mx-2">
+                                {[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map((step) => (
+                                    <div
+                                        key={step}
+                                        onClick={() => setZoomLevel(step)}
+                                        className={`h-4 flex-1 cursor-pointer transition-all duration-300 border-l border-r border-black skew-x-[-15deg] ${zoomLevel >= step
+                                            ? 'bg-cyan-400 shadow-[0_0_15px_#00E5FF] scale-y-110'
+                                            : 'bg-cyan-900/40 hover:bg-cyan-800'
+                                            }`}
+                                    />
+                                ))}
+                            </div>
+                            <button onClick={() => setZoomLevel(z => Math.min(5, z + 0.5))} className="p-1 px-3 text-cyan-600 hover:text-cyan-300 transition-colors"><Maximize className="w-5 h-5" /></button>
+                        </div>
+                    </div>
+
+                </div>
+
+                {/* DIAGNOSTIC CONSOLE & SMART INSIGHTS (Right) */}
+                <div className="w-full lg:w-[450px] flex flex-col gap-5 shrink-0 relative z-20">
+
+                    {/* 1. SCREENING RESULT BADGE — replaces old diagnosis badge */}
+                    {report && (
+                        <div className="mt-6 flex flex-col gap-2">
+                            <h5 className={`text-[11px] uppercase font-black tracking-[0.25em] px-4 py-2 rounded-lg w-fit border shadow-sm ${report.alertLevel === 'critical'
+                                ? 'bg-rose-950/50 text-rose-400 border-rose-800/60 text-shadow-glow-rose'
+                                : report.alertLevel === 'review'
+                                    ? 'bg-amber-950/50 text-amber-400 border-amber-800/60'
+                                    : 'bg-emerald-950/50 text-emerald-400 border-emerald-800/60'
+                                }`}>
+                                {report.diagnosis}
+                            </h5>
+                            {/* Evidence Strength Tag */}
+                            {report.evidenceStrength && report.evidenceStrength !== 'none' && (
+                                <span className={`text-[9px] font-mono font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-md w-fit border ${
+                                    report.evidenceStrength === 'strong'
+                                        ? 'text-rose-400 border-rose-800/40 bg-rose-950/30'
+                                        : report.evidenceStrength === 'moderate'
+                                            ? 'text-amber-400 border-amber-800/40 bg-amber-950/30'
+                                            : 'text-cyan-400 border-cyan-800/40 bg-cyan-950/30'
+                                }`}>
+                                    Evidence: {report.evidenceStrength}
+                                </span>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 2. MEDICAL INTERPRETATION — prominent, unobstructed */}
+                    <div className="relative bg-cyan-950/20 border border-cyan-900/50 p-6 rounded-2xl shadow-inner w-full">
+                        <div className="flex items-center gap-2 mb-4 border-b border-cyan-800/40 pb-3">
+                            <Activity className="w-4 h-4 text-cyan-500" />
+                            <h3 className="text-[11px] font-bold text-cyan-500 tracking-[0.25em] uppercase">Screening Interpretation</h3>
+                            {isScanning && (
+                                <div className="flex items-center gap-1.5 ml-auto">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_5px_rgba(251,191,36,0.8)] animate-pulse"></div>
+                                    <span className="font-mono text-[9px] text-amber-300 tracking-[0.2em] font-bold uppercase">Processing</span>
+                                </div>
+                            )}
+                        </div>
+                        {isScanning ? (
+                            <p className="text-cyan-400 text-sm font-mono tracking-wider animate-pulse leading-relaxed font-bold">Scanning morphology networks. Mapping pixel densities...</p>
+                        ) : report ? (
+                            <p className={`text-[14px] leading-[1.8] tracking-wide font-semibold ${report.alertLevel === 'critical' ? 'text-rose-300'
+                                : report.alertLevel === 'review' ? 'text-amber-200'
+                                    : 'text-cyan-200'
+                                }`}>
+                                "{report.rashaText}"
+                            </p>
+                        ) : (
+                            <p className="text-cyan-600 text-sm font-mono tracking-wider leading-relaxed">System ready. Mount a slide to begin optics analysis.</p>
+                        )}
+                    </div>
+
+                    {/* 3. ALERT SECTION — tiered rendering */}
+                    {report?.alertLevel === 'critical' && (
+                        <div className="flex items-center gap-3 bg-red-950/70 border border-red-500/40 p-4 rounded-xl shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                            <ShieldAlert className="w-6 h-6 text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)] shrink-0" />
+                            <div>
+                                <h6 className="text-[11px] font-black text-red-400 tracking-widest uppercase mb-0.5">Screening Alert</h6>
+                                <p className="text-[10px] font-mono text-white/90 tracking-wider">Sickle cell morphology detected — {report.sickleCells} cells flagged. This is a screening result only. Confirmatory laboratory testing is required before clinical action.</p>
+                            </div>
+                        </div>
+                    )}
+                    {report?.alertLevel === 'review' && (
+                        <div className="flex items-center gap-3 bg-amber-950/50 border border-amber-600/30 p-4 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+                            <ShieldAlert className="w-6 h-6 text-amber-500 shrink-0" />
+                            <div>
+                                <h6 className="text-[11px] font-black text-amber-400 tracking-widest uppercase mb-0.5">Manual Review Advisory</h6>
+                                <p className="text-[10px] font-mono text-white/80 tracking-wider">{report.sickleCells} cell{report.sickleCells > 1 ? 's' : ''} flagged with possible sickle-like morphology. Manual microscopy review recommended. This is a screening result only.</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 4. DETECTION METRICS BAR — with sickle percentage */}
+                    {telemetry && (
+                        <div className="flex flex-row justify-between items-center w-full bg-black/50 backdrop-blur-md rounded-xl border border-cyan-900/40 px-5 py-4 shadow-lg">
+                            <div className="flex flex-col items-center text-center">
+                                <span className="text-[8px] tracking-[0.2em] text-cyan-500 font-bold mb-1">DETECTED</span>
+                                <span className={`text-2xl font-digit font-black ${isScanning ? 'text-cyan-700 animate-pulse' : 'text-cyan-300'}`}>{telemetry.detectedCells ?? '—'}</span>
+                                <span className="text-[7px] tracking-wider text-cyan-700 mt-0.5">cells</span>
+                            </div>
+                            <div className="w-px h-12 bg-cyan-900/40"></div>
+                            <div className="flex flex-col items-center text-center">
+                                <span className="text-[8px] tracking-[0.2em] text-emerald-500 font-bold mb-1">NORMAL</span>
+                                <span className={`text-2xl font-digit font-black ${isScanning ? 'text-cyan-700 animate-pulse' : 'text-emerald-400'}`}>{telemetry.normalCells ?? '—'}</span>
+                                <span className="text-[7px] tracking-wider text-cyan-700 mt-0.5">RBC</span>
+                            </div>
+                            <div className="w-px h-12 bg-cyan-900/40"></div>
+                            <div className="flex flex-col items-center text-center">
+                                <span className={`text-[8px] tracking-[0.2em] font-bold mb-1 ${telemetry.sickleCells > 0 ? 'text-rose-500' : 'text-cyan-500'}`}>SICKLE</span>
+                                <span className={`text-2xl font-digit font-black ${telemetry.sickleCells > 0 ? 'text-rose-400' : isScanning ? 'text-cyan-700 animate-pulse' : 'text-cyan-400'}`}>{telemetry.sickleCells ?? '—'}</span>
+                                <span className={`text-[7px] tracking-wider mt-0.5 ${telemetry.sickleCells > 0 ? 'text-rose-600' : 'text-cyan-700'}`}>{telemetry.sicklePct != null ? `${Number(telemetry.sicklePct).toFixed(1)}%` : ''}</span>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 5. SCREENING DISCLAIMER — persistent note */}
+                    {report && !isScanning && (
+                        <div className="flex items-start gap-2 px-4 py-3 rounded-lg bg-slate-950/60 border border-slate-700/40">
+                            <ShieldAlert className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
+                            <p className="text-[9px] font-mono text-slate-400 tracking-wider leading-relaxed">
+                                This is an AI-assisted screening result only. It does not constitute a clinical diagnosis. Confirmatory laboratory testing is required before any clinical decision.
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <style>{`
+                .text-shadow-glow { text-shadow: 0 0 15px rgba(0,229,255,0.8); }
+                .text-shadow-glow-rose { text-shadow: 0 0 15px rgba(225,29,72,0.8); }
+                .font-digit { font-family: 'Share Tech Mono', monospace, sans-serif; }
+            `}</style>
+        </div >
+    );
+}

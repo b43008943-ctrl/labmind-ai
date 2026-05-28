@@ -1,0 +1,280 @@
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Users, MessageCircle, Trophy, Swords, Map, Image as ImageIcon, ChevronRight, Microscope, CheckCircle2, XCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigation } from '../context/NavigationContext';
+import {
+    INITIAL_STUDY_GROUPS,
+    FeedTab,
+    LeaderboardTab,
+    WarMapTab,
+    ChatRoom,
+    BattleAlert,
+} from '../components/community';
+
+/* ═══════════════════════════════════════════════════════════════
+   STUDENT COMMUNITY — Social Hub
+   Feed | Chat | Leaderboard | Challenges | War Map | Image Quiz
+   ═══════════════════════════════════════════════════════════════ */
+
+const TABS = [
+    { id: 'feed', label: 'Feed', icon: Users, color: '#22D3EE' },
+    { id: 'chat', label: 'Chat', icon: MessageCircle, color: '#A855F7' },
+    { id: 'leaderboard', label: 'Ranks', icon: Trophy, color: '#F59E0B' },
+    { id: 'challenges', label: 'Battles', icon: Swords, color: '#EF4444' },
+    { id: 'warmap', label: 'War Map', icon: Map, color: '#22C55E' },
+    { id: 'quiz', label: 'Image Quiz', icon: ImageIcon, color: '#3B82F6' },
+];
+
+// ── Chat rooms mock ──
+const CHAT_ROOMS = [
+    { id: 'general', name: 'General Discussion', icon: '💬', lastMsg: 'Has anyone seen the new module?', unread: 3, color: '#22D3EE' },
+    { id: 'hema', name: 'Hematology Help', icon: '🩸', lastMsg: 'Can someone explain reticulocyte count?', unread: 7, color: '#EF4444' },
+    { id: 'para', name: 'Parasitology Corner', icon: '🔬', lastMsg: 'Check this Ascaris egg photo...', unread: 0, color: '#22C55E' },
+    { id: 'micro', name: 'Microbiology Lab', icon: '🧫', lastMsg: 'Gram stain results discussion', unread: 2, color: '#A855F7' },
+    { id: 'exam', name: 'Exam Prep', icon: '📝', lastMsg: 'Final exam topics leaked!', unread: 12, color: '#F59E0B' },
+];
+
+// ── Challenges mock ──
+const MOCK_CHALLENGES = [
+    { id: 1, opponent: 'Ahmad M.', topic: 'Hematology', status: 'live', score: '3-2', mode: '1v1' },
+    { id: 2, opponent: 'Team Alpha', topic: 'Microbiology', status: 'pending', score: null, mode: 'team' },
+];
+const PAST_RESULTS = [
+    { opponent: 'Fatima Z.', topic: 'Parasitology', won: true, score: '5-3' },
+    { opponent: 'Dr. Nora', topic: 'Hematology', won: false, score: '2-5' },
+    { opponent: 'Team Beta', topic: 'Urinalysis', won: true, score: '8-4' },
+];
+
+// ── Image Quiz mock ──
+const QUIZ_IMAGES = [
+    { id: 1, url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sickle_cell_anemia.jpg/1280px-Sickle_cell_anemia.jpg', question: 'What type of cells are prominently visible?', options: ['Sickle cells', 'Target cells', 'Spherocytes', 'Schistocytes'], correct: 0, explanation: 'The crescent/sickle-shaped RBCs are characteristic of Sickle Cell Disease (HbS).' },
+    { id: 2, url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Gram_stain_01.jpg/640px-Gram_stain_01.jpg', question: 'What does this Gram stain show?', options: ['Gram-positive cocci in clusters', 'Gram-negative rods', 'Gram-positive rods', 'Acid-fast bacilli'], correct: 0, explanation: 'Purple/violet cocci in clusters are characteristic of Staphylococcus species (Gram-positive).' },
+    { id: 3, url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ascaris_lumbricoides_egg.jpg/640px-Ascaris_lumbricoides_egg.jpg', question: 'Identify this parasitic structure:', options: ['Ascaris lumbricoides egg', 'Hookworm egg', 'Trichuris trichiura egg', 'Enterobius vermicularis egg'], correct: 0, explanation: 'The mammillated (bumpy) outer coat is characteristic of fertilized Ascaris lumbricoides eggs.' },
+    { id: 4, url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Neutrophils.jpg/640px-Neutrophils.jpg', question: 'What is the predominant WBC type here?', options: ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil'], correct: 0, explanation: 'Multi-lobed nucleus (3-5 lobes) and pale pink granules are characteristic of neutrophils.' },
+    { id: 5, url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/WBC_urine_microscopy.jpg/640px-WBC_urine_microscopy.jpg', question: 'What does this urine sediment show?', options: ['White blood cells (pyuria)', 'Red blood cells', 'Epithelial cells', 'Yeast cells'], correct: 0, explanation: 'Multiple WBCs in urine sediment (pyuria) suggest urinary tract infection.' },
+];
+
+export default function StudentCommunityScreen() {
+    const { navigate } = useNavigation();
+    const [activeTab, setActiveTab] = useState('feed');
+    const [groups, setGroups] = useState(INITIAL_STUDY_GROUPS);
+    const [activeChat, setActiveChat] = useState(null);
+    const [showBattleAlert, setShowBattleAlert] = useState(false);
+
+    // Image quiz state
+    const [quizIndex, setQuizIndex] = useState(0);
+    const [quizAnswer, setQuizAnswer] = useState(null);
+    const [quizScore, setQuizScore] = useState(0);
+    const [quizFinished, setQuizFinished] = useState(false);
+
+    const resetQuiz = () => { setQuizIndex(0); setQuizAnswer(null); setQuizScore(0); setQuizFinished(false); };
+    const currentQuiz = QUIZ_IMAGES[quizIndex];
+
+    const handleQuizPick = (idx) => {
+        if (quizAnswer !== null) return;
+        setQuizAnswer(idx);
+        if (idx === currentQuiz.correct) setQuizScore(s => s + 1);
+        setTimeout(() => {
+            if (quizIndex + 1 < QUIZ_IMAGES.length) { setQuizIndex(i => i + 1); setQuizAnswer(null); }
+            else setQuizFinished(true);
+        }, 1800);
+    };
+
+    return (
+        <>
+            <div className="min-h-dvh w-full bg-[#0A0E17] flex flex-col pb-24 overflow-hidden">
+                {/* Header */}
+                <header className="px-6 pt-12 pb-3 bg-[#0A0E17]/80 backdrop-blur-xl z-40 border-b border-white/5">
+                    <h1 className="text-xl font-bold text-white tracking-wide flex items-center gap-2">
+                        <Users className="w-5 h-5 text-cyan-400" /> Community
+                    </h1>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Connect, Compete & Learn Together</p>
+
+                    {/* Tab bar */}
+                    <div className="flex gap-1 mt-4 overflow-x-auto no-scrollbar -mx-6 px-6">
+                        {TABS.map(t => (
+                            <button key={t.id} onClick={() => setActiveTab(t.id)}
+                                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[11px] font-bold tracking-wider uppercase whitespace-nowrap transition-all shrink-0 ${activeTab === t.id ? 'text-white' : 'text-slate-500 hover:text-slate-300'}`}
+                                style={activeTab === t.id ? { background: `${t.color}15`, borderBottom: `2px solid ${t.color}` } : {}}>
+                                <t.icon size={13} style={activeTab === t.id ? { color: t.color } : {}} />
+                                {t.label}
+                            </button>
+                        ))}
+                    </div>
+                </header>
+
+                {/* Tab content */}
+                <div className="flex-1 overflow-y-auto no-scrollbar">
+                    <AnimatePresence mode="wait">
+
+                        {/* ═══ FEED ═══ */}
+                        {activeTab === 'feed' && (
+                            <div className="px-5 pt-2 pb-4">
+                                <FeedTab groups={groups} setGroups={setGroups} setActiveChat={setActiveChat} />
+                            </div>
+                        )}
+
+                        {/* ═══ CHAT ═══ */}
+                        {activeTab === 'chat' && (
+                            <motion.div key="chat" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="px-5 pt-4 flex flex-col gap-2">
+                                {CHAT_ROOMS.map(room => (
+                                    <button key={room.id} onClick={() => setActiveChat({ id: room.id, name: room.name, color: room.color })}
+                                        className="w-full flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-all text-left">
+                                        <div className="w-11 h-11 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ background: `${room.color}15`, border: `1px solid ${room.color}25` }}>
+                                            {room.icon}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-bold text-white truncate">{room.name}</p>
+                                            <p className="text-xs text-slate-500 truncate mt-0.5">{room.lastMsg}</p>
+                                        </div>
+                                        <div className="flex flex-col items-end gap-1 shrink-0">
+                                            {room.unread > 0 && (
+                                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ background: room.color }}>{room.unread}</span>
+                                            )}
+                                            <ChevronRight size={14} className="text-slate-600" />
+                                        </div>
+                                    </button>
+                                ))}
+                            </motion.div>
+                        )}
+
+                        {/* ═══ LEADERBOARD ═══ */}
+                        {activeTab === 'leaderboard' && (
+                            <div className="px-1"><LeaderboardTab /></div>
+                        )}
+
+                        {/* ═══ CHALLENGES ═══ */}
+                        {activeTab === 'challenges' && (
+                            <motion.div key="challenges" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="px-5 pt-4 flex flex-col gap-5">
+                                {/* Active */}
+                                <div>
+                                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Active Challenges</h3>
+                                    {MOCK_CHALLENGES.map(c => (
+                                        <div key={c.id} className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5 mb-2">
+                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 ${c.mode === '1v1' ? 'bg-red-500/10 border border-red-500/20' : 'bg-purple-500/10 border border-purple-500/20'}`}>
+                                                {c.mode === '1v1' ? '⚔️' : '🏴'}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-bold text-white">{c.opponent}</p>
+                                                <p className="text-xs text-slate-500">{c.topic} • {c.mode.toUpperCase()}</p>
+                                            </div>
+                                            <div className="shrink-0 text-right">
+                                                {c.status === 'live' ? (
+                                                    <span className="px-2 py-1 rounded-md text-[10px] font-bold bg-red-500/15 text-red-400 border border-red-500/20 animate-pulse">LIVE {c.score}</span>
+                                                ) : (
+                                                    <span className="px-2 py-1 rounded-md text-[10px] font-bold bg-amber-500/15 text-amber-400 border border-amber-500/20">PENDING</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Create challenge placeholder */}
+                                <button onClick={() => navigate('battle')} className="w-full py-4 rounded-2xl font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 bg-gradient-to-r from-red-500/15 to-orange-500/15 border border-red-500/25 text-red-300 hover:from-red-500/25 hover:to-orange-500/25 transition-all cursor-pointer active:scale-[0.98]">
+                                    <Swords size={18} /> Create Challenge
+                                </button>
+
+                                {/* Past results */}
+                                <div>
+                                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Past Results</h3>
+                                    {PAST_RESULTS.map((r, i) => (
+                                        <div key={i} className="flex items-center gap-4 p-3 rounded-xl bg-white/[0.02] border border-white/5 mb-2">
+                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${r.won ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20' : 'bg-red-500/15 text-red-400 border border-red-500/20'}`}>
+                                                {r.won ? 'W' : 'L'}
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="text-sm text-white font-medium">{r.opponent}</p>
+                                                <p className="text-xs text-slate-500">{r.topic}</p>
+                                            </div>
+                                            <span className="text-sm font-bold text-slate-400 font-mono">{r.score}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {/* ═══ WAR MAP ═══ */}
+                        {activeTab === 'warmap' && (
+                            <div className="px-1"><WarMapTab /></div>
+                        )}
+
+                        {/* ═══ IMAGE QUIZ ═══ */}
+                        {activeTab === 'quiz' && (
+                            <motion.div key="quiz" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="px-5 pt-4 flex flex-col gap-4">
+                                {quizFinished ? (
+                                    <div className="flex flex-col items-center gap-4 py-10 text-center">
+                                        <Microscope size={48} className="text-blue-400" />
+                                        <div className="text-4xl font-black" style={{ background: 'linear-gradient(135deg, #3B82F6, #22D3EE)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                                            {quizScore}/{QUIZ_IMAGES.length}
+                                        </div>
+                                        <h3 className="text-lg font-bold text-white">{quizScore >= QUIZ_IMAGES.length / 2 ? 'Great Eye!' : 'Keep Practicing!'}</h3>
+                                        <button onClick={resetQuiz} className="px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider bg-blue-500/10 border border-blue-500/25 text-blue-300 hover:bg-blue-500/20 transition-all">
+                                            Try Again
+                                        </button>
+                                    </div>
+                                ) : currentQuiz && (
+                                    <>
+                                        <div className="flex items-center justify-between">
+                                            <h3 className="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-2"><Microscope size={14} /> Image Identification</h3>
+                                            <span className="text-[10px] font-bold text-slate-500">{quizIndex + 1}/{QUIZ_IMAGES.length} • Score: {quizScore}</span>
+                                        </div>
+
+                                        {/* Image */}
+                                        <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/50 aspect-video">
+                                            <img src={currentQuiz.url} alt="Quiz" className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
+                                        </div>
+
+                                        {/* Question */}
+                                        <p className="text-sm font-bold text-white">{currentQuiz.question}</p>
+
+                                        {/* Options */}
+                                        <div className="flex flex-col gap-2">
+                                            {currentQuiz.options.map((opt, i) => {
+                                                let st = 'idle';
+                                                if (quizAnswer !== null) {
+                                                    if (i === currentQuiz.correct) st = 'correct';
+                                                    else if (i === quizAnswer) st = 'wrong';
+                                                    else st = 'dim';
+                                                }
+                                                const c = { idle: { bg: 'rgba(255,255,255,0.03)', border: 'rgba(255,255,255,0.08)', text: 'rgba(255,255,255,0.8)' }, correct: { bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.5)', text: '#10B981' }, wrong: { bg: 'rgba(239,68,68,0.12)', border: 'rgba(239,68,68,0.5)', text: '#EF4444' }, dim: { bg: 'transparent', border: 'rgba(255,255,255,0.03)', text: 'rgba(255,255,255,0.2)' } }[st];
+                                                return (
+                                                    <button key={i} onClick={() => handleQuizPick(i)} disabled={quizAnswer !== null}
+                                                        className="w-full flex items-center gap-3 p-3.5 rounded-xl transition-all" style={{ background: c.bg, border: `1px solid ${c.border}`, cursor: quizAnswer !== null ? 'default' : 'pointer' }}>
+                                                        <div className="w-7 h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-bold" style={{ background: `${c.border}`, color: c.text }}>
+                                                            {st === 'correct' ? <CheckCircle2 size={14} /> : st === 'wrong' ? <XCircle size={14} /> : String.fromCharCode(65 + i)}
+                                                        </div>
+                                                        <span className="flex-1 text-sm text-left" style={{ color: c.text }}>{opt}</span>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+
+                                        {/* Explanation after answer */}
+                                        {quizAnswer !== null && (
+                                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-4 rounded-xl bg-blue-500/5 border border-blue-500/15">
+                                                <p className="text-xs text-blue-300 leading-relaxed">{currentQuiz.explanation}</p>
+                                            </motion.div>
+                                        )}
+                                    </>
+                                )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            </div>
+
+            {/* Chat portal */}
+            {activeChat && typeof window !== 'undefined' && createPortal(
+                <ChatRoom activeChat={activeChat} groups={groups} setGroups={setGroups} setActiveChat={setActiveChat} onClose={() => setActiveChat(null)} />,
+                document.body
+            )}
+
+            {/* Battle alert portal */}
+            {showBattleAlert && typeof window !== 'undefined' && createPortal(
+                <BattleAlert showBattleAlert={showBattleAlert} setShowBattleAlert={setShowBattleAlert} onNavigate={(v) => navigate(v)} />,
+                document.body
+            )}
+        </>
+    );
+}

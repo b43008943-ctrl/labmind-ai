@@ -1,0 +1,171 @@
+# ═══════════════════════════════════════════════════════════════
+# LABMIND AI — Git Ignore Rules
+# ═══════════════════════════════════════════════════════════════
+
+# ─── Python ───
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+*.egg-info/
+
+# ─── Node ───
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ─── Environment files (contain secrets) ───
+.env
+.env.local
+.env.production
+.env.*.local
+
+# ─── IDE / Editor ───
+.vscode/
+.idea/
+*.swp
+*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ─── OS ───
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Build outputs ───
+dist/
+dist-ssr/
+
+# ─── Logs ───
+*.log
+logs/
+
+# ═══════════════════════════════════════════════════════════════
+# AI-BACKEND: Model weights (too large for git — backup separately)
+# ═══════════════════════════════════════════════════════════════
+ai-backend/*.pth
+ai-backend/*.pt
+
+# ═══════════════════════════════════════════════════════════════
+# AI-BACKEND: Datasets (too large for git — backup separately)
+# ═══════════════════════════════════════════════════════════════
+ai-backend/dataset_v1_2class/
+ai-backend/dataset_v1/
+ai-backend/dataset_raw/
+ai-backend/dataset_robust/
+ai-backend/dataset_clean/
+ai-backend/dataset/
+ai-backend/Clear/
+ai-backend/validation_smears/
+ai-backend/validation_cells/
+ai-backend/cropped_cells/
+ai-backend/debug_crops/
+ai-backend/new_cropped_cells/
+ai-backend/new_raw_images/
+ai-backend/hard_negatives/
+ai-backend/suspect_sickle_cells/
+ai-backend/input_samples/
+ai-backend/test_images/
+ai-backend/uploads/
+ai-backend/clinical_reports/
+
+# ═══════════════════════════════════════════════════════════════
+# AI-BACKEND: Generated result/report files
+# ═══════════════════════════════════════════════════════════════
+ai-backend/baseline_results*.json
+ai-backend/e2e_result*.json
+ai-backend/celery_e2e_result*.json
+ai-backend/*_report.json
+ai-backend/*_grid.png
+ai-backend/training_*.json
+ai-backend/training_*.png
+ai-backend/regression_*.json
+ai-backend/adoption_*.json
+ai-backend/diagnose_*.json
+ai-backend/diagnose_*.png
+ai-backend/recall_results.json
+ai-backend/recall_output.txt
+ai-backend/recall_summary.txt
+ai-backend/ranking_audit_results.json
+ai-backend/ranking_summary*.txt
+ai-backend/field_audit_results.json
+ai-backend/field_interpretation_results.json
+ai-backend/field_summary*.txt
+ai-backend/validation_results*.json
+ai-backend/model_comparison_*.json
+ai-backend/test_evaluation_*.json
+ai-backend/finetune_log.json
+ai-backend/gate_fn_audit.json
+ai-backend/dataset_audit_report.json
+ai-backend/crop_quality_deep_analysis.json
+ai-backend/sickle_fps.txt
+ai-backend/alignment_results.txt
+
+# ─── AI-BACKEND: Error dumps and debug output ───
+ai-backend/err_*.txt
+ai-backend/error*.txt
+ai-backend/error*.log
+ai-backend/case_error.txt
+ai-backend/case_raw.json
+ai-backend/task_error*.txt
+ai-backend/traceback.txt
+ai-backend/schema_check.txt
+ai-backend/pipeline_output.txt
+ai-backend/pipeline_results.txt
+ai-backend/steps_output.txt
+ai-backend/validate_out*.txt
+ai-backend/validate_results*.txt
+ai-backend/test_result.txt
+ai-backend/test_case_out*.txt
+
+# ═══════════════════════════════════════════════════════════════
+# FRONTEND: Rejected experiments / vanilla prototypes
+# ═══════════════════════════════════════════════════════════════
+rebuild_*.mjs
+app.vanilla.js
+index.vanilla.html
+styles.vanilla.css
+generate_covers*.mjs
+generate_covers*.js
+generate_science_covers*.mjs
+copy_covers.mjs
+copy_iliad.mjs
+remove-microscope.js
+rm.ps1
+
+# ─── Frontend: Log/error dumps ───
+lint-output.txt
+lint_output.txt
+eslint_output.txt
+output.txt
+build_error*.log
+build_error*.txt
+build_utf8*.log
+error_utf8.log
+eslint.log
+index_part*.txt
+
+# ─── Frontend: Standalone Tailwind bundle (407KB, not needed in repo) ───
+tailwind.js
+
+# ─── Frontend: Stray image assets committed to root ───
+hematology-bg.jpg
+
+# ═══════════════════════════════════════════════════════════════
+# GEMINI / ANTIGRAVITY
+# ═══════════════════════════════════════════════════════════════
+.gemini/
+
+# ─── Book ZIP Releases and weights ───
+book-releases/
+yolov8n.pt
+public/book-pages/
+public/books/
+ai-backend/dataset_parasites/
+android/
+dist/
+

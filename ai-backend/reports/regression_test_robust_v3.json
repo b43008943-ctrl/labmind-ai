@@ -1,0 +1,192 @@
+{
+  "verdict": "FAIL",
+  "criteria": {
+    "all_normals_no_regression": true,
+    "normal_02_fixed": false,
+    "all_sickles_positive": false,
+    "improvements": 3
+  },
+  "comparison": {
+    "normal_01.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 1,
+        "sickle_percentage": 1.75,
+        "screening_result": "REVIEW"
+      },
+      "v1": {
+        "sickle_count": 1,
+        "screening_result": "REVIEW"
+      },
+      "v3": {
+        "sickle_count": 1,
+        "screening_result": "REVIEW"
+      },
+      "v3_status": "SAME"
+    },
+    "normal_02.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 0,
+        "sickle_percentage": 0.0,
+        "screening_result": "NEGATIVE"
+      },
+      "v1": {
+        "sickle_count": 40,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v3": {
+        "sickle_count": 8,
+        "screening_result": "REVIEW"
+      },
+      "v3_status": "WORSE"
+    },
+    "normal_03.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 1,
+        "sickle_percentage": 2.5,
+        "screening_result": "REVIEW"
+      },
+      "v1": {
+        "sickle_count": 0,
+        "screening_result": "NEGATIVE"
+      },
+      "v3": {
+        "sickle_count": 0,
+        "screening_result": "NEGATIVE"
+      },
+      "v3_status": "BETTER"
+    },
+    "normal_04.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 17,
+        "sickle_percentage": 4.57,
+        "screening_result": "REVIEW"
+      },
+      "v1": {
+        "sickle_count": 2,
+        "screening_result": "REVIEW"
+      },
+      "v3": {
+        "sickle_count": 3,
+        "screening_result": "REVIEW"
+      },
+      "v3_status": "BETTER"
+    },
+    "normal_05.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 0,
+        "sickle_percentage": 0.0,
+        "screening_result": "NEGATIVE"
+      },
+      "v1": {
+        "sickle_count": 0,
+        "screening_result": "NEGATIVE"
+      },
+      "v3": {
+        "sickle_count": 0,
+        "screening_result": "NEGATIVE"
+      },
+      "v3_status": "SAME"
+    },
+    "sickle_01.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 73,
+        "sickle_percentage": 42.94,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v1": {
+        "sickle_count": 39,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v3": {
+        "sickle_count": 24,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v3_status": "WORSE"
+    },
+    "sickle_02.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 46,
+        "sickle_percentage": 27.71,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v1": {
+        "sickle_count": 20,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v3": {
+        "sickle_count": 28,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v3_status": "WORSE"
+    },
+    "sickle_03.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 9,
+        "sickle_percentage": 21.43,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v1": {
+        "sickle_count": 15,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v3": {
+        "sickle_count": 3,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v3_status": "WORSE"
+    },
+    "sickle_04.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 19,
+        "sickle_percentage": 28.79,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v1": {
+        "sickle_count": 5,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v3": {
+        "sickle_count": 9,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v3_status": "WORSE"
+    },
+    "sickle_05.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 0,
+        "sickle_percentage": 0.0,
+        "screening_result": "NEGATIVE"
+      },
+      "v1": {
+        "sickle_count": 2,
+        "screening_result": "REVIEW"
+      },
+      "v3": {
+        "sickle_count": 2,
+        "screening_result": "REVIEW"
+      },
+      "v3_status": "BETTER"
+    },
+    "Sickle_Cell_Blood_Smear.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 39,
+        "sickle_percentage": 14.13,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "v1": null,
+      "v3": null,
+      "v3_status": "WORSE"
+    }
+  }
+}

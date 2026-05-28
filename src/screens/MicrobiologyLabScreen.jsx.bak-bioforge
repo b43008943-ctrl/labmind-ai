@@ -1,0 +1,330 @@
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { api } from '../services/apiClient';
+import {
+  Upload, Camera, Microscope, AlertTriangle, CheckCircle,
+  X, FileText, Loader2, Activity, Info, ArrowLeft,
+  ChevronRight, RefreshCw, Zap
+} from 'lucide-react';
+
+// ═══════════════════════════════════════════════════════════
+//  Constants
+// ═══════════════════════════════════════════════════════════
+
+const BACTERIA_NAMES = {
+  'G-_Bacillus': { name: 'Gram-Negative Bacilli', color: '#ef4444', gram: '-' },
+  'G+_Coccus':   { name: 'Gram-Positive Cocci',   color: '#8b5cf6', gram: '+' },
+  'G-_Coccus':   { name: 'Gram-Negative Cocci',   color: '#f59e0b', gram: '-' },
+  'G+_Bacillus': { name: 'Gram-Positive Bacilli',  color: '#10b981', gram: '+' },
+};
+
+const SEVERITY_COLORS = {
+  low: '#22c55e', mild: '#f59e0b', moderate: '#f59e0b',
+  high: '#ef4444', severe: '#dc2626', critical: '#dc2626',
+};
+
+// ═══════════════════════════════════════════════════════════
+//  Helpers
+// ═══════════════════════════════════════════════════════════
+
+function extractError(err) {
+  if (!err) return 'Unknown error';
+  if (typeof err === 'string') return err;
+  const p = err.payload || err;
+  if (typeof p?.detail === 'string') return p.detail;
+  if (Array.isArray(p?.detail)) return p.detail.map(e => e.msg || '').join(', ');
+  return err.message || 'An error occurred';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Component
+// ═══════════════════════════════════════════════════════════
+
+export default function MicrobiologyLabScreen({ onNavigate }) {
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState(null);
+  const [clinicalReport, setClinicalReport] = useState(null);
+  const [isLoadingReport, setIsLoadingReport] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+  const [error, setError] = useState(null);
+  const [showBacteriaList, setShowBacteriaList] = useState(false);
+
+  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImage(file); setImagePreview(URL.createObjectURL(file));
+    setAnalysisResult(null); setClinicalReport(null); setShowReport(false); setError(null);
+    e.target.value = '';
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setImage(file); setImagePreview(URL.createObjectURL(file));
+      setAnalysisResult(null); setClinicalReport(null); setShowReport(false); setError(null);
+    }
+  };
+
+  const handleNewSample = () => {
+    setImage(null); setImagePreview(null); setAnalysisResult(null);
+    setClinicalReport(null); setShowReport(false); setError(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (cameraInputRef.current) cameraInputRef.current.value = '';
+  };
+
+  const handleAnalyze = async () => {
+    if (!image) return;
+    setIsAnalyzing(true); setError(null);
+    try { setAnalysisResult(await api.microbiology.analyzeAnnotated(image)); }
+    catch (err) { setError(extractError(err)); }
+    finally { setIsAnalyzing(false); }
+  };
+
+  const handleClinicalReport = async () => {
+    if (!analysisResult) return;
+    setIsLoadingReport(true);
+    try { const r = await api.microbiology.clinicalReport(analysisResult); setClinicalReport(r); setShowReport(true); }
+    catch (err) { setError(extractError(err)); }
+    finally { setIsLoadingReport(false); }
+  };
+
+  const P = '#8b5cf6', G = '#a78bfa', BG = '#030712';
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+  return (
+    <div style={{ minHeight:'100vh', background:BG, color:'#f5f3ff', fontFamily:'system-ui,sans-serif', display:'flex', flexDirection:'column', alignItems:'center', overflowX:'hidden', overflowY:'auto', WebkitOverflowScrolling:'touch' }}>
+      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelect} style={{ display:'none' }} />
+      <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleFileSelect} style={{ display:'none' }} />
+
+      {/* HEADER */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, padding:'14px 20px', width:'100%', borderBottom:`1px solid ${P}26`, background:`${P}08` }}>
+        <button onClick={() => window.history.back()} style={{ background:'none', border:`1px solid ${P}4d`, borderRadius:8, padding:'6px 10px', color:G, cursor:'pointer' }}><ArrowLeft size={18} /></button>
+        <div>
+          <h1 style={{ margin:0, fontSize:18, fontWeight:700, display:'flex', alignItems:'center', gap:8 }}>
+            <Microscope size={20} style={{ color:G, filter:`drop-shadow(0 0 6px ${P}99)` }} />
+            MICROBIOLOGY LAB
+            <span style={{ fontSize:10, padding:'2px 8px', borderRadius:99, background:`${P}26`, color:G, marginLeft:8 }}>AI Active</span>
+          </h1>
+          <p style={{ margin:0, fontSize:12, color:'#6b7280' }}>Bacterial Culture Analysis • 4 Gram Classifications</p>
+        </div>
+      </div>
+
+      {/* MAIN */}
+      <div className="micro-main" style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:16, padding:16, width:'100%' }}>
+        {/* LEFT */}
+        <div style={{ width:'100%', display:'flex', flexDirection:'column', alignItems:'center', gap:16 }}>
+          <div className="micro-circle" onDragOver={e=>e.preventDefault()} onDrop={handleDrop}
+            style={{ width:'100%', maxWidth:'min(460px,85vw)', aspectRatio:'1/1', borderRadius:'50%', border:`2px solid ${P}40`, background:`${P}08`, display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', position:'relative', margin:'0 auto' }}>
+            {isAnalyzing && <div style={{ position:'absolute', inset:0, border:`3px solid transparent`, borderTopColor:P, borderRadius:'50%', animation:'labSpin 1s linear infinite', zIndex:5 }} />}
+            {analysisResult?.annotated_image_base64
+              ? <img src={`data:image/jpeg;base64,${analysisResult.annotated_image_base64}`} alt="Annotated" style={{ width:'100%', height:'100%', objectFit:'cover', borderRadius:'50%' }} />
+              : imagePreview
+                ? <img src={imagePreview} alt="Preview" style={{ width:'100%', height:'100%', objectFit:'cover', borderRadius:'50%', opacity:isAnalyzing?0.5:1 }} />
+                : <div style={{ textAlign:'center', color:`${P}66` }}><Microscope size={48} /><p style={{ fontSize:12, marginTop:8 }}>Drop specimen or upload</p></div>}
+            {isAnalyzing && <div style={{ position:'absolute', display:'flex', flexDirection:'column', alignItems:'center', gap:6 }}>
+              <Loader2 size={32} style={{ color:G, animation:'labSpin 1s linear infinite' }} />
+              <span style={{ fontSize:11, color:G, animation:'labPulse 1.5s infinite' }}>Analyzing culture…</span>
+            </div>}
+          </div>
+          <div style={{ display:'flex', gap:10, flexWrap:'wrap', justifyContent:'center', width:'100%' }}>
+            {(analysisResult||image) && <button onClick={handleNewSample} style={{ display:'flex', alignItems:'center', gap:4, padding:'8px 14px', borderRadius:8, border:`1px solid ${P}4d`, background:`${P}14`, color:G, cursor:'pointer', fontSize:12 }}><RefreshCw size={14} /> New Sample</button>}
+            <button onClick={()=>fileInputRef.current?.click()} style={{ display:'flex', alignItems:'center', gap:4, padding:'8px 14px', borderRadius:8, border:`1px solid ${P}4d`, background:`${P}14`, color:G, cursor:'pointer', fontSize:12 }}><Upload size={14} /> Upload</button>
+            <button onClick={()=>cameraInputRef.current?.click()} style={{ display:'flex', alignItems:'center', gap:4, padding:'8px 14px', borderRadius:8, border:`1px solid ${P}4d`, background:`${P}14`, color:G, cursor:'pointer', fontSize:12 }}><Camera size={14} /> Camera</button>
+            {image && !analysisResult && !isAnalyzing && <button onClick={handleAnalyze} style={{ display:'flex', alignItems:'center', gap:4, padding:'8px 16px', borderRadius:8, background:`linear-gradient(135deg,${P},#7c3aed)`, color:'#fff', fontWeight:700, cursor:'pointer', fontSize:12, border:'none' }}><Activity size={14} /> Analyze</button>}
+          </div>
+          {error && <div style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 14px', background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', borderRadius:8, color:'#fca5a5', fontSize:12, maxWidth:460 }}><AlertTriangle size={16} /> {error}</div>}
+        </div>
+
+        {/* RIGHT */}
+        <div style={{ width:'100%', maxWidth:460, margin:'0 auto', display:'flex', flexDirection:'column', gap:16 }}>
+          {!analysisResult && !isAnalyzing && (<>
+            <div style={{ padding:16, background:`${P}0a`, border:`1px solid ${P}26`, borderRadius:12 }}>
+              <h3 style={{ margin:'0 0 8px', color:G, fontSize:16 }}>🧫 Microbiology Lab</h3>
+              <p style={{ margin:0, fontSize:12, color:'#9ca3af' }}>Gram staining classification AI for bacterial cultures.</p>
+              <div style={{ display:'flex', gap:16, marginTop:12 }}>
+                {[['4','Classes'],['88.6%','Accuracy'],['YOLOv8','Model']].map(([v,l])=>(
+                  <div key={l} style={{ textAlign:'center' }}><div style={{ fontSize:18, fontWeight:700, color:G }}>{v}</div><div style={{ fontSize:10, color:'#6b7280' }}>{l}</div></div>
+                ))}
+              </div>
+            </div>
+            <div style={{ padding:14, background:'rgba(255,255,255,0.02)', border:`1px solid ${P}1f`, borderRadius:12 }}>
+              <button onClick={()=>setShowBacteriaList(!showBacteriaList)} style={{ width:'100%', background:'none', border:'none', color:G, display:'flex', justifyContent:'space-between', alignItems:'center', cursor:'pointer', fontSize:13, fontWeight:600, padding:0 }}>
+                <span>Bacterial Classes (4)</span>
+                <ChevronRight size={16} style={{ transform:showBacteriaList?'rotate(90deg)':'none', transition:'transform 0.2s' }} />
+              </button>
+              <AnimatePresence>{showBacteriaList && (
+                <motion.div initial={{ height:0, opacity:0 }} animate={{ height:'auto', opacity:1 }} exit={{ height:0, opacity:0 }} style={{ overflow:'hidden', marginTop:8 }}>
+                  {Object.entries(BACTERIA_NAMES).map(([key,{name,color,gram}])=>(
+                    <div key={key} style={{ display:'flex', alignItems:'center', gap:8, padding:'6px 0', borderBottom:'1px solid rgba(255,255,255,0.04)' }}>
+                      <div style={{ width:10, height:10, borderRadius:'50%', background:color }} />
+                      <span style={{ fontSize:12, color:'#d1d5db' }}>{name}</span>
+                      <span style={{ fontSize:9, padding:'1px 6px', borderRadius:4, background:gram==='+'?'#7c3aed33':'#ef444433', color:gram==='+'?'#a78bfa':'#fca5a5', marginLeft:'auto' }}>Gram{gram}</span>
+                    </div>
+                  ))}
+                </motion.div>
+              )}</AnimatePresence>
+            </div>
+          </>)}
+
+          {isAnalyzing && (
+            <div style={{ padding:24, textAlign:'center', background:`${P}0a`, border:`1px solid ${P}26`, borderRadius:12 }}>
+              <Loader2 size={28} style={{ color:G, animation:'labSpin 1s linear infinite', margin:'0 auto' }} />
+              <p style={{ marginTop:12, fontSize:13, color:G }}>Analyzing bacterial culture…</p>
+            </div>
+          )}
+
+          {analysisResult && !isAnalyzing && (<>
+            {/* Assessment */}
+            <div style={{ padding:14, borderRadius:12, background:`${P}0f`, border:`1px solid ${P}33`, textAlign:'center' }}>
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, marginBottom:6 }}>
+                {analysisResult.total_bacteria_detected > 0
+                  ? <AlertTriangle size={18} style={{ color:'#ef4444' }} />
+                  : <CheckCircle size={18} style={{ color:'#22c55e' }} />}
+                <span style={{ fontWeight:700, fontSize:13, color:analysisResult.total_bacteria_detected>0?'#ef4444':'#22c55e' }}>
+                  {analysisResult.overall_assessment || 'Analysis Complete'}
+                </span>
+              </div>
+            </div>
+
+            {/* Gram Summary */}
+            {analysisResult.gram_summary && (
+              <div style={{ padding:14, borderRadius:12, background:'rgba(255,255,255,0.02)', border:`1px solid ${P}1f` }}>
+                <h4 style={{ margin:'0 0 10px', fontSize:13, color:G, display:'flex', alignItems:'center', gap:6 }}><Zap size={14} /> Gram Summary</h4>
+                <div style={{ display:'flex', gap:8 }}>
+                  <div style={{ flex:1, padding:'8px 10px', borderRadius:8, background:'#7c3aed1a', border:'1px solid #7c3aed33', textAlign:'center' }}>
+                    <div style={{ fontSize:20, fontWeight:700, color:'#a78bfa' }}>{analysisResult.gram_summary.gram_positive}</div>
+                    <div style={{ fontSize:10, color:'#9ca3af' }}>Gram+</div>
+                  </div>
+                  <div style={{ flex:1, padding:'8px 10px', borderRadius:8, background:'#ef44441a', border:'1px solid #ef444433', textAlign:'center' }}>
+                    <div style={{ fontSize:20, fontWeight:700, color:'#fca5a5' }}>{analysisResult.gram_summary.gram_negative}</div>
+                    <div style={{ fontSize:10, color:'#9ca3af' }}>Gram−</div>
+                  </div>
+                </div>
+                {analysisResult.gram_summary.dominant_gram && (
+                  <p style={{ margin:'8px 0 0', fontSize:11, color:'#9ca3af', textAlign:'center' }}>Dominant: <strong style={{ color:G }}>{analysisResult.gram_summary.dominant_gram}</strong></p>
+                )}
+              </div>
+            )}
+
+            {/* Bacteria Info */}
+            {analysisResult.bacteria_info?.length > 0 && (
+              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                {analysisResult.bacteria_info.map((b,i)=>{
+                  const meta = BACTERIA_NAMES[b.species];
+                  return (
+                    <div key={i} style={{ padding:'10px 12px', borderRadius:10, background:'rgba(0,0,0,0.3)', border:`1px solid ${meta?.color||P}33` }}>
+                      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:4 }}>
+                        <span style={{ fontSize:13, fontWeight:600, color:meta?.color||G }}>{meta?.name||b.species}</span>
+                        <span style={{ fontSize:18, fontWeight:700, color:meta?.color||G }}>{b.count}</span>
+                      </div>
+                      <div style={{ fontSize:10, color:'#9ca3af' }}>{b.appearance}</div>
+                      {b.color_on_stain && <div style={{ fontSize:10, color:'#6b7280', marginTop:2 }}>Stain: {b.color_on_stain}</div>}
+                    </div>
+                  );
+                })}
+                <div style={{ padding:'10px 12px', borderRadius:10, background:'rgba(0,0,0,0.3)', border:`1px solid ${P}33`, textAlign:'center' }}>
+                  <div style={{ fontSize:22, fontWeight:700, color:G }}>{analysisResult.total_bacteria_detected}</div>
+                  <div style={{ fontSize:10, color:'#9ca3af' }}>Total Bacteria</div>
+                </div>
+              </div>
+            )}
+
+            <button onClick={handleClinicalReport} disabled={isLoadingReport}
+              style={{ width:'100%', padding:'12px 0', borderRadius:10, border:'none', cursor:'pointer', background:`linear-gradient(135deg,${P},#7c3aed)`, color:'#fff', fontWeight:700, fontSize:13, display:'flex', alignItems:'center', justifyContent:'center', gap:8, opacity:isLoadingReport?0.6:1 }}>
+              {isLoadingReport ? <Loader2 size={16} style={{ animation:'labSpin 1s linear infinite' }} /> : <FileText size={16} />}
+              {isLoadingReport ? 'Generating Report…' : 'Clinical Report'}
+            </button>
+          </>)}
+        </div>
+      </div>
+
+      {/* CLINICAL REPORT MODAL */}
+      <AnimatePresence>
+        {showReport && clinicalReport?.rule_based && (
+          <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+            style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.85)', zIndex:50, display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}>
+            <motion.div initial={{ scale:0.9, opacity:0 }} animate={{ scale:1, opacity:1 }} exit={{ scale:0.9, opacity:0 }}
+              style={{ background:'#0f172a', border:`1px solid ${P}40`, borderRadius:16, padding:24, maxWidth:560, width:'100%', maxHeight:'85vh', overflowY:'auto', position:'relative' }}>
+              <button onClick={()=>setShowReport(false)} style={{ position:'absolute', top:12, right:12, background:'none', border:'none', color:'#9ca3af', cursor:'pointer' }}><X size={20} /></button>
+              {(()=>{
+                const rb = clinicalReport.rule_based;
+                const sevColor = rb.severity_color || SEVERITY_COLORS[rb.severity] || P;
+                return (<>
+                  <div style={{ textAlign:'center', marginBottom:16 }}>
+                    <span style={{ display:'inline-block', padding:'4px 16px', borderRadius:99, background:`${sevColor}22`, color:sevColor, fontWeight:700, fontSize:12, textTransform:'uppercase', border:`1px solid ${sevColor}44` }}>{rb.severity}</span>
+                  </div>
+                  <h2 style={{ margin:'0 0 16px', fontSize:16, color:G, textAlign:'center', lineHeight:1.4 }}>{rb.primary_diagnosis || 'Clinical Report'}</h2>
+
+                  {rb.overall_assessment && <div style={{ padding:12, background:`${P}0f`, border:`1px solid ${P}26`, borderRadius:8, marginBottom:12, fontSize:12, color:'#d1d5db', lineHeight:1.6 }}>{rb.overall_assessment}</div>}
+
+                  {rb.differential_diagnosis?.length > 0 && (
+                    <div style={{ marginBottom:12 }}>
+                      <h4 style={{ fontSize:12, color:G, margin:'0 0 6px', fontWeight:600 }}>Differential Diagnosis</h4>
+                      {rb.differential_diagnosis.map((d,i)=>(
+                        <div key={i} style={{ padding:'8px', borderBottom:'1px solid rgba(255,255,255,0.04)', fontSize:11, color:'#d1d5db' }}>
+                          <strong>{d.organism}</strong> — {d.diseases}
+                          {d.arrangement && <div style={{ fontSize:10, color:'#6b7280', marginTop:2 }}>{d.arrangement}</div>}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {rb.recommended_investigations?.length > 0 && (
+                    <div style={{ marginBottom:12 }}>
+                      <h4 style={{ fontSize:12, color:G, margin:'0 0 6px', fontWeight:600 }}>Recommended Investigations</h4>
+                      {rb.recommended_investigations.map((inv,i)=>(
+                        <div key={i} style={{ padding:'4px 8px', fontSize:11, color:'#d1d5db', borderBottom:'1px solid rgba(255,255,255,0.04)' }}>• {typeof inv==='string'?inv:inv.test}</div>
+                      ))}
+                    </div>
+                  )}
+
+                  {rb.red_flags?.length > 0 && (
+                    <div style={{ marginBottom:12, padding:10, background:'rgba(239,68,68,0.08)', border:'1px solid rgba(239,68,68,0.2)', borderRadius:8 }}>
+                      <h4 style={{ fontSize:12, color:'#ef4444', margin:'0 0 6px', fontWeight:600, display:'flex', alignItems:'center', gap:4 }}><AlertTriangle size={14} /> Red Flags</h4>
+                      {rb.red_flags.map((rf,i)=>(<div key={i} style={{ fontSize:11, color:'#fca5a5', marginBottom:4 }}>⚠ {typeof rf==='string'?rf:rf.flag}</div>))}
+                    </div>
+                  )}
+
+                  {rb.treatment_considerations?.length > 0 && (
+                    <div style={{ marginBottom:12, padding:10, background:'rgba(16,185,129,0.06)', border:'1px solid rgba(16,185,129,0.2)', borderRadius:8 }}>
+                      <h4 style={{ fontSize:12, color:'#10b981', margin:'0 0 6px', fontWeight:600 }}>Treatment Considerations</h4>
+                      {rb.treatment_considerations.map((t,i)=>(<div key={i} style={{ fontSize:11, color:'#6ee7b7', marginBottom:4 }}>💊 {typeof t==='string'?t:t.treatment}</div>))}
+                    </div>
+                  )}
+
+                  {rb.ruled_out?.length > 0 && (
+                    <div style={{ marginBottom:12 }}>
+                      <h4 style={{ fontSize:12, color:'#6b7280', margin:'0 0 6px', fontWeight:600 }}>Ruled Out</h4>
+                      {rb.ruled_out.map((r,i)=>(<div key={i} style={{ fontSize:11, color:'#4b5563', textDecoration:'line-through', padding:'2px 0' }}>{typeof r==='string'?r:r.condition}</div>))}
+                    </div>
+                  )}
+
+                  {rb.educational_note && (
+                    <div style={{ padding:12, background:`${P}0a`, border:`1px solid ${P}1f`, borderRadius:8, marginBottom:12 }}>
+                      <h4 style={{ fontSize:12, color:G, margin:'0 0 6px', fontWeight:600, display:'flex', alignItems:'center', gap:4 }}><Info size={14} /> Educational Note</h4>
+                      <p style={{ fontSize:11, color:'#d1d5db', margin:0, lineHeight:1.6 }}>{typeof rb.educational_note==='string'?rb.educational_note:rb.educational_note?.english}</p>
+                    </div>
+                  )}
+
+                  {rb.disclaimer && <p style={{ fontSize:10, color:'#4b5563', textAlign:'center', marginTop:12, fontStyle:'italic' }}>{rb.disclaimer}</p>}
+                </>);
+              })()}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <style>{`
+        @keyframes labSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        @keyframes labPulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .micro-circle { max-width:85vw !important; }
+      `}</style>
+    </div>
+  );
+}

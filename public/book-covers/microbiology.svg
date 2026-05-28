@@ -1,0 +1,38 @@
+<svg width="400" height="580" viewBox="0 0 400 580" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="m-le" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2d4a"/><stop offset="0.6" stop-color="#0d1729"/><stop offset="1" stop-color="#070d18"/></linearGradient>
+<linearGradient id="m-go" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4d98a"/><stop offset="0.5" stop-color="#b8923f"/><stop offset="0.7" stop-color="#e8c878"/><stop offset="1" stop-color="#9c7a32"/></linearGradient>
+<radialGradient id="m-vig" cx="0.5" cy="0.45" r="0.75"><stop offset="0.7" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient>
+<linearGradient id="m-sp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0.75"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+<linearGradient id="m-rs" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="0.13"/></linearGradient>
+<filter id="m-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0"/></filter>
+</defs>
+<rect width="400" height="580" rx="6" fill="url(#m-le)"/>
+<rect width="400" height="580" rx="6" filter="url(#m-gr)" opacity="0.6"/>
+<rect x="22" y="22" width="356" height="536" rx="3" fill="none" stroke="url(#m-go)" stroke-width="2.5"/>
+<rect x="30" y="30" width="340" height="520" rx="2" fill="none" stroke="url(#m-go)" stroke-width="1"/>
+<g stroke="url(#m-go)" stroke-width="1.6" fill="none"><path d="M 22 60 Q 22 22 60 22"/><path d="M 378 60 Q 378 22 340 22"/><path d="M 22 520 Q 22 558 60 558"/><path d="M 378 520 Q 378 558 340 558"/></g>
+<g fill="url(#m-go)"><circle cx="46" cy="46" r="3"/><circle cx="354" cy="46" r="3"/><circle cx="46" cy="534" r="3"/><circle cx="354" cy="534" r="3"/></g>
+<text x="200" y="100" font-family="Georgia,serif" font-size="13" letter-spacing="3.5" fill="url(#m-go)" text-anchor="middle">OPENSTAX EDITION</text>
+<line x1="120" y1="116" x2="280" y2="116" stroke="url(#m-go)" stroke-width="1"/>
+<circle cx="200" cy="116" r="3" fill="url(#m-go)"/>
+<g transform="translate(200,240)">
+<circle r="76" fill="none" stroke="url(#m-go)" stroke-width="2"/>
+<g fill="url(#m-go)"><circle cx="0" cy="-76" r="3"/><circle cx="54" cy="-54" r="3"/><circle cx="76" cy="0" r="3"/><circle cx="54" cy="54" r="3"/><circle cx="0" cy="76" r="3"/><circle cx="-54" cy="54" r="3"/><circle cx="-76" cy="0" r="3"/><circle cx="-54" cy="-54" r="3"/></g>
+<circle r="56" fill="url(#m-le)" stroke="url(#m-go)" stroke-width="1"/>
+<circle r="38" fill="none" stroke="url(#m-go)" stroke-width="1.8"/>
+<circle r="24" fill="none" stroke="url(#m-go)" stroke-width="1.2"/>
+<circle r="11" fill="url(#m-go)" opacity="0.5"/>
+<path d="M 38 0 Q 58 -12 70 6" fill="none" stroke="url(#m-go)" stroke-width="1.3"/>
+<path d="M -38 0 Q -58 12 -70 -6" fill="none" stroke="url(#m-go)" stroke-width="1.3"/>
+<circle cx="28" cy="-28" r="3" fill="url(#m-go)"/><circle cx="-30" cy="26" r="2.5" fill="url(#m-go)"/>
+</g>
+<text x="200" y="378" font-family="Georgia,serif" font-size="42" font-weight="700" fill="url(#m-go)" text-anchor="middle">MICRO</text>
+<text x="200" y="420" font-family="Georgia,serif" font-size="42" font-weight="700" fill="url(#m-go)" text-anchor="middle">BIOLOGY</text>
+<line x1="110" y1="444" x2="290" y2="444" stroke="url(#m-go)" stroke-width="0.8"/>
+<text x="200" y="468" font-family="Georgia,serif" font-size="13" font-style="italic" fill="#c8b888" text-anchor="middle">Laboratory Reference</text>
+<g transform="translate(200,510)"><path d="M -36 0 L -8 0 M 36 0 L 8 0" stroke="url(#m-go)" stroke-width="1"/><path d="M 0 -7 L 5 0 L 0 7 L -5 0 Z" fill="url(#m-go)"/></g>
+<rect width="400" height="580" rx="6" fill="url(#m-vig)"/>
+<rect x="350" y="0" width="50" height="580" fill="url(#m-rs)"/>
+<rect x="0" y="0" width="34" height="580" fill="url(#m-sp)"/>
+</svg>

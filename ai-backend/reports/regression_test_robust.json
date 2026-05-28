@@ -1,0 +1,171 @@
+{
+  "verdict": "FAIL",
+  "summary": {
+    "normal_improved": 2,
+    "normal_worse": 1,
+    "sickle_improved": 2,
+    "sickle_worse": 3
+  },
+  "comparison": {
+    "normal_01.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 1,
+        "sickle_percentage": 1.75,
+        "screening_result": "REVIEW"
+      },
+      "new": {
+        "total_cells": 58,
+        "sickle_count": 1,
+        "normal_count": 56,
+        "sickle_percentage": 1.75,
+        "screening_result": "REVIEW"
+      },
+      "status": "SAME"
+    },
+    "normal_02.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 0,
+        "sickle_percentage": 0.0,
+        "screening_result": "NEGATIVE"
+      },
+      "new": {
+        "total_cells": 202,
+        "sickle_count": 40,
+        "normal_count": 160,
+        "sickle_percentage": 20.0,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "status": "WORSE"
+    },
+    "normal_03.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 1,
+        "sickle_percentage": 2.5,
+        "screening_result": "REVIEW"
+      },
+      "new": {
+        "total_cells": 40,
+        "sickle_count": 0,
+        "normal_count": 34,
+        "sickle_percentage": 0.0,
+        "screening_result": "NEGATIVE"
+      },
+      "status": "BETTER"
+    },
+    "normal_04.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 17,
+        "sickle_percentage": 4.57,
+        "screening_result": "REVIEW"
+      },
+      "new": {
+        "total_cells": 369,
+        "sickle_count": 2,
+        "normal_count": 348,
+        "sickle_percentage": 0.57,
+        "screening_result": "REVIEW"
+      },
+      "status": "BETTER"
+    },
+    "normal_05.jpg.jpg": {
+      "old": {
+        "category": "normal",
+        "sickle_count": 0,
+        "sickle_percentage": 0.0,
+        "screening_result": "NEGATIVE"
+      },
+      "new": {
+        "total_cells": 124,
+        "sickle_count": 0,
+        "normal_count": 124,
+        "sickle_percentage": 0.0,
+        "screening_result": "NEGATIVE"
+      },
+      "status": "SAME"
+    },
+    "sickle_01.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 73,
+        "sickle_percentage": 42.94,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "new": {
+        "total_cells": 170,
+        "sickle_count": 39,
+        "normal_count": 127,
+        "sickle_percentage": 23.49,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "status": "WORSE"
+    },
+    "sickle_02.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 46,
+        "sickle_percentage": 27.71,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "new": {
+        "total_cells": 161,
+        "sickle_count": 20,
+        "normal_count": 134,
+        "sickle_percentage": 12.99,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "status": "WORSE"
+    },
+    "sickle_03.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 9,
+        "sickle_percentage": 21.43,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "new": {
+        "total_cells": 41,
+        "sickle_count": 15,
+        "normal_count": 25,
+        "sickle_percentage": 37.5,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "status": "BETTER"
+    },
+    "sickle_04.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 19,
+        "sickle_percentage": 28.79,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "new": {
+        "total_cells": 67,
+        "sickle_count": 5,
+        "normal_count": 56,
+        "sickle_percentage": 8.2,
+        "screening_result": "SICKLE_SCREEN_POSITIVE"
+      },
+      "status": "WORSE"
+    },
+    "sickle_05.jpg.jpg": {
+      "old": {
+        "category": "sickle",
+        "sickle_count": 0,
+        "sickle_percentage": 0.0,
+        "screening_result": "NEGATIVE"
+      },
+      "new": {
+        "total_cells": 78,
+        "sickle_count": 2,
+        "normal_count": 64,
+        "sickle_percentage": 3.03,
+        "screening_result": "REVIEW"
+      },
+      "status": "BETTER"
+    }
+  }
+}
