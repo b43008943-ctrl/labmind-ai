@@ -87,19 +87,37 @@ export default function ImageReader({ book, onClose, readerVisible, onRate }) {
     cursor: 'pointer'
   }
 
+  // GitHub CDN base URL for book pages
+  const GITHUB_CDN = 'https://raw.githubusercontent.com/b43008943-ctrl/labmind-ai/main/public/book-pages'
+
+  function isLocalDev() {
+    return window.location.hostname === 'localhost' ||
+           window.location.hostname.startsWith('192.168.')
+  }
+
   function getPageUrl(pageNum) {
     const padded = String(pageNum).padStart(4, '0')
-    return `/book-pages/${book.pageFolder}/page-${padded}.webp`
+    if (isLocalDev()) {
+      return `/book-pages/${book.pageFolder}/page-${padded}.webp`
+    }
+    return `${GITHUB_CDN}/${book.pageFolder}/page-${padded}.webp`
   }
 
   // ON MOUNT — load manifest to get total pages
   useEffect(() => {
-    fetch(`/book-pages/${book.pageFolder}/manifest.json`)
+    const manifestUrl = isLocalDev()
+      ? `/book-pages/${book.pageFolder}/manifest.json`
+      : `${GITHUB_CDN}/${book.pageFolder}/manifest.json`
+
+    fetch(manifestUrl)
       .then(r => r.json())
       .then(data => {
         setTotalPages(data.pages)
       })
-      .catch(() => {})
+      .catch(() => {
+        // Fallback to book's embedded page count
+        if (book.totalPages) setTotalPages(book.totalPages)
+      })
   }, [book.pageFolder])
 
   // PAPER FLIP SOUND (White noise paper rustle synthesis)
